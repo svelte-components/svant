@@ -1,6 +1,6 @@
 <script>
-  import Prism from '../../components/prism/Prism.svelte'
-  import Button from '../../../externals/components/Button.svelte';
+  import Prism from 'docs/src/components/prism/Prism.svelte'
+  import Button from '@/components/Button.svelte';
 
   import Base from './base.demo.svelte'
   import BaseCode from './base.demo.txt'

@@ -1,16 +1,14 @@
 {
-  "name": "TODO",
-  "description": "TODO",
+  "name": "svant",
+  "description": "Svelte componet library based on the Ant Design System",
   "version": "0.0.1",
   "scripts": {
     "dev": "yarn gen:code-text && sapper dev",
     "build": "yarn gen:code-text && sapper build --legacy",
     "gen:code-text": "node scripts/generateCodeText run",
     "export": "sapper export --legacy",
-    "start": "node __sapper__/build",
-    "cy:run": "cypress run",
-    "cy:open": "cypress open",
-    "test": "run-p --race dev cy:run"
+    "start": "yarn gen:code-text && node __sapper__/build",
+    "test": "echo no tests yet"
   },
   "dependencies": {
     "compression": "^1.7.1",
@@ -25,6 +23,7 @@
     "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/runtime": "^7.0.0",
+    "@rollup/plugin-alias": "^3.0.1",
     "@rollup/plugin-commonjs": "^11.0.0",
     "@rollup/plugin-node-resolve": "^7.0.0",
     "@rollup/plugin-replace": "^2.2.0",

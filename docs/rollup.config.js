@@ -8,6 +8,8 @@ import config from 'sapper/config/rollup.js';
 import pkg from './package.json';
 import { markdown } from 'svelte-preprocess-markdown';
 import { string } from "rollup-plugin-string";
+import alias from '@rollup/plugin-alias';
+import path from 'path';
 
 const {generateFromPath} = require('./scripts/generateCodeText')
 
@@ -39,6 +41,12 @@ export default {
 			}),
 			string({
 				include: "**/*.txt"
+			}),
+			alias({
+				entries: {
+					'@': path.join(__dirname, '../src'),
+					docs: path.join(__dirname, '../docs')
+				}
 			}),
 			commonjs(),
 
@@ -83,6 +91,12 @@ export default {
 			}),
 			resolve({
 				dedupe: ['svelte']
+			}),
+			alias({
+				entries: {
+					'@': path.join(__dirname, '../src'),
+					docs: path.join(__dirname, '../docs')
+				}
 			}),
 			commonjs(),
 			string({

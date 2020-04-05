@@ -34,7 +34,7 @@ async function generateTextFiles (component) {
 module.exports.generateAll = async function () {
   const directories = await getDirectories(routesPath)
   for (const dir of directories) {
-    generateTextFiles(dir)
+    await generateTextFiles(dir)
   }
 }
 
@@ -48,6 +48,8 @@ module.exports.generateFromPath = async function (pathChanged) {
 }
 
 if (process.argv[2] === 'run') {
-  module.exports.generateAll()
+  (async function () {
+    await module.exports.generateAll()
+  })
 }
 
