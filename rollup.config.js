@@ -9,7 +9,7 @@ import pkg from './package.json';
 import { markdown } from 'svelte-preprocess-markdown';
 import { string } from "rollup-plugin-string";
 
-const generateCodeText = require('./scripts/generateCodeText')
+const {generateFromPath} = require('./scripts/generateCodeText')
 
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
@@ -90,7 +90,7 @@ export default {
 			}),
 			{
 				watchChange(id) {
-					generateCodeText(id)
+					generateFromPath(id)
 				}
 			}
 		],

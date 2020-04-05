@@ -1,5 +1,3 @@
-// TODO: have to generate all demo text files on start and on build
-// Also gitignore ??
 <script>
   import Prism from '../../components/prism/Prism.svelte'
   import Button from '../../../externals/components/Button.svelte';

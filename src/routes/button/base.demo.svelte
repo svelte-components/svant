@@ -1,6 +1,6 @@
 <script>
   import Button from '../../../externals/components/Button.svelte'
-  let text = 'there'
+  let text = 'what!?'
 </script>
 
 <div>
