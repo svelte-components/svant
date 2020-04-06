@@ -1,7 +1,6 @@
 .DS_Store
-/node_modules/
-/docs/node_modules/
-/docs/node_modules/@sapper/
+node_modules/
+docs/src/node_modules
 yarn-error.log
 docs/__sapper__/
 **/*.demo.txt

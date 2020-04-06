@@ -11,6 +11,7 @@ import { string } from "rollup-plugin-string";
 import alias from "@rollup/plugin-alias";
 import path from "path";
 
+const renderLessStyles = require("./scripts/renderLessStyles");
 const { generateFromPath } = require("./scripts/generateCodeText");
 
 const mode = process.env.NODE_ENV;
@@ -116,6 +117,9 @@ export default {
       {
         watchChange(id) {
           generateFromPath(id);
+          if (id.includes('.less')) {
+            renderLessStyles()
+          }
         },
       },
     ],

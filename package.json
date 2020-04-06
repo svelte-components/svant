@@ -20,6 +20,8 @@
     "url": "https://github.com/svelting/svant/issues"
   },
   "homepage": "https://github.com/svelting/svant#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "less": "^3.11.1"
+  },
   "dependencies": {}
 }
