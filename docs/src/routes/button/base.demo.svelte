@@ -1,6 +1,6 @@
 <script>
-  import Button from '@/components/Button.svelte'
-  let text = 'there'
+  import Button from "@/components/Button.svelte";
+  let text = "there";
 </script>
 
 <div>

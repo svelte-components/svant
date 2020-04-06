@@ -1,6 +1,7 @@
-
 <script>
-  import Doc from './demo.md'
+  import Doc from "./demo.md";
 </script>
 
-<Doc/>
+<div class="markdown api-container">
+  <Doc />
+</div>

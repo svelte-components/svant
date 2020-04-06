@@ -1,6 +1,8 @@
 
 <script>
 	export let segment;
+
+	const setAreaCurrent = (link) => segment === link ? "page" : undefined
 </script>
 
 <style>
@@ -47,6 +49,6 @@
 	<ul>
 		<li><a aria-current='{segment === undefined ? "page" : undefined}' href='.'>home</a></li>
 		<li><a aria-current='{segment === "about" ? "page" : undefined}' href='about'>about</a></li>
-		<li><a aria-current='{segment === "button" ? "button" : undefined}' href='button'>button</a></li>
+		<li><a aria-current='{segment === "button" ? "page" : undefined}' href='button'>button</a></li>
 	</ul>
 </nav>
