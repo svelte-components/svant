@@ -46,8 +46,5 @@ This is a simple demo for a button
 <Base />
 <Prism language="html" source="{BaseCode}"/>
 
-<!-- This is a colored demo for a button
-{@html colored}
-<Prism language="html" source="{colored}"/> -->
-
+## API
 <DocsTable {...attributesData}/>

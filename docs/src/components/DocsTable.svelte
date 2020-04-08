@@ -4,7 +4,7 @@
   export let data;
 </script>
 
-<h2>{title}</h2>
+<h3>{title}</h3>
 <table>
   <thead>
     <tr>

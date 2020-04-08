@@ -23,7 +23,6 @@ const preprocess = sveltePreprocess({
   }
 });
 
-const renderLessStyles = require("./scripts/renderLessStyles");
 const { generateFromPath } = require("./scripts/generateCodeText");
 
 const mode = process.env.NODE_ENV;
