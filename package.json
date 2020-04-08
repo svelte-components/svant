@@ -1,0 +1,27 @@
+{
+  "name": "svant",
+  "version": "0.0.1",
+  "description": "Svelte componet library based on the Ant Design System",
+  "main": "src/main.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svelting/svant.git"
+  },
+  "author": "Kujtim Hoxah and Aaron Saloff",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/svelting/svant/issues"
+  },
+  "homepage": "https://github.com/svelting/svant#readme",
+  "devDependencies": {
+    "less": "^3.11.1"
+  },
+  "dependencies": {}
+}

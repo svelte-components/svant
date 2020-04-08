@@ -1,2 +1,3 @@
-# Svant
-WIP - Under Construction
+# docs-site
+
+Temporary repo for developing the docs site
