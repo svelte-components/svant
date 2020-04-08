@@ -10,7 +10,9 @@
   <slot />
 </main>
 
-<style>
+<style global lang="less">
+  @import "../theme/index.less";
+
   main {
     position: relative;
     max-width: 56em;

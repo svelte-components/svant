@@ -10,6 +10,18 @@ import { markdown } from "svelte-preprocess-markdown";
 import { string } from "rollup-plugin-string";
 import alias from "@rollup/plugin-alias";
 import path from "path";
+import sveltePreprocess from 'svelte-preprocess';
+
+const preprocess = sveltePreprocess({
+  postcss: {
+    plugins: [
+      require('autoprefixer')
+    ],
+  },
+  less: {
+    javascriptEnabled: true
+  }
+});
 
 const renderLessStyles = require("./scripts/renderLessStyles");
 const { generateFromPath } = require("./scripts/generateCodeText");
@@ -37,7 +49,10 @@ export default {
         hydratable: true,
         emitCss: true,
         extensions: [".svelte", ".md"],
-        preprocess: markdown(),
+        preprocess: {
+          ...preprocess,
+          ...markdown()
+        },
       }),
       resolve({
         browser: true,
@@ -99,7 +114,10 @@ export default {
         generate: "ssr",
         dev,
         extensions: [".svelte", ".md"],
-        preprocess: markdown(),
+        preprocess: {
+          ...preprocess,
+          ...markdown()
+        }
       }),
       resolve({
         dedupe: ["svelte"],
@@ -111,15 +129,13 @@ export default {
         },
       }),
       commonjs(),
+
       string({
         include: "**/*.txt",
       }),
       {
         watchChange(id) {
           generateFromPath(id);
-          if (id.includes('.less')) {
-            renderLessStyles()
-          }
         },
       },
     ],
