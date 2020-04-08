@@ -4,3 +4,4 @@ docs/src/node_modules
 yarn-error.log
 docs/__sapper__/
 **/*.demo.txt
+/.idea

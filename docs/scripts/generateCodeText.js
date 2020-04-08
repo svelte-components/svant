@@ -54,5 +54,5 @@ module.exports.generateFromPath = async function (pathChanged) {
 if (process.argv[2] === "run") {
   (async function () {
     await module.exports.generateAll();
-  });
+  })();
 }
