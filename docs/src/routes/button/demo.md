@@ -1,9 +1,14 @@
 <script>
   import Prism from 'docs/src/components/prism/Prism.svelte'
-  import Button from '@/components/Button.svelte';
 
-  import Base from './base.demo.svelte'
-  import BaseCode from './base.demo.txt'
+  import Base from './demos/base.demo.svelte'
+  import BaseCode from './demos/base.demo.txt'
+
+  import Type from './demos/type.demo.svelte'
+  import TypeCode from './demos/type.demo.txt'
+  
+  import Icons from './demos/icons.demo.svelte'
+  import IconsCode from './demos/icons.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
@@ -37,7 +42,19 @@
     ]
   }
 </script>
+
 # Button
+
+## Example type
+
+<Type />
+<Prism language="html" source="{TypeCode}"/>
+
+## Example icons
+
+<Icons />
+<Prism language="html" source="{IconsCode}"/>
+
 
 ## A simple place to click
 
@@ -47,4 +64,5 @@ This is a simple demo for a button
 <Prism language="html" source="{BaseCode}"/>
 
 ## API
+
 <DocsTable {...attributesData}/>

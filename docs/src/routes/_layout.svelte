@@ -1,17 +1,18 @@
-<script>
-  import Nav from "../components/Nav.svelte";
-
-  export let segment;
-</script>
-
 <Nav {segment} />
 
 <main>
   <slot />
 </main>
 
+<script>
+  import Nav from "../components/Nav.svelte";
+
+  export let segment;
+</script>
+
 <style global lang="less">
   @import "../theme/index.less";
+  @import "../../src/style/index.less";
 
   main {
     position: relative;

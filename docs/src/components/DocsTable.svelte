@@ -1,15 +1,9 @@
-<script>
-  export let title = 'Attributes';
-  export let columns = ['Property', 'Description', 'Type', 'Default'];
-  export let data;
-</script>
-
 <h3>{title}</h3>
 <table>
   <thead>
     <tr>
       {#each columns as column (column)}
-         <th>{column}</th>
+        <th>{column}</th>
       {/each}
     </tr>
   </thead>
@@ -23,3 +17,9 @@
     {/each}
   </tbody>
 </table>
+
+<script>
+  export let title = "Attributes";
+  export let columns = ["Property", "Description", "Type", "Default"];
+  export let data;
+</script>

@@ -1,10 +1,24 @@
+<code bind:this={element} style="display:none">
+  <slot />
+</code>
+
+<pre class="language-{language}" command-line data-output="2-17">
+  <code class="language-{language}">
+    {#if language === 'none'}
+      {formattedCode}
+    {:else}
+      {@html formattedCode}
+    {/if}
+  </code>
+</pre>
+
 <script context="module">
   import _prism from "./import";
   export const global = {
     transform: x => x
   };
-  export const prism = _prism
-  export const highlight = _prism.highlightElement
+  export const prism = _prism;
+  export const highlight = _prism.highlightElement;
 </script>
 
 <script>
@@ -24,17 +38,3 @@
       language === "none" ? body : prism.highlight(body, grammar, language);
   }
 </script>
-
-<code bind:this={element} style="display:none">
-  <slot />
-</code>
-
-<pre class="language-{language}" command-line data-output="2-17">
-  <code class="language-{language}">
-    {#if language === 'none'}
-      {formattedCode}
-    {:else}
-      {@html formattedCode}
-    {/if}
-  </code>
-</pre>
