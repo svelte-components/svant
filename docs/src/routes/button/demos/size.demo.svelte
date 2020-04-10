@@ -1,19 +1,19 @@
 <Button
-  on:click={() => {
+  on:click="{() => {
     size = 'large';
-  }}>
+  }}">
   Large
 </Button>
 <Button
-  on:click={() => {
+  on:click="{() => {
     size = 'default';
-  }}>
+  }}">
   Default
 </Button>
 <Button
-  on:click={() => {
+  on:click="{() => {
     size = 'small';
-  }}>
+  }}">
   Small
 </Button>
 <br />
@@ -22,13 +22,13 @@
 <Button type="dashed" {size}>Dashed</Button>
 <Button type="link" {size}>Link</Button>
 <br />
-<Button type="primary" icon={DownloadOutlined} {size} />
-<Button type="primary" shape="circle" icon={DownloadOutlined} {size} />
-<Button type="primary" shape="round" icon={DownloadOutlined} {size} />
-<Button type="primary" shape="round" icon={DownloadOutlined} {size}>
+<Button type="primary" icon="{DownloadOutlined}" {size} />
+<Button type="primary" shape="circle" icon="{DownloadOutlined}" {size} />
+<Button type="primary" shape="round" icon="{DownloadOutlined}" {size} />
+<Button type="primary" shape="round" icon="{DownloadOutlined}" {size}>
   Download
 </Button>
-<Button type="primary" icon={DownloadOutlined} {size}>Download</Button>
+<Button type="primary" icon="{DownloadOutlined}" {size}>Download</Button>
 
 <script>
   import Button from "@/components/button/Button.svelte";

@@ -1,24 +1,24 @@
 <aside {...divProps} {...$$restProps}>
-  <div class={`${prefixCls}-children`}>
+  <div class="{`${prefixCls}-children`}">
     <slot />
   </div>
   {#if collapsible || (below && zeroWidthTrigger)}
     {#if zeroWidthTrigger}
       <span
-        on:click={toggle}
-        class={zeroWidthTriggerClasses}
-        tyle={zeroWidthTriggerStyle}>
+        on:click="{toggle}"
+        class="{zeroWidthTriggerClasses}"
+        tyle="{zeroWidthTriggerStyle}">
         <BarsOutlined />
       </span>
     {:else if !hideTrigger}
       <div
-        class={`${prefixCls}-trigger`}
-        on:click={toggle}
-        bind:this={triggerWrapper}
-        style={`width:${siderWidth};`}>
+        class="{`${prefixCls}-trigger`}"
+        on:click="{toggle}"
+        bind:this="{triggerWrapper}"
+        style="{`width:${siderWidth};`}">
         <slot name="trigger" />
         {#if !triggerExists()}
-          <svelte:component this={defaultTrigger} />
+          <svelte:component this="{defaultTrigger}" />
         {/if}
       </div>
     {/if}

@@ -1,4 +1,4 @@
-<footer class={classes} {...$$restProps}>
+<footer class="{classes}" {...$$restProps}>
   <slot />
 </footer>
 

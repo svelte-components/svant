@@ -1,4 +1,4 @@
-<header class={classes} {...$$restProps}>
+<header class="{classes}" {...$$restProps}>
   <slot />
 </header>
 

@@ -58,30 +58,35 @@
 # Button
 
 ## Example type
+
 <div id="components-button-demo-type">
     <Type />
 </div>
 <Prism language="svelte" source="{TypeCode}"/>
 
 ## Example icons
+
 <div id="components-button-demo-icons">
     <Icons />
 </div>
 <Prism language="svelte" source="{IconsCode}"/>
 
 ## Example size
+
 <div id="components-button-demo-size">
     <Size />
 </div>
 <Prism language="svelte" source="{SizeCode}"/>
 
 ## Example disabled
+
 <div id="components-button-demo-disabled">
     <Disabled />
 </div>
 <Prism language="svelte" source="{DisabledCode}"/>
 
 ## Example loading
+
 <div id="components-button-demo-loading">
     <Loading />
 </div>
@@ -89,12 +94,14 @@
 <Prism language="svelte" source="{LoadingCode}"/>
 
 ## Example danger
+
 <div id="components-button-demo-danger">
     <Danger />
 </div>
 <Prism language="svelte" source="{DangerCode}"/>
 
 ## Example block
+
 <div id="components-button-demo-block">
     <Block />
 </div>
