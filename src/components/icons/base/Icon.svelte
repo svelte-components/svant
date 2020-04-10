@@ -1,18 +1,18 @@
 <span
   role="img"
-  aria-label={icon.name}
-  class={classes}
+  aria-label="{icon.name}"
+  class="{classes}"
   {style}
-  tabindex={tabIndex}
-  bind:this={iconEl}
-  on:click={e => dispatch('click', e)}>
+  tabindex="{tabIndex}"
+  bind:this="{iconEl}"
+  on:click="{e => dispatch('click', e)}">
   {#if component}
-    <svelte:component this={component} />
+    <svelte:component this="{component}" />
   {:else}
     <SVGElement
-      icon={iconConfig}
-      class={svgClasses}
-      style={svgStyle}
+      icon="{iconConfig}"
+      class="{svgClasses}"
+      style="{svgStyle}"
       {width}
       {height}
       {fill} />

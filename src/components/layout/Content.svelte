@@ -1,4 +1,4 @@
-<main class={classes} {...$$restProps}>
+<main class="{classes}" {...$$restProps}>
   <slot />
 </main>
 

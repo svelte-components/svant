@@ -1,4 +1,4 @@
-<code bind:this={element} style="display:none">
+<code bind:this="{element}" style="display:none">
   <slot />
 </code>
 
