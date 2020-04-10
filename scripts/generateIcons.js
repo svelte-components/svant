@@ -32,7 +32,7 @@ async function generateIcons() {
     `
 <Icon {...props} on:click="{(e) => dispatch('click', e)}"/>
 <script>
-// GENERATE BY ./scripts/generate.js
+// GENERATE BY scripts/generatIcons.js
 // DON NOT EDIT IT MANUALLY
 import Icon from '@/components/icons/base/Icon.svelte';
 import <%= svgIdentifier %>Svg from '@ant-design/icons-svg/lib/asn/<%= svgIdentifier %>';
@@ -43,7 +43,6 @@ const dispatch = createEventDispatcher();
 export let spin = false
 export let rotate = false
 export let style = ''
-export let tabIndex = null
 <% if (theme === "twotone") {%>
 export let twoToneColor = null
 <% } %>
@@ -51,8 +50,6 @@ export let twoToneColor = null
 export let width = null
 export let height = null
 export let fill = null
-export let svgClass = null
-export let svgStyle = null
 
 let className = '';
 
@@ -65,13 +62,10 @@ $: props = {
     rotate,
     style,
     class: className,
-    tabIndex,
     twoToneColor,
     width,
     height,
-    fill,
-    svgClass,
-    svgStyle
+    fill
 }
 <% } else { %>
 $: props = {
@@ -80,12 +74,9 @@ $: props = {
     rotate,
     style,
     class: className,
-    tabIndex,
     width,
     height,
-    fill,
-    svgClass,
-    svgStyle
+    fill
 }
 <% } %>
 </script>
