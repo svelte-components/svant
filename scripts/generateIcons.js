@@ -32,7 +32,7 @@ async function generateIcons() {
     `
 <Icon {...props} on:click="{(e) => dispatch('click', e)}"/>
 <script>
-// GENERATE BY scripts/generatIcons.js
+// GENERATE BY scripts/generateIcons.js
 // DON NOT EDIT IT MANUALLY
 import Icon from '@/components/icons/base/Icon.svelte';
 import <%= svgIdentifier %>Svg from '@ant-design/icons-svg/lib/asn/<%= svgIdentifier %>';

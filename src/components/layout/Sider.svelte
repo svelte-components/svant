@@ -84,7 +84,6 @@
   export let defaultCollapsed = false;
   export let reverseArrow = false;
   export let zeroWidthTriggerStyle = "";
-  export let trigger = null;
   export let width = 200;
   let cwidth = 80;
   let collapsedWidth;

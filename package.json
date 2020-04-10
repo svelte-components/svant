@@ -2,8 +2,9 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "scripts": {
-    "build": "node scripts/generatIcons.js && rollup -c",
+    "build": "yarn generate:icons && rollup -c",
     "dev": "cd docs && yarn dev",
+    "generate:icons": "node scripts/generateIcons.js ",
     "start": "sirv public"
   },
   "devDependencies": {
@@ -29,6 +30,7 @@
     "lodash": "^4.17.15",
     "raf": "^3.4.1",
     "sirv-cli": "^0.4.5",
+    "style-to-object": "^0.3.0",
     "to-style": "^1.3.3"
   }
 }
