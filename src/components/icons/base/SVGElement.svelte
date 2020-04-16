@@ -1,4 +1,4 @@
-<svg bind:this={container} {...attrs} />
+<svg bind:this="{container}" {...attrs}></svg>
 
 <script>
   import { onMount } from "svelte";

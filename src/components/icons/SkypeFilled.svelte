@@ -1,4 +1,4 @@
-<Icon {...props} on:click={e => dispatch('click', e)} />
+<Icon {...props} on:click="{e => dispatch('click', e)}" />
 
 <script>
   // GENERATE BY ./scripts/generate.js
