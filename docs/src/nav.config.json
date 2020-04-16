@@ -1,0 +1,35 @@
+[
+  {
+    "name": "General",
+    "children": [
+      "button",
+      "icon"
+    ]
+  },
+  {
+    "name": "Layout",
+    "children": [
+      "layout"
+    ]
+  },
+  {
+    "name": "Navigation",
+    "children": []
+  },
+  {
+    "name": "Data Entry",
+    "children": []
+  },
+  {
+    "name": "Data Display",
+    "children": []
+  },
+  {
+    "name": "Feedback",
+    "children": []
+  },
+  {
+    "name": "Other",
+    "children": []
+  }
+]
