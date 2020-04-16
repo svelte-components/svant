@@ -3,7 +3,7 @@
   aria-label="{icon.name}"
   class="{classes}"
   {style}
-  tabindex="{tabIndex}"
+  {...$$restProps}
   bind:this="{iconEl}"
   on:click="{e => dispatch('click', e)}">
   {#if component}
@@ -11,62 +11,87 @@
   {:else}
     <SVGElement
       icon="{iconConfig}"
-      class="{svgClasses}"
-      style="{svgStyle}"
       {width}
       {height}
-      {fill} />
+      {fill}
+      class="{svgClasses}"
+      style="{svgStyle}" />
   {/if}
 
 </span>
 
 <script>
   import SVGElement from "@/components/icons/base/SVGElement.svelte";
-  import classnames from "classnames";
+  import classNames from "classnames";
+  import parse from "style-to-object";
+  import { string as toStyle } from "to-style";
   import {
     getSecondaryColor,
     getTwoToneColors,
     normalizeTwoToneColors
   } from "./utils";
   import { createEventDispatcher } from "svelte";
+
   const dispatch = createEventDispatcher();
 
-  // icon props
-  export let icon = {};
+  // ********************** Props **********************
+
+  // the icon object from @ant-design/icons-svg
+  export let icon;
+  // rotate icon with animation
   export let spin = false;
+  // rotate by n degrees (not working in IE9)
   export let rotate = false;
-  export let style = "";
-  export let tabIndex = null;
-  export let component = null;
+  // only supports the two-tone icon. Specify the primary color.
   export let twoToneColor = null;
-
-  // SVG props
+  // the component used for the root node, the first child of this component should be SVG
+  export let component = null;
+  // the width property of the svg node
   export let width = null;
+  // the height property of the svg node
   export let height = null;
+  // the fill property of the svg node
   export let fill = null;
-  export let svgClass = "";
-  export let svgStyle = "";
 
-  let className = "";
+  // this exports the classObj as class so the button user can set class={{'abc':true}}
+  let classObj = null;
+  export { classObj as class };
 
-  export { className as class };
+  // this allows us to get the style as object e.x  style={{'color':'red'}}.
+  export let style = null;
+  // ********************** /Props **********************
 
   let _twoToneColor;
   let iconEl;
+  let iconConfig;
+  let svgClasses;
+  let svgStyleObj;
+  let svgStyle;
 
-  $: classes = classnames(["anticon", `anticon-${icon.name}`, className]);
-  $: svgClasses = classnames([{ "anticon-spin": spin }, svgClass]);
-  if (!svgStyle) {
-    svgStyle = "";
+  // we make the classObj an object so we can add it to the classNames func.
+  $: if (typeof classObj === "string") {
+    classObj = {
+      [classObj]: true
+    };
   }
-  svgStyle = svgStyle.trim();
-  if (!svgStyle.endsWith(";")) {
-    svgStyle = svgStyle + ";";
+
+  // since we are not adding any style we just convert the style object to a style sting if it is not already a string
+  $: if (typeof style !== "string") {
+    style = toStyle(style);
   }
-  $: svgStyle = rotate
-    ? svgStyle +
-      `ms-transform: rotate(${rotate}deg);  transform: rotate(${rotate}deg);`
-    : svgStyle;
+
+  $: classes = classNames(["anticon", `anticon-${icon.name}`], classObj);
+
+  $: svgClasses = spin ? "anticon-spin" : null;
+
+  $: if (rotate) {
+    svgStyleObj = {
+      "ms-transform": `rotate(${rotate}deg)`,
+      transform: `rotate(${rotate}deg)`
+    };
+  }
+
+  $: svgStyle = toStyle(svgStyleObj);
 
   $: if (twoToneColor) {
     const _colors = normalizeTwoToneColors(twoToneColor);
@@ -87,8 +112,6 @@
     });
   }
 
-  let iconConfig;
-
   $: if (typeof icon.icon === "function") {
     iconConfig = icon.icon(
       _twoToneColor.primaryColor,
@@ -99,21 +122,21 @@
   }
 
   $: if (component && iconEl) {
-    let customeSvg = iconEl.children[0];
+    const customeSvg = iconEl.children[0];
     if (iconEl.children > 1 || !customeSvg || customeSvg.tagName !== "svg") {
       iconEl.innerHTML = "";
       console.error("Only one svg child allowed");
     } else {
-      let classAttr =
-        (customeSvg.getAttribute("class") || "") + ` ${svgClasses}`;
-      let existingStyle = customeSvg.getAttribute("style") || "";
-      existingStyle = existingStyle.trim();
-      if (!existingStyle.endsWith(";")) {
-        existingStyle = existingStyle + ";";
+      if (svgStyleObj) {
+        let existingStyle = customeSvg.getAttribute("style") || "";
+        let styleObj = parse(existingStyle);
+        customeSvg.setAttribute("style", toStyle(...styleObj, ...svgStyleObj));
       }
-      existingStyle = existingStyle + svgStyle;
-      customeSvg.setAttribute("class", classAttr);
-      customeSvg.setAttribute("style", existingStyle);
+      if (svgClasses) {
+        let classAttr =
+          (customeSvg.getAttribute("class") || "") + ` ${svgClasses}`;
+        customeSvg.setAttribute("class", classAttr);
+      }
       if (width) {
         customeSvg.setAttribute("width", width);
       }
@@ -127,50 +150,6 @@
   }
 </script>
 
-<style global>
-  .anticon {
-    display: inline-block;
-    color: inherit;
-    font-style: normal;
-    line-height: 0;
-    text-align: center;
-    text-transform: none;
-    vertical-align: -0.125em;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  .anticon > * {
-    line-height: 1;
-  }
-  .anticon svg {
-    display: inline-block;
-  }
-  .anticon::before {
-    display: none;
-  }
-  .anticon .anticon-icon {
-    display: block;
-  }
-  .anticon[tabindex] {
-    cursor: pointer;
-  }
-  .anticon-spin::before,
-  .anticon-spin {
-    display: inline-block;
-    -webkit-animation: loadingCircle 1s infinite linear;
-    animation: loadingCircle 1s infinite linear;
-  }
-  @-webkit-keyframes loadingCircle {
-    100% {
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
-  }
-  @keyframes loadingCircle {
-    100% {
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
-  }
+<style global lang="less">
+  @import "styles/index.less";
 </style>

@@ -20,8 +20,6 @@
   export let width = null;
   export let height = null;
   export let fill = null;
-  export let svgClass = null;
-  export let svgStyle = null;
 
   let className = "";
 
@@ -37,8 +35,6 @@
     twoToneColor,
     width,
     height,
-    fill,
-    svgClass,
-    svgStyle
+    fill
   };
 </script>
