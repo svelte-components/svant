@@ -8,6 +8,7 @@ import config from "sapper/config/rollup.js";
 import pkg from "./package.json";
 import { markdown } from "svelte-preprocess-markdown";
 import { string } from "rollup-plugin-string";
+import json from 'rollup-plugin-json';
 import alias from "@rollup/plugin-alias";
 import path from "path";
 import sveltePreprocess from 'svelte-preprocess';
@@ -67,6 +68,7 @@ export default {
         },
       }),
       commonjs(),
+      json(),
 
       legacy &&
         babel({
@@ -128,6 +130,7 @@ export default {
         },
       }),
       commonjs(),
+      json(),
 
       string({
         include: "**/*.txt",
