@@ -1,17 +1,26 @@
-<div class="header">
-  <div class="logo">Awesome Svant</div>
-</div>
-
-<div class="main-wrapper">
-  <Nav {segment} />
-  <div class="body">
-    <slot />
-  </div>
-</div>
-
+<Layout>
+  <Header theme="light" class="header">
+    <a class="logo" href="/">
+      <img alt="logo" src="/ant_logo.svg" />
+      Svant
+    </a>
+  </Header>
+  <Layout>
+    <Sider theme="light" width="16.66%">
+      <Nav {segment} />
+    </Sider>
+    <Content class="body">
+      <slot />
+    </Content>
+  </Layout>
+</Layout>
 
 <script>
   import Nav from "../components/Nav.svelte";
+  import Layout from "@/components/layout/Layout.svelte";
+  import Content from "@/components/layout/Content.svelte";
+  import Sider from "@/components/layout/Sider.svelte";
+  import Header from "@/components/layout/Header.svelte";
 
   export let segment;
 </script>
@@ -21,32 +30,31 @@
   @import "../../src/style/index.less";
 
   .header {
-    height: 64px;
-    background-color: #fff;
     position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
+    width: 100%;
     box-shadow: 0 2px 8px #f0f1f2;
-    display: flex;
-    align-items: center;
-    z-index: 10;;
+    z-index: 10;
   }
-
   .logo {
-    padding-left: 40px;
+    font-family: Avenir, -apple-system, BlinkMacSystemFont, segoe ui, Roboto,
+      helvetica neue, Arial, noto sans, sans-serif, apple color emoji,
+      segoe ui emoji, segoe ui symbol, noto color emoji, sans-serif;
+    height: 64px;
+    overflow: hidden;
+    color: rgba(0, 0, 0, 0.85);
+    font-size: 18px;
+    line-height: 64px;
+    white-space: nowrap;
+    text-decoration: none;
+    img {
+      position: relative;
+      top: -1.5px;
+      height: 32px;
+      margin-right: 16px;
+    }
   }
-
-  .main-wrapper {
-    margin-top: 64px;
-    position: relative;
-    padding: 40px 0 0;
-    background: #fff;
-  }
-
   .body {
-    width: 80%;
-    margin-left: 20%;
-    padding: 0 64px;
+    padding: 104px 64px;
+    background: #fff;
   }
 </style>

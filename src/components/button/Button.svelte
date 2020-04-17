@@ -49,7 +49,7 @@
   // set the icon component of button
   export let icon = null;
   // set the icon component props (this is an extra attribute that is not in the original ant design)
-  export let iconProps = null;
+  export let iconProps = {};
   // set the loading status of button
   export let loading = false;
   // can be set to `circle`, `round` or `omitted`
