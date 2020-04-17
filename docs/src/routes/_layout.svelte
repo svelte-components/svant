@@ -6,10 +6,7 @@
     </a>
   </Header>
   <Layout>
-    <Sider
-      theme="light"
-      width="16.66%"
-      class="layout-sidebar">
+    <Sider theme="light" width="16.66%" class="layout-sidebar">
       <Nav {segment} />
     </Sider>
     <Content class="body">

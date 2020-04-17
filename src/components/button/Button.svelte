@@ -113,7 +113,7 @@
         sizeCls = "sm";
         break;
       default:
-        sizeCls = null
+        sizeCls = null;
         break;
     }
 
@@ -183,7 +183,6 @@
       icon != null
     );
   }
-
 </script>
 
 <style lang="less" global>
