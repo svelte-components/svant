@@ -8,16 +8,14 @@ import config from "sapper/config/rollup.js";
 import pkg from "./package.json";
 import { markdown } from "svelte-preprocess-markdown";
 import { string } from "rollup-plugin-string";
-import json from 'rollup-plugin-json';
+import json from "rollup-plugin-json";
 import alias from "@rollup/plugin-alias";
 import path from "path";
-import sveltePreprocess from 'svelte-preprocess';
+import sveltePreprocess from "svelte-preprocess";
 
 const preprocess = sveltePreprocess({
   postcss: {
-    plugins: [
-      require('autoprefixer')
-    ],
+    plugins: [require("autoprefixer")]
   },
   less: {
     javascriptEnabled: true
@@ -42,7 +40,7 @@ export default {
     plugins: [
       replace({
         "process.browser": true,
-        "process.env.NODE_ENV": JSON.stringify(mode),
+        "process.env.NODE_ENV": JSON.stringify(mode)
       }),
       svelte({
         dev,
@@ -52,20 +50,20 @@ export default {
         preprocess: {
           ...preprocess,
           ...markdown()
-        },
+        }
       }),
       resolve({
         browser: true,
-        dedupe: ["svelte"],
+        dedupe: ["svelte"]
       }),
       string({
-        include: "**/*.txt",
+        include: "**/*.txt"
       }),
       alias({
         entries: {
           "@": path.join(__dirname, "../src"),
-          docs: path.join(__dirname, "../docs"),
-        },
+          docs: path.join(__dirname, "../docs")
+        }
       }),
       commonjs(),
       json(),
@@ -79,28 +77,28 @@ export default {
             [
               "@babel/preset-env",
               {
-                targets: "> 0.25%, not dead",
-              },
-            ],
+                targets: "> 0.25%, not dead"
+              }
+            ]
           ],
           plugins: [
             "@babel/plugin-syntax-dynamic-import",
             [
               "@babel/plugin-transform-runtime",
               {
-                useESModules: true,
-              },
-            ],
-          ],
+                useESModules: true
+              }
+            ]
+          ]
         }),
 
       !dev &&
         terser({
-          module: true,
-        }),
+          module: true
+        })
     ],
 
-    onwarn,
+    onwarn
   },
 
   server: {
@@ -109,7 +107,7 @@ export default {
     plugins: [
       replace({
         "process.browser": false,
-        "process.env.NODE_ENV": JSON.stringify(mode),
+        "process.env.NODE_ENV": JSON.stringify(mode)
       }),
       svelte({
         generate: "ssr",
@@ -121,32 +119,32 @@ export default {
         }
       }),
       resolve({
-        dedupe: ["svelte"],
+        dedupe: ["svelte"]
       }),
       alias({
         entries: {
           "@": path.join(__dirname, "../src"),
-          docs: path.join(__dirname, "../docs"),
-        },
+          docs: path.join(__dirname, "../docs")
+        }
       }),
       commonjs(),
       json(),
 
       string({
-        include: "**/*.txt",
+        include: "**/*.txt"
       }),
       {
         watchChange(id) {
           generateFromPath(id);
-        },
-      },
+        }
+      }
     ],
     external: Object.keys(pkg.dependencies).concat(
       require("module").builtinModules ||
         Object.keys(process.binding("natives"))
     ),
 
-    onwarn,
+    onwarn
   },
 
   serviceworker: {
@@ -156,12 +154,12 @@ export default {
       resolve(),
       replace({
         "process.browser": true,
-        "process.env.NODE_ENV": JSON.stringify(mode),
+        "process.env.NODE_ENV": JSON.stringify(mode)
       }),
       commonjs(),
-      !dev && terser(),
+      !dev && terser()
     ],
 
-    onwarn,
-  },
+    onwarn
+  }
 };

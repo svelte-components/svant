@@ -113,7 +113,7 @@ ${entryText}
 }
 
 generateIcons();
-exec("prettier --write \"src/components/icons/*.svelte\"", (error) => {
+exec('prettier --write "src/components/icons/*.svelte"', error => {
   if (error) {
     console.log(`error: ${error.message}`);
     return;
