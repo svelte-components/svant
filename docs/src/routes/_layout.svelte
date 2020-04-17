@@ -6,7 +6,10 @@
     </a>
   </Header>
   <Layout>
-    <Sider theme="light" width="16.66%">
+    <Sider
+      theme="light"
+      width="16.66%"
+      class="layout-sidebar">
       <Nav {segment} />
     </Sider>
     <Content class="body">
@@ -27,7 +30,6 @@
 
 <style global lang="less">
   @import "../theme/index.less";
-  @import "../../src/style/index.less";
 
   .header {
     position: fixed;
@@ -46,6 +48,8 @@
     line-height: 64px;
     white-space: nowrap;
     text-decoration: none;
+    display: flex;
+    align-items: center;
     img {
       position: relative;
       top: -1.5px;
@@ -56,5 +60,13 @@
   .body {
     padding: 104px 64px;
     background: #fff;
+    margin-left: 16.66%; /* width of sidebar */
+  }
+
+  .layout-sidebar {
+    position: fixed;
+    top: 104px; /* top nav + 40px padding */
+    bottom: 0;
+    overflow-y: scroll;
   }
 </style>

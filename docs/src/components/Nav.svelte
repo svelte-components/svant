@@ -34,11 +34,6 @@
     font-family: Avenir, -apple-system, BlinkMacSystemFont, segoe ui, Roboto,
       helvetica neue, Arial, noto sans, sans-serif, apple color emoji,
       segoe ui emoji, segoe ui symbol, noto color emoji, sans-serif;
-    width: 16.66%; /* TODO: Change when column component is available */
-    position: fixed;
-    top: 104px; /* top nav + 40px padding */
-    bottom: 0;
-    overflow-y: scroll;
     border-right: 1px solid #f0f0f0;
   }
 
