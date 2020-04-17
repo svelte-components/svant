@@ -7,7 +7,8 @@
     "generate:icons": "node scripts/generateIcons.js ",
     "start": "sirv public",
     "lint": "prettier --check '**/*.js' '**/*.svelte' &>/dev/null || (echo \"Linting failed. Run yarn lint:fix to fix the formatting issues\" &&  exit 1)",
-    "lint:fix": "prettier --write '**/*.js' '**/*.svelte'"
+    "lint:fix": "prettier --write '**/*.js' '**/*.svelte'",
+    "create:component": "node scripts/createComponentRoute.js"
   },
   "husky": {
     "hooks": {
@@ -22,6 +23,7 @@
     "postcss": "^7.0.27",
     "prettier": "^1.16.4",
     "prettier-plugin-svelte": "^0.7.0",
+    "prompts": "^2.3.2",
     "rollup": "^2.3.2",
     "rollup-plugin-livereload": "^1.1.0",
     "rollup-plugin-replace": "^2.2.0",
