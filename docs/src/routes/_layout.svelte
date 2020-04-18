@@ -27,6 +27,7 @@
 
 <style global lang="less">
   @import "../theme/index.less";
+  @import "../../src/style/index.less";
 
   .header {
     position: fixed;
