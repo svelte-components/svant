@@ -2,3 +2,4 @@
 node_modules
 src/components/icons/*.svelte
 docs/__sapper__
+coverage
