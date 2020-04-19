@@ -44,12 +44,6 @@
         description: 'If the button is round',
         type: 'Boolean',
         default: 'false'
-      },
-      {
-        property: 'clickHandler',
-        description: 'Function to call on click',
-        type: 'Function',
-        default: ''
       }
     ]
   }
