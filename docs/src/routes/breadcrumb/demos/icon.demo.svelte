@@ -10,7 +10,6 @@
 </Breadcrumb>
 
 <script>
-  import Breadcrumb from "@/components/breadcrumb/Breadcrumb.svelte";
-  import BreadcrumbItem from "@/components/breadcrumb/BreadcrumbItem.svelte";
-  import { HomeOutlined, UserOutlined } from "@/components/icons";
+  import { Breadcrumb, BreadcrumbItem } from "svant";
+  import { HomeOutlined, UserOutlined } from "svant/icons";
 </script>

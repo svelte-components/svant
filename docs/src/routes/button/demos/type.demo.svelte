@@ -4,5 +4,5 @@
 <Button type="link">Link</Button>
 
 <script>
-  import Button from "@/components/button/Button.svelte";
+  import { Button } from "svant";
 </script>

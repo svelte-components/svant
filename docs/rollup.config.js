@@ -62,6 +62,7 @@ export default {
       alias({
         entries: {
           "@": path.join(__dirname, "../src"),
+          svant: path.join(__dirname, "../src/components"),
           docs: path.join(__dirname, "../docs")
         }
       }),
@@ -124,6 +125,7 @@ export default {
       alias({
         entries: {
           "@": path.join(__dirname, "../src"),
+          svant: path.join(__dirname, "../src/components"),
           docs: path.join(__dirname, "../docs")
         }
       }),

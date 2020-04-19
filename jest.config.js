@@ -6,7 +6,8 @@ module.exports = {
   moduleFileExtensions: ["js", "svelte"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
-    "^examples/(.*)$": "<rootDir>/docs/src/routes/$1"
+    "^examples/(.*)$": "<rootDir>/docs/src/routes/$1",
+    "^svant(.*)$": "<rootDir>/src/components$1"
   },
   testPathIgnorePatterns: ["node_modules"],
   bail: false,

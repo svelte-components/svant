@@ -168,4 +168,8 @@ Description of the ${component}'s function.
 
   createComponentFiles(kebabCasedName, pascalCasedName);
   createDocumentationFiles(kebabCasedName, pascalCasedName, sectionAnswer[0]);
+
+  console.log(
+    `${pascalCasedName} component created. Remember to add it to src/components/index.js so that users can treeshake it!`
+  );
 })();
