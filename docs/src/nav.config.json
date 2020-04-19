@@ -1,16 +1,11 @@
 [
   {
     "name": "General",
-    "children": [
-      "button",
-      "icon"
-    ]
+    "children": ["button", "icon"]
   },
   {
     "name": "Layout",
-    "children": [
-      "layout"
-    ]
+    "children": ["layout"]
   },
   {
     "name": "Navigation",
