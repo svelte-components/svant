@@ -1,5 +1,5 @@
 <div class="ant-breadcrumb">
-  <slot {separator} />
+  <slot />
 </div>
 
 <script>
