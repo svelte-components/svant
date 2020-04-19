@@ -106,7 +106,11 @@ const createDocumentationFiles = (folder, component, navSection) => {
   // Make demo.md
   const docTemplate = `# ${startCase(component)}
 
-## Example Basic Usage
+Description of the ${component}'s function.
+
+## Examples
+
+### Basic
 
 <div id="components-${folder}-demo-basic">
   <Basic />

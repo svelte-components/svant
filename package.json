@@ -9,8 +9,8 @@
     "lint": "prettier --check '**/*.js' '**/*.svelte' &>/dev/null || (echo \"Linting failed. Run yarn lint:fix to fix the formatting issues\" &&  exit 1)",
     "lint:fix": "prettier --write '**/*.js' '**/*.svelte'",
     "create:component": "node scripts/createComponentRoute.js",
-    "test": "jest src",
-    "test:watch": "npm run test -- --watch"
+    "test": "jest",
+    "test:watch": "yarn test --watch"
   },
   "husky": {
     "hooks": {
