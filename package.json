@@ -8,7 +8,9 @@
     "start": "sirv public",
     "lint": "prettier --check '**/*.js' '**/*.svelte' &>/dev/null || (echo \"Linting failed. Run yarn lint:fix to fix the formatting issues\" &&  exit 1)",
     "lint:fix": "prettier --write '**/*.js' '**/*.svelte'",
-    "create:component": "node scripts/createComponentRoute.js"
+    "create:component": "node scripts/createComponentRoute.js",
+    "test": "jest src",
+    "test:watch": "npm run test -- --watch"
   },
   "husky": {
     "hooks": {
@@ -16,9 +18,17 @@
     }
   },
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
     "husky": "^4.2.5",
+    "@testing-library/jest-dom": "^5.5.0",
+    "@testing-library/svelte": "^3.0.0",
+    "babel-jest": "^25.3.0",
+    "flush-promises": "^1.0.2",
+    "jest": "^25.3.0",
+    "jest-transform-svelte": "^2.1.1",
     "less": "^3.11.1",
     "postcss": "^7.0.27",
     "prettier": "^1.16.4",

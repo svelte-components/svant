@@ -37,7 +37,7 @@ const createComponentFiles = (folder, component) => {
   mkdirSync(`${rootDir}/src/components/${folder}`);
 
   // Add [Component.svelte] file
-  const template = `<h1>This is the ${component} component</h1>
+  const template = `<div class="ant-${folder}">This is the ${component} component</div>
 
 <script>
 // ...
@@ -55,6 +55,24 @@ const createComponentFiles = (folder, component) => {
   // Add style and empty index.less file
   mkdirSync(`${rootDir}/src/components/${folder}/style`);
   writeFileSync(`${rootDir}/src/components/${folder}/style/index.less`, "");
+
+  // Add test file
+  const testFileContent = `import { render } from "@testing-library/svelte";
+import ${component} from '../${component}.svelte'
+
+describe("${component} component", () => {
+  test("should render", () => {
+    const { container } = render(${component});
+    expect(container.innerHTML).toContain("ant-${folder}")
+  });
+});
+  `;
+
+  mkdirSync(`${rootDir}/src/components/${folder}/__tests__`);
+  writeFileSync(
+    `${rootDir}/src/components/${folder}/__tests__/${component}.spec.js`,
+    testFileContent
+  );
 };
 
 const createDocumentationFiles = (folder, component, navSection) => {
