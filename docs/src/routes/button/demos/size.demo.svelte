@@ -31,7 +31,7 @@
 <Button type="primary" icon="{DownloadOutlined}" {size}>Download</Button>
 
 <script>
-  import Button from "@/components/button/Button.svelte";
-  import { DownloadOutlined } from "@/components/icons";
+  import { Button } from "svant";
+  import { DownloadOutlined } from "svant/icons";
   let size;
 </script>

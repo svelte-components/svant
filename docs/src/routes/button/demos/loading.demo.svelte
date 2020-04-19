@@ -37,8 +37,8 @@
 </Button>
 
 <script>
-  import Button from "@/components/button/Button.svelte";
-  import { PoweroffOutlined } from "@/components/icons";
+  import { Button } from "svant";
+  import { PoweroffOutlined } from "svant/icons";
 
   let loading = false;
   let iconLoading = false;

@@ -6,6 +6,5 @@
 </Breadcrumb>
 
 <script>
-  import Breadcrumb from "@/components/breadcrumb/Breadcrumb.svelte";
-  import BreadcrumbItem from "@/components/breadcrumb/BreadcrumbItem.svelte";
+  import { Breadcrumb, BreadcrumbItem } from "svant";
 </script>

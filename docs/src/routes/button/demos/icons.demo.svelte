@@ -12,6 +12,6 @@
 <Button type="dashed" icon="{SearchOutlined}">Search</Button>
 
 <script>
-  import Button from "@/components/button/Button.svelte";
-  import { SearchOutlined } from "@/components/icons";
+  import { Button } from "svant";
+  import { SearchOutlined } from "svant/icons";
 </script>
