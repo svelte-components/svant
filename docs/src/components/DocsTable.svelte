@@ -8,9 +8,9 @@
     </tr>
   </thead>
   <tbody>
-    {#each data as row (row[columns[0].toLowerCase()])}
+    {#each data as row (`${columns[0].toLowerCase()}-${row[columns[0].toLowerCase()]}`)}
       <tr>
-        {#each columns as column (row[column.toLowerCase()])}
+        {#each columns as column (`${column.toLowerCase()}-${row[column.toLowerCase()]}`)}
           <th>{row[column.toLowerCase()]}</th>
         {/each}
       </tr>
