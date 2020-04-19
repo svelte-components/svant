@@ -17,6 +17,7 @@
 
 <script>
   import { onMount, getContext } from "svelte";
+  import { writable } from "svelte/store";
 
   // ********************** Props **********************
 
@@ -27,8 +28,11 @@
 
   // ********************** /Props **********************
 
+  let uniformedSeparator = getContext("uniformedSeparator");
+  let separatorToUse;
+  let separatorIsComponent;
   // either uses the separator passed directly as a prop or using the prop passed in from the parent Breadcrumb component
-  let separatorToUse = separator || getContext("uniformedSeparator");
+  $: separatorToUse = separator || $uniformedSeparator;
   // boolean to tell us if a Svelte component is passed as the separator
-  let separatorIsComponent = typeof separatorToUse === "function";
+  $: separatorIsComponent = typeof separatorToUse === "function";
 </script>
