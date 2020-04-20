@@ -29,7 +29,7 @@
     data: [
       {
         property: 'color',
-        description: 'the color',
+        description: 'The color',
         type: 'String',
         default: 'white'
       },
