@@ -28,7 +28,9 @@
   },
   {
     "name": "Feedback",
-    "children": []
+    "children": [
+      "modal"
+    ]
   },
   {
     "name": "Other",

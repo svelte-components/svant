@@ -151,7 +151,7 @@ Description of the ${component}'s function.
   const demoTemplate = `<${component} />
 
 <script>
-  import ${component} from "@/components/${folder}/${component}.svelte";
+  import { ${component} } from "svant";
 </script>
   `;
   writeFileSync(`${routeDir}/demos/basic.demo.svelte`, demoTemplate);
