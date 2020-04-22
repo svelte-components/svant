@@ -1,21 +1,15 @@
 <div class="ant-modal-root">
-  {#if visible}
+  {#if localVisible}
     <div transition:fade="{{ duration: 100 }}" class="ant-modal-mask"></div>
-    <div
-      transition:fadescale="{{ duration: 250 }}"
-      class="ant-modal-wrap"
-      role="dialog"
-      style=""
-      tabindex="-1">
-      <div
-        class="ant-modal"
-        role="document"
-        style="width: 520px; transform-origin: 15px 11px;">
+    <div class="ant-modal-wrap" role="dialog" style="" tabindex="-1">
+      <div class="ant-modal" role="document" style="width: 520px;">
         <div
           aria-hidden="true"
           style="width: 0px; height: 0px; overflow: hidden; outline: none;"
           tabindex="0"></div>
-        <div class="ant-modal-content">
+        <div
+          transition:fadescale="{{ duration: 200 }}"
+          class="ant-modal-content">
           <button
             aria-label="Close"
             class="ant-modal-close"
@@ -60,12 +54,91 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { fade, fly } from "svelte/transition";
-  import { quadOut } from "svelte/easing";
+  // import { quadOut } from "svelte/easing";
   import { CloseOutlined } from "@/components/icons";
 
   const dispatch = createEventDispatcher();
 
+  // ********************** Props **********************
+
   export let visible = false;
+
+  // ********************** /Props **********************
+
+  // Need to allow clickPosition to be set before first transition
+  let localVisible = false;
+  // Used so we can set a transform-origin for the transition
+  let clickPosition = null;
+  // Used for custom transition. Set below as a watched property
+  let fadescale;
+
+  $: if (visible) {
+    setDialogOnBody("add");
+    setTimeout(() => {
+      localVisible = true;
+    }, 50);
+  } else {
+    setDialogOnBody("remove");
+    localVisible = false;
+  }
+
+  // Set click position each time there is a click
+  if (typeof window !== "undefined" && window.document) {
+    window.document.addEventListener("click", e => {
+      clickPosition = {
+        x: e.pageX,
+        y: e.pageY
+      };
+    });
+  }
+
+  //*** Transition logic start ***//
+  $: if (clickPosition) {
+    fadescale = function(node, { duration }) {
+      let transformOrigin = "";
+      const dialogNode = document.querySelector(".ant-modal-content");
+      const elOffset = offset(dialogNode);
+      transformOrigin = ` transform-origin: ${clickPosition.x -
+        elOffset.left}px ${clickPosition.y - elOffset.top}px;`;
+
+      return {
+        duration,
+        css: t => `opacity: ${t}; transform: scale(${t});${transformOrigin}`
+      };
+    };
+  }
+
+  function getScroll(w, top) {
+    let ret = w[`page${top ? "Y" : "X"}Offset`];
+    const method = `scroll${top ? "Top" : "Left"}`;
+    if (typeof ret !== "number") {
+      const d = w.document;
+      ret = d.documentElement[method];
+      if (typeof ret !== "number") {
+        ret = d.body[method];
+      }
+    }
+    return ret;
+  }
+
+  function offset(el) {
+    const rect = el.getBoundingClientRect();
+    const pos = {
+      left: rect.left,
+      top: rect.top
+    };
+    const doc = el.ownerDocument;
+    const w = doc.defaultView || doc.parentWindow;
+    pos.left += getScroll(w);
+    pos.top += getScroll(w, true);
+    return pos;
+  }
+  //*** Transition logic end ***//
+
+  function setDialogOnBody(value) {
+    // value should be 'add' or 'remove'
+    document.querySelector("body").classList[value]("dialog-open");
+  }
 
   function onOk() {
     dispatch("ok");
@@ -73,15 +146,6 @@
 
   function onCancel() {
     dispatch("cancel");
-  }
-
-  function fadescale(node, { duration }) {
-    return {
-      duration,
-      easing: quadOut,
-      css: t =>
-        `opacity: ${t}; transform: scale(${t}); transition-timing-function:cubic-bezier(0,.55,.45,1);`
-    };
   }
 </script>
 
