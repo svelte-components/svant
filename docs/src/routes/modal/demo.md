@@ -11,6 +11,20 @@ Description of the Modal's function.
 </div>
 <Prism language="svelte" source="{BasicCode}"/>
 
+### Asynchronously Close
+
+<div id="components-modal-demo-async-close">
+  <AsyncClose />
+</div>
+<Prism language="svelte" source="{AsyncCloseCode}"/>
+
+### Customized Footer
+
+<div id="components-modal-demo-async-close">
+  <CustomFooter />
+</div>
+<Prism language="svelte" source="{CustomFooterCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -20,6 +34,12 @@ Description of the Modal's function.
 
   import Basic from './demos/basic.demo.svelte'
   import BasicCode from './demos/basic.demo.txt'
+
+  import AsyncClose from './demos/async.demo.svelte'
+  import AsyncCloseCode from './demos/async.demo.txt'
+
+  import CustomFooter from './demos/footer.demo.svelte'
+  import CustomFooterCode from './demos/footer.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

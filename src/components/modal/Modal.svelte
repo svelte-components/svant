@@ -1,12 +1,8 @@
 <div class="ant-modal-root">
   {#if localVisible}
     <div transition:fade="{{ duration: 100 }}" class="ant-modal-mask"></div>
-    <div class="ant-modal-wrap" role="dialog" style="" tabindex="-1">
-      <div class="ant-modal" role="document" style="width: 520px;">
-        <div
-          aria-hidden="true"
-          style="width: 0px; height: 0px; overflow: hidden; outline: none;"
-          tabindex="0"></div>
+    <div class="ant-modal-wrap" role="dialog">
+      <div class="ant-modal" role="document" style="{`width: ${width};`}">
         <div
           transition:fadescale="{{ duration: 200 }}"
           class="ant-modal-content">
@@ -21,31 +17,25 @@
           </button>
 
           <div class="ant-modal-header">
-            <div class="ant-modal-title">Basic Modal</div>
+            <div class="ant-modal-title">{title}</div>
           </div>
           <div class="ant-modal-body">
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+            <slot />
           </div>
           <div class="ant-modal-footer">
-            <div>
-              <button class="ant-btn" type="button" on:click="{onCancel}">
-                <span>Cancel</span>
-              </button>
-              <button
-                class="ant-btn ant-btn-primary"
-                type="button"
-                on:click="{onOk}">
-                <span>OK</span>
-              </button>
-            </div>
+            <slot name="footer">
+              <div>
+                <Button on:click="{onCancel}">Cancel</Button>
+                <Button
+                  type="primary"
+                  on:click="{onOk}"
+                  loading="{confirmLoading}">
+                  OK
+                </Button>
+              </div>
+            </slot>
           </div>
         </div>
-        <div
-          aria-hidden="true"
-          style="width: 0px; height: 0px; overflow: hidden; outline: none;"
-          tabindex="0"></div>
       </div>
     </div>
   {/if}
@@ -54,14 +44,21 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { fade, fly } from "svelte/transition";
-  // import { quadOut } from "svelte/easing";
   import { CloseOutlined } from "@/components/icons";
+  import Button from "../button/Button.svelte";
 
   const dispatch = createEventDispatcher();
 
   // ********************** Props **********************
 
+  // If the modal is visible
   export let visible = false;
+  // Modal width
+  export let width = "520px";
+  // Title for the header
+  export let title;
+  // If the ok button is in loading state
+  export let confirmLoading = false;
 
   // ********************** /Props **********************
 
