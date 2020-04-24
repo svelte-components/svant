@@ -3,6 +3,7 @@ export { default as BreadcrumbItem } from "./breadcrumb/BreadcrumbItem.svelte";
 export { default as Button } from "./button/Button.svelte";
 export { default as Layout } from "./layout/Layout.svelte";
 export { default as Modal } from "./modal/Modal.svelte";
+export { default as ModalHelper } from "./modal/ModalHelper";
 export { default as Content } from "./layout/Content.svelte";
 export { default as Footer } from "./layout/Footer.svelte";
 export { default as Header } from "./layout/Header.svelte";

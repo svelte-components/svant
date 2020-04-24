@@ -25,6 +25,15 @@ Description of the Modal's function.
 </div>
 <Prism language="svelte" source="{CustomFooterCode}"/>
 
+### Confirmation Modal Dialog
+
+Use `ModalHelper.confirm()` to show a confirmation modal dialog.
+
+<div id="components-modal-demo-confirm">
+  <ConfirmModal />
+</div>
+<Prism language="svelte" source="{ConfirmModalCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -40,6 +49,9 @@ Description of the Modal's function.
 
   import CustomFooter from './demos/footer.demo.svelte'
   import CustomFooterCode from './demos/footer.demo.txt'
+
+  import ConfirmModal from './demos/confirm.demo.svelte'
+  import ConfirmModalCode from './demos/confirm.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
