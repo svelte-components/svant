@@ -1,12 +1,13 @@
 <Button on:click="{showConfirm}">Confirm</Button>
 <Button on:click="{showDeleteConfirm}" type="dashed">Delete</Button>
 <Button on:click="{showPropsConfirm}" type="dashed">With extra props</Button>
+<Button on:click="{showPromiseConfirm}">Confirm with Promise</Button>
 
 <script>
-  import { Button, ModalHelper } from "svant";
+  import { Button, Modal } from "svant";
   import { ExclamationCircleOutlined } from "svant/icons";
 
-  const { confirm } = ModalHelper;
+  const { confirm } = Modal;
 
   function showConfirm() {
     confirm({
@@ -56,6 +57,21 @@
       onCancel() {
         console.log("Cancel");
       }
+    });
+  }
+
+  function showPromiseConfirm() {
+    confirm({
+      title: "Do you want to delete these items?",
+      icon: ExclamationCircleOutlined,
+      content:
+        "When clicked the OK button, this dialog will be closed after 1 second",
+      onOk() {
+        return new Promise((resolve, reject) => {
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log("Oops errors!"));
+      },
+      onCancel() {}
     });
   }
 </script>

@@ -1,14 +1,19 @@
-import { render } from "@testing-library/svelte";
+import { render, fireEvent, getByText } from "@testing-library/svelte";
 import BasicModal from "examples/modal/demos/basic.demo.svelte";
 import AsyncCloseModal from "examples/modal/demos/async.demo.svelte";
 import CustomFooterModal from "examples/modal/demos/footer.demo.svelte";
 import ConfirmModal from "examples/modal/demos/confirm.demo.svelte";
+import InformationModal from "examples/modal/demos/information.demo.svelte";
+import DestroyModal from "examples/modal/demos/update-destroy.demo.svelte";
+import ModalPositioning from "examples/modal/demos/positioning.demo.svelte";
+import DestroyAllModal from "examples/modal/demos/destroy-all.demo.svelte";
 import { delay } from "../../_util/testHelpers";
+import { Modal } from "svant";
 
 describe("Modal component", () => {
   test("should render correctly", async () => {
-    const { container } = render(BasicModal);
-    container.querySelector(".ant-btn").click();
+    const { container, getByText } = render(BasicModal);
+    await fireEvent.click(getByText("Open Modal"));
     await delay(200);
     expect(container.querySelector(".ant-modal")).toBeVisible();
     expect(container.querySelector(".ant-modal-header").textContent).toEqual(
@@ -24,9 +29,8 @@ describe("Modal component", () => {
   });
 
   test("confirm loading", async () => {
-    const { container } = render(AsyncCloseModal);
-
-    container.querySelector(".ant-btn").click();
+    const { container, getByText } = render(AsyncCloseModal);
+    await fireEvent.click(getByText("Open Modal with async logic"));
     await delay(200);
 
     const okButton = container.querySelector(".ant-modal .ant-btn-primary");
@@ -93,11 +97,84 @@ describe("Modal component", () => {
 
     // Additional props can be added to the buttons
     container.querySelectorAll(".ant-btn")[2].click();
-    await delay(200);
+    await delay(400);
 
     okButton = container.querySelector(
       ".ant-modal-confirm-btns .ant-btn-danger"
     );
     expect(okButton).toBeDisabled();
+
+    // cleanup
+    container.innerHTML = "";
+  });
+
+  test("Information Modal Dialog", async done => {
+    const { container } = render(InformationModal);
+    const iconTypes = ["info", "check", "close", "exclamation"];
+    const buttons = container.querySelectorAll(
+      ".information-buttons > .ant-btn"
+    );
+
+    iconTypes.forEach(async (type, index) => {
+      const button = buttons[index];
+      button.click();
+      await delay(300);
+
+      try {
+        expect(container.querySelector(`.anticon-${type}-circle`)).toBeTruthy();
+        if (type === "exclamation") {
+          // cleanup
+          container.innerHTML = "";
+          done();
+        }
+      } catch (e) {
+        done.fail(e);
+      }
+    });
+  });
+
+  test("destroy modal", async () => {
+    const { container, getByText } = render(DestroyModal);
+    await fireEvent.click(getByText("Open modal to close in 3s"));
+    await delay(200);
+
+    expect(container.querySelector(".ant-modal")).toBeTruthy();
+
+    await delay(4000);
+    // Modal should be destroyed
+    expect(container.querySelector(".ant-modal")).toBeFalsy();
+
+    // cleanup
+    container.innerHTML = "";
+  });
+
+  test("positioning", async () => {
+    const { container, getByText } = render(ModalPositioning);
+    await fireEvent.click(getByText("Open 20px from the top"));
+    await delay(300);
+    expect(container.querySelector(".ant-modal").style.top).toEqual("20px");
+    await fireEvent.click(getByText("OK"));
+    await fireEvent.click(getByText("Vertically centered"));
+    await delay(300);
+    expect(container.querySelector(".ant-modal-centered")).toBeTruthy();
+  });
+
+  test("destroyAll()", async done => {
+    const { container, findByText } = render(DestroyAllModal);
+    container.querySelector(".ant-btn").click();
+    // needs extra time to open all three
+    await delay(1500);
+
+    expect(container.querySelectorAll(".ant-modal")).toHaveLength(3);
+
+    const destroyAllSpy = jest.spyOn(Modal, "destroyAll");
+    const allButtons = container.querySelectorAll(".ant-btn");
+    const lastOkButton = allButtons[allButtons.length - 1];
+    lastOkButton.click();
+
+    expect(destroyAllSpy).toHaveBeenCalled();
+    // cleanup
+    container.innerHTML = "";
+    done();
   });
 });

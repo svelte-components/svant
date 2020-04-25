@@ -8,11 +8,14 @@
   {/if}
 </svelte:head>
 
-<div class="ant-modal-root">
-  {#if localVisible}
+{#if localVisible}
+  <div class="ant-modal-root">
     <div transition:fade="{{ duration: 100 }}" class="ant-modal-mask"></div>
-    <div class="ant-modal-wrap" role="dialog">
-      <div class="{modalClasses}" role="document" style="{`width: ${width};`}">
+    <div
+      class="ant-modal-wrap"
+      class:ant-modal-centered="{centered}"
+      role="dialog">
+      <div class="{modalClasses}" role="document" style="{styleString}">
         <div
           transition:fadescale="{{ duration: 200 }}"
           class="ant-modal-content">
@@ -26,10 +29,11 @@
                 <CloseOutlined class="ant-modal-close-icon" />
               </span>
             </button>
-
-            <div class="ant-modal-header">
-              <div class="ant-modal-title">{title}</div>
-            </div>
+            {#if title}
+              <div class="ant-modal-header">
+                <div class="ant-modal-title">{title}</div>
+              </div>
+            {/if}
           {/if}
           <div class="ant-modal-body">
             {#if modalType === 'standard'}
@@ -52,20 +56,23 @@
                   </div>
                 </div>
                 <div class="ant-modal-confirm-btns">
-                  <Button on:click="{onCancelLocal}" {...cancelButtonProps}>
-                    {cancelText}
-                  </Button>
+                  {#if modalType === 'confirm'}
+                    <Button on:click="{onCancelLocal}" {...cancelButtonProps}>
+                      {cancelText}
+                    </Button>
+                  {/if}
                   <Button
                     type="{okType}"
                     on:click="{onOkLocal}"
-                    {...okButtonProps}>
+                    {...okButtonProps}
+                    loading="{confirmLoading}">
                     {okText}
                   </Button>
                 </div>
               </div>
             {/if}
           </div>
-          {#if modalType === 'standard'}
+          {#if footer && modalType === 'standard'}
             <div class="ant-modal-footer">
               <slot name="footer">
                 <div>
@@ -83,14 +90,21 @@
         </div>
       </div>
     </div>
-  {/if}
-</div>
+  </div>
+{/if}
 
 <script>
   import { createEventDispatcher } from "svelte";
   import { fade, fly } from "svelte/transition";
-  import { CloseOutlined } from "@/components/icons";
+  import {
+    CloseOutlined,
+    InfoCircleOutlined,
+    CheckCircleOutlined,
+    CloseCircleOutlined,
+    ExclamationCircleOutlined
+  } from "@/components/icons";
   import Button from "../button/Button.svelte";
+  import { destroyAll } from "./store";
 
   const dispatch = createEventDispatcher();
 
@@ -98,10 +112,12 @@
 
   // If the modal is visible
   export let visible = false;
+  // User has the option to remove the footer
+  export let footer = true;
   // Modal width
   export let width;
   // Title for the header
-  export let title;
+  export let title = "";
   // If the ok button is in loading state
   export let confirmLoading = false;
   // Confirm and status modals need a differnet component sructure
@@ -122,6 +138,15 @@
   export let okText = "OK";
   // Text of the cancel button
   export let cancelText = "Cancel";
+  // Allow top and bottom positioning
+  export let verticalPosition = {};
+  // Center modal on page
+  export let centered = false;
+  // Functions for destroying the modal
+  export const destroy = () => {
+    localVisible = false;
+    scrollableBody = true;
+  };
 
   // ********************** /Props **********************
 
@@ -129,12 +154,19 @@
   let localVisible = false;
   // Used so we can set a transform-origin for the transition
   let clickPosition = null;
-  // Used for custom transition. Set below as a watched property
-  let fadescale;
+  // Used for custom transition.
+  let fadescale = function(node, { duration }) {
+    return {
+      duration,
+      css: t => `opacity: ${t}; transform: scale(${t});`
+    };
+  };
   // Body should not be scrollable when the modal is open
   let scrollableBody = true;
   // Confirm and status modals need special classes
   let modalClasses;
+  // Style string for the ant-modal element
+  let styleString = width ? `width: ${width};` : "";
 
   $: modalClasses = computeClasses();
 
@@ -148,6 +180,7 @@
 
   $: if (!width) {
     width = modalType === "standard" ? "520px" : "416px";
+    styleString = `width: ${width};`;
   }
 
   $: if (visible) {
@@ -156,9 +189,36 @@
       localVisible = true;
     }, 50);
   } else {
-    scrollableBody = true;
-    localVisible = false;
+    destroy();
   }
+
+  $: if (Object.keys(verticalPosition)) {
+    for (const [key, value] of Object.entries(verticalPosition)) {
+      if (["top", "bottom"].includes(key)) styleString += ` ${key}: ${value};`;
+    }
+  }
+
+  $: if (!icon) {
+    switch (modalType) {
+      case "info":
+        icon = InfoCircleOutlined;
+        break;
+      case "success":
+        icon = CheckCircleOutlined;
+        break;
+      case "error":
+        icon = CloseCircleOutlined;
+        break;
+      case "warning":
+        icon = ExclamationCircleOutlined;
+        break;
+      default:
+        icon = null;
+    }
+  }
+
+  // watch for Modal.destroyAll() call
+  $: if ($destroyAll && modalType !== "standard") destroy();
 
   // Set click position each time there is a click
   if (typeof window !== "undefined" && window.document) {
@@ -213,21 +273,20 @@
   }
   //*** Transition logic end ***//
 
-  function onOkLocal() {
-    onOk && onOk();
-    if (modalType !== "standard") {
-      scrollableBody = true;
-      localVisible = false;
+  async function onOkLocal() {
+    if (onOk) {
+      confirmLoading = true;
+      await onOk();
+      confirmLoading = false;
     }
+
+    if (modalType !== "standard") destroy();
     dispatch("ok");
   }
 
   async function onCancelLocal() {
-    onCancel && onCancel();
-    if (modalType !== "standard") {
-      scrollableBody = true;
-      localVisible = false;
-    }
+    onCancel && (await onCancel());
+    if (modalType !== "standard") destroy();
     dispatch("cancel");
   }
 </script>
