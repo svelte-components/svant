@@ -1,12 +1,17 @@
 import Modal from "./Modal.svelte";
-import { destroyAll } from "./store";
+import { modalDestroyFunctions } from "./store";
 
 Modal.destroyAll = () => {
-  destroyAll.set(true);
-  // reset so it can be called again
-  setTimeout(() => {
-    destroyAll.set(false);
-  }, 500);
+  const unsubscribe = modalDestroyFunctions.subscribe(destroyFunctions => {
+    destroyFunctions.forEach(func => {
+      func();
+    });
+  });
+
+  // Empty array so we can start over
+  modalDestroyFunctions.set([]);
+
+  unsubscribe();
 };
 
 const createModalFunction = modalType => options => {

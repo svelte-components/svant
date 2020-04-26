@@ -141,7 +141,7 @@
     ExclamationCircleOutlined
   } from "@/components/icons";
   import Button from "../button/Button.svelte";
-  import { destroyAll } from "./store";
+  import { modalDestroyFunctions } from "./store";
 
   const dispatch = createEventDispatcher();
 
@@ -194,6 +194,12 @@
     localVisible = false;
     scrollableBody = true;
     afterClose();
+    // Remove the destroy function modalDestroyFunctions store
+    if (modalType !== "standard") {
+      modalDestroyFunctions.set(
+        $modalDestroyFunctions.filter(func => func !== destroy)
+      );
+    }
   };
   // Body style for modal body element
   export let bodyStyle = "";
@@ -257,6 +263,11 @@
     if (keyboard) {
       window.addEventListener("keydown", removeModalOnEscape);
     }
+
+    // Add destroy function to the store so we can call Modal.destroyAll()
+    if (modalType !== "standard") {
+      modalDestroyFunctions.set([...$modalDestroyFunctions, destroy]);
+    }
   });
 
   onDestroy(() => {
@@ -316,9 +327,6 @@
         icon = null;
     }
   }
-
-  // watch for Modal.destroyAll() call
-  $: if ($destroyAll && modalType !== "standard") destroy();
 
   // We want to close the modal if we clicked outside of it
   $: if (localVisible && mask && maskClosable) {
