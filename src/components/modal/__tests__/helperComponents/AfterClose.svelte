@@ -1,11 +1,9 @@
 <Button type="primary" on:click="{showModal}">Open Modal</Button>
 <Modal
-  title="Basic Modal"
   {visible}
-  on:ok="{openAnother}"
-  on:cancel="{closeModal}">
-  <p>Some contents...</p>
-  <p>Some contents...</p>
+  on:ok="{closeModal}"
+  on:cancel="{closeModal}"
+  afterClose="{onAfterClose}">
   <p>Some contents...</p>
 </Modal>
 
@@ -22,12 +20,7 @@
     visible = false;
   }
 
-  function openAnother() {
-    Modal.confirm({
-      content: "Are you sure?",
-      onOk: () => {
-        closeModal();
-      }
-    });
+  function onAfterClose() {
+    console.log("afterClose called");
   }
 </script>

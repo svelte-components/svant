@@ -1,4 +1,4 @@
-import { render, fireEvent, getByText } from "@testing-library/svelte";
+import { render, fireEvent } from "@testing-library/svelte";
 import BasicModal from "examples/modal/demos/basic.demo.svelte";
 import AsyncCloseModal from "examples/modal/demos/async.demo.svelte";
 import CustomFooterModal from "examples/modal/demos/footer.demo.svelte";
@@ -7,6 +7,7 @@ import InformationModal from "examples/modal/demos/information.demo.svelte";
 import DestroyModal from "examples/modal/demos/update-destroy.demo.svelte";
 import ModalPositioning from "examples/modal/demos/positioning.demo.svelte";
 import DestroyAllModal from "examples/modal/demos/destroy-all.demo.svelte";
+import AfterCloseModal from "./helperComponents/AfterClose.svelte";
 import { delay } from "../../_util/testHelpers";
 import { Modal } from "svant";
 
@@ -159,6 +160,32 @@ describe("Modal component", () => {
     expect(container.querySelector(".ant-modal-centered")).toBeTruthy();
   });
 
+  test("afterClose prop", async done => {
+    const mockLogFunction = jest.fn();
+    const originalConsole = { ...console };
+    console = {
+      ...originalConsole,
+      log: string => {
+        mockLogFunction(string);
+      }
+    };
+
+    const { container, getByText } = render(AfterCloseModal);
+    await fireEvent.click(getByText("Open Modal"));
+    await delay(400);
+    await fireEvent.click(getByText("OK"));
+    await delay(400);
+    expect(mockLogFunction).toBeCalledWith("afterClose called");
+
+    // Cleanup
+    container.innerHTML = "";
+    console = originalConsole;
+    done();
+  });
+
+  // ** Keep this test as the last test **
+  // Having an issue related to https://github.com/sveltejs/svelte/issues/2086
+  // The fix would be a simple change to https://github.com/sveltejs/svelte/blob/ff5f25249e39985b6ca88c6815d123f26e40402a/src/runtime/internal/dom.ts#L12
   test("destroyAll()", async done => {
     const { container, findByText } = render(DestroyAllModal);
     container.querySelector(".ant-btn").click();
@@ -168,6 +195,7 @@ describe("Modal component", () => {
     expect(container.querySelectorAll(".ant-modal")).toHaveLength(3);
 
     const destroyAllSpy = jest.spyOn(Modal, "destroyAll");
+
     const allButtons = container.querySelectorAll(".ant-btn");
     const lastOkButton = allButtons[allButtons.length - 1];
     lastOkButton.click();
@@ -177,4 +205,5 @@ describe("Modal component", () => {
     container.innerHTML = "";
     done();
   });
+  // ** See comment above about last test
 });

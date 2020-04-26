@@ -1,5 +1,5 @@
 <h3>{title}</h3>
-<table>
+<table class="docs-table">
   <thead>
     <tr>
       {#each columns as column (column)}
@@ -11,7 +11,7 @@
     {#each data as row (`${columns[0].toLowerCase()}-${row[columns[0].toLowerCase()]}`)}
       <tr>
         {#each columns as column (`${column.toLowerCase()}-${row[column.toLowerCase()]}`)}
-          <th>{row[column.toLowerCase()]}</th>
+          <td>{row[column.toLowerCase()]}</td>
         {/each}
       </tr>
     {/each}

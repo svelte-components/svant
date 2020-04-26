@@ -13,7 +13,10 @@
     Modal.info({
       title: "This is a notification message",
       content: ModalInfoContent,
-      onOk() {}
+      autoFocusButton: "ok",
+      onOk() {
+        console.log("OK Clicked");
+      }
     });
   }
 
@@ -33,7 +36,8 @@
   function warning() {
     Modal.warning({
       title: "This is a warning message",
-      content: "some messages...some messages..."
+      content: "some messages...some messages...",
+      closeable: true
     });
   }
 </script>

@@ -14,7 +14,8 @@
     type="{htmlType}"
     {...commonProps}
     use:wave="{{ csp }}"
-    on:click="{handleClick}">
+    on:click="{handleClick}"
+    use:triggerFocus>
     {#if _isLoading}
       <LoadingOutlined spin />
     {:else if icon}
@@ -64,6 +65,8 @@
   export let block = false;
   // set the danger status of button
   export let danger = null;
+  // sets the focus of the button when the button is mounted
+  export let focusOnMount = false;
 
   // this exports the classObj as class so the button user can set class={{'abc':true}}
   let classObj = null;
@@ -182,6 +185,10 @@
       defaultSlot.innerText === "" &&
       icon != null
     );
+  }
+
+  function triggerFocus(node) {
+    if (focusOnMount) node.focus();
   }
 </script>
 
