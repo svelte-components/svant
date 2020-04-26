@@ -131,7 +131,7 @@
 {/if}
 
 <script>
-  import { createEventDispatcher, onMount } from "svelte";
+  import { createEventDispatcher, onMount, onDestroy } from "svelte";
   import { fade, fly } from "svelte/transition";
   import {
     CloseOutlined,
@@ -230,6 +230,19 @@
   // Ref for the root element
   let thisModal;
 
+  function setClickPosition(e) {
+    clickPosition = {
+      x: e.pageX,
+      y: e.pageY
+    };
+  }
+
+  function setWrapClickClose(e) {
+    if (e.target.className === "ant-modal-wrap") {
+      onCancelLocal();
+    }
+  }
+
   function removeModalOnEscape(e) {
     if (e.key === "Escape" || e.keyCode === 27) {
       const allModalsOpen = document.querySelectorAll(".ant-modal-root");
@@ -242,7 +255,15 @@
 
   onMount(() => {
     if (keyboard) {
-      window && window.addEventListener("keydown", removeModalOnEscape);
+      window.addEventListener("keydown", removeModalOnEscape);
+    }
+  });
+
+  onDestroy(() => {
+    if (typeof window !== "undefined") {
+      window.removeEventListener("keydown", removeModalOnEscape);
+      document.body.removeEventListener("click", setWrapClickClose);
+      document.removeEventListener("click", setClickPosition);
     }
   });
 
@@ -301,21 +322,12 @@
 
   // We want to close the modal if we clicked outside of it
   $: if (localVisible && mask && maskClosable) {
-    document.body.addEventListener("click", e => {
-      if (e.target.className === "ant-modal-wrap") {
-        onCancelLocal();
-      }
-    });
+    document.body.addEventListener("click", setWrapClickClose);
   }
 
   // Set click position each time there is a click
   if (typeof window !== "undefined" && window.document) {
-    window.document.addEventListener("click", e => {
-      clickPosition = {
-        x: e.pageX,
-        y: e.pageY
-      };
-    });
+    window.document.addEventListener("click", setClickPosition);
   }
 
   //*** Transition logic start ***//
