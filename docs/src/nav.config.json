@@ -24,7 +24,9 @@
   },
   {
     "name": "Data Display",
-    "children": []
+    "children": [
+      "collapse"
+    ]
   },
   {
     "name": "Feedback",
