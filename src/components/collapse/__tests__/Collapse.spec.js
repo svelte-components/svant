@@ -1,9 +1,16 @@
-import { render } from "@testing-library/svelte";
-import Collapse from "../Collapse.svelte";
+import { render, fireEvent } from "@testing-library/svelte";
+import CollapseBasic from "examples/collapse/demos/basic.demo.svelte";
 
 describe("Collapse component", () => {
-  test("should render", () => {
-    const { container } = render(Collapse);
-    expect(container.innerHTML).toContain("ant-collapse");
+  test("basic functionality", async () => {
+    const { container } = render(CollapseBasic);
+    const panels = container.querySelectorAll(".ant-collapse-item");
+    // First panel should be open
+    expect(panels[0]).toHaveClass("ant-collapse-item-active");
+
+    await fireEvent.click(panels[0]);
+    // should be closed
+
+    // last panel should be disabled
   });
 });

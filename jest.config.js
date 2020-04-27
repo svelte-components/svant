@@ -12,7 +12,7 @@ module.exports = {
   testPathIgnorePatterns: ["node_modules"],
   bail: false,
   verbose: true,
-  transformIgnorePatterns: ["node_modules"],
+  transformIgnorePatterns: ["<rootDir>/node_modules/(?!lodash-es)"],
   setupFilesAfterEnv: ["@testing-library/jest-dom/extend-expect"],
   collectCoverage: true,
   collectCoverageFrom: [

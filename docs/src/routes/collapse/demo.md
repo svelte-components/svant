@@ -1,10 +1,12 @@
 # Collapse
 
-Description of the Collapse's function.
+A content area which can be collapsed and expanded.
 
 ## Examples
 
 ### Basic
+
+By default, any number of panels can be expanded at a time. The first panel is expanded in this example.
 
 <div id="components-collapse-demo-basic">
   <Basic />
@@ -35,4 +37,3 @@ Description of the Collapse's function.
     ]
   }
 </script>
-  
