@@ -13,6 +13,15 @@ By default, any number of panels can be expanded at a time. The first panel is e
 </div>
 <Prism language="svelte" source="{BasicCode}"/>
 
+### Accordion
+
+In accordion mode, only one panel can be expanded at a time.
+
+<div id="components-collapse-demo-accordion">
+  <Accordion />
+</div>
+<Prism language="svelte" source="{AccordionCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -22,6 +31,9 @@ By default, any number of panels can be expanded at a time. The first panel is e
 
   import Basic from './demos/basic.demo.svelte'
   import BasicCode from './demos/basic.demo.txt'
+
+  import Accordion from './demos/accordion.demo.svelte'
+  import AccordionCode from './demos/accordion.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

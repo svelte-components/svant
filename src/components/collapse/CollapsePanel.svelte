@@ -1,4 +1,7 @@
-<div class="ant-collapse-item" class:ant-collapse-item-active="{active}">
+<div
+  class="ant-collapse-item"
+  class:ant-collapse-item-active="{active}"
+  class:ant-collapse-item-disabled="{disabled}">
   <div
     class="ant-collapse-header"
     aria-expanded="{active}"
@@ -31,24 +34,34 @@
   export let key;
   // Header content
   export let header;
+  // Disable the panel
+  export let disabled = false;
 
   // ********************** /Props **********************
 
-  // Store from parent Collapse component
+  // Store from parent Collapse component that has the active keys
   let activeKeyStore = getContext("activeKeyStore");
+  // Store from parent Collapse component that has the accordion status
+  let isAccordionStore = getContext("isAccordionStore");
+  // Whether accordion mode is set
+  let accordion = false;
   // Whether the panel is active
   let active = false;
   // Initial icon rotation
 
   $: active = $activeKeyStore.includes(key);
+  $: accordion = $isAccordionStore;
 
   function togglePanel() {
+    if (disabled) return;
     if (active) {
       activeKeyStore.set(
         $activeKeyStore.filter(storedKey => storedKey !== key)
       );
     } else {
-      activeKeyStore.set([...$activeKeyStore, key]);
+      accordion
+        ? activeKeyStore.set([key])
+        : activeKeyStore.set([...$activeKeyStore, key]);
     }
   }
 </script>
