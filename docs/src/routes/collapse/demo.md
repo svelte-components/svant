@@ -31,6 +31,15 @@ A `Collapse` can be nested inside another.
 </div>
 <Prism language="svelte" source="{NestedCode}"/>
 
+### Borderless
+
+A border-less version of the `Collapse`.
+
+<div id="components-collapse-demo-borderless">
+  <Borderless />
+</div>
+<Prism language="svelte" source="{BorderlessCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -46,6 +55,9 @@ A `Collapse` can be nested inside another.
 
   import Nested from './demos/nested.demo.svelte'
   import NestedCode from './demos/nested.demo.txt'
+
+  import Borderless from './demos/borderless.demo.svelte'
+  import BorderlessCode from './demos/borderless.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

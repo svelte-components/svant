@@ -1,4 +1,6 @@
-<div class="ant-collapse ant-collapse-icon-position-left">
+<div
+  class="ant-collapse ant-collapse-icon-position-left"
+  class:ant-collapse-borderless="{borderless}">
   <slot />
 </div>
 
@@ -14,6 +16,8 @@
   export let defaultActiveKey = "";
   // Accordion mode only allows one panel open at a time
   export let accordion = false;
+  // Borderless version
+  export let borderless = false;
 
   const activeKeyStore = writable([]);
   $: activeKeyStore.set(

@@ -3,6 +3,7 @@ import { delay } from "../../_util/testHelper.js";
 import CollapseBasic from "examples/collapse/demos/basic.demo.svelte";
 import CollapseAccordion from "examples/collapse/demos/accordion.demo.svelte";
 import CollapseNested from "examples/collapse/demos/nested.demo.svelte";
+import CollapseBorderless from "examples/collapse/demos/borderless.demo.svelte";
 
 describe("Collapse component", () => {
   const originalConsole = { ...console };
@@ -75,5 +76,10 @@ describe("Collapse component", () => {
     // close the parent collapse and make sure the nested one stays open
     await fireEvent.click(firstPanelHeader);
     expect(nestedPanel).toHaveClass("ant-collapse-item-active");
+  });
+
+  test("borderless", () => {
+    const { container } = render(CollapseBorderless);
+    expect(container.querySelector(".ant-collapse-borderless")).toBeTruthy();
   });
 });
