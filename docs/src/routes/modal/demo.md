@@ -80,6 +80,8 @@ You can use the centered prop, or set the verticalPosition's top or bottom to po
 
 <DocsTable {...attributesData}/>
 
+<DocsTable {...eventData}/>
+
 ### Modal.method()
 
 There are five ways to display the information based on the content's nature:
@@ -92,7 +94,7 @@ There are five ways to display the information based on the content's nature:
 
 The items listed above are all functions, expecting a settings object as parameter. The settings object takes any of the props above as attributes.
 
-> Note: The `closeable` prop defaults to false for these types of modals.
+> Note: The `closeable` and `maskClosable` props default to false for these types of modals.
 
 Additionally these options are available:
 
@@ -251,18 +253,6 @@ Additionally these options are available:
         default: '1000'
       },
       {
-        property: 'onCancel',
-        description: 'Specify a function that will be called when a user clicks mask, close button on top right or Cancel button.',
-        type: 'Function',
-        default: '-'
-      },
-      {
-        property: 'onOk',
-        description: 'Specify a function that will be called when a user clicks the OK button.',
-        type: 'Function',
-        default: '-'
-      },
-      {
         property: 'autoFocusButton',
         description: 'Specify which button to autofocus when the modal opens.',
         type: "null|'ok'|'cancel'",
@@ -273,6 +263,20 @@ Additionally these options are available:
         description: 'Whether the escape key will close the modal.',
         type: "Boolean",
         default: 'true'
+      }
+    ]
+  }
+  const eventData = {
+    title: 'Events',
+    columns: ['Name', 'Description'],
+    data: [
+      {
+        name: 'cancel',
+        description: 'Specify a function that will be called when a user clicks mask, close button on top right or Cancel button.'
+      },
+      {
+        name: 'ok',
+        description: 'Specify a function that will be called when a user clicks the OK button.'
       }
     ]
   }
@@ -291,6 +295,18 @@ Additionally these options are available:
         description: 'Custom icon to display next to the content.',
         type: "SvelteComponent",
         default: 'Depends on the modal method'
+      },
+      {
+        property: 'onCancel',
+        description: 'Specify a function that will be called when a user clicks mask, close button on top right or Cancel button.',
+        type: 'Function',
+        default: '-'
+      },
+      {
+        property: 'onOk',
+        description: 'Specify a function that will be called when a user clicks the OK button.',
+        type: 'Function',
+        default: '-'
       }
     ]
   }

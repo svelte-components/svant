@@ -244,7 +244,7 @@
   }
 
   function setWrapClickClose(e) {
-    if (e.target.className === "ant-modal-wrap") {
+    if (e.target.classList.value.includes("ant-modal-wrap")) {
       onCancelLocal();
     }
   }
