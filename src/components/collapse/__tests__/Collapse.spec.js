@@ -2,6 +2,7 @@ import { render, fireEvent } from "@testing-library/svelte";
 import { delay } from "../../_util/testHelper.js";
 import CollapseBasic from "examples/collapse/demos/basic.demo.svelte";
 import CollapseAccordion from "examples/collapse/demos/accordion.demo.svelte";
+import CollapseNested from "examples/collapse/demos/nested.demo.svelte";
 
 describe("Collapse component", () => {
   const originalConsole = { ...console };
@@ -56,5 +57,23 @@ describe("Collapse component", () => {
     expect(
       container.querySelectorAll(".ant-collapse-item-active")
     ).toHaveLength(1);
+  });
+
+  test("nested collapse", async () => {
+    const { container } = render(CollapseNested);
+    const firstPanel = container.querySelector(".ant-collapse-item");
+    const firstPanelHeader = firstPanel.querySelector(".ant-collapse-header");
+    const nestedPanel = firstPanel.querySelector(".ant-collapse-item");
+    const nestedPanelHeader = nestedPanel.querySelector(".ant-collapse-header");
+
+    await fireEvent.click(firstPanelHeader);
+    await fireEvent.click(nestedPanelHeader);
+
+    // should have a functional nested collapse
+    expect(nestedPanel).toHaveClass("ant-collapse-item-active");
+
+    // close the parent collapse and make sure the nested one stays open
+    await fireEvent.click(firstPanelHeader);
+    expect(nestedPanel).toHaveClass("ant-collapse-item-active");
   });
 });

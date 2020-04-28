@@ -11,15 +11,12 @@
       <svelte:component this="{header}" />
     {:else}{header}{/if}
   </div>
-  {#if active}
-    <div
-      transition:slide="{{ duration: 400, easing: expoInOut }}"
-      class="ant-collapse-content ant-collapse-content-{active ? '' : 'in'}active">
-      <div class="ant-collapse-content-box">
-        <slot />
-      </div>
+  <div
+    class="ant-collapse-content ant-collapse-content-{active ? '' : 'in'}active">
+    <div class="ant-collapse-content-box">
+      <slot />
     </div>
-  {/if}
+  </div>
 </div>
 
 <script>

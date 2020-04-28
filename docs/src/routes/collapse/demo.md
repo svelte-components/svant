@@ -22,6 +22,15 @@ In accordion mode, only one panel can be expanded at a time.
 </div>
 <Prism language="svelte" source="{AccordionCode}"/>
 
+### Nested
+
+A `Collapse` can be nested inside another.
+
+<div id="components-collapse-demo-nested">
+  <Nested />
+</div>
+<Prism language="svelte" source="{NestedCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -34,6 +43,9 @@ In accordion mode, only one panel can be expanded at a time.
 
   import Accordion from './demos/accordion.demo.svelte'
   import AccordionCode from './demos/accordion.demo.txt'
+
+  import Nested from './demos/nested.demo.svelte'
+  import NestedCode from './demos/nested.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
