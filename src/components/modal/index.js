@@ -22,7 +22,7 @@ const createModalFunction = modalType => options => {
       modalType,
       visible: true,
       closeable: options.closeable || false,
-      mask: options.maskClosable || false
+      maskClosable: options.maskClosable || false
     }
   });
   modal.$on("ok", () => {
