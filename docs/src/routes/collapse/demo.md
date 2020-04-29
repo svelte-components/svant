@@ -40,6 +40,15 @@ A border-less version of the `Collapse`.
 </div>
 <Prism language="svelte" source="{BorderlessCode}"/>
 
+### Custom Panels
+
+Customize the Collapse icon and the styles for each panel. Note: the icon will rotate when opening the panel.
+
+<div id="components-collapse-demo-custom-panel">
+  <CustomPanel />
+</div>
+<Prism language="svelte" source="{CustomPanelCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -58,6 +67,9 @@ A border-less version of the `Collapse`.
 
   import Borderless from './demos/borderless.demo.svelte'
   import BorderlessCode from './demos/borderless.demo.txt'
+
+  import CustomPanel from './demos/custom-panel.demo.svelte'
+  import CustomPanelCode from './demos/custom-panel.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

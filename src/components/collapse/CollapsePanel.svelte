@@ -1,12 +1,15 @@
 <div
-  class="ant-collapse-item"
+  class="ant-collapse-item {className}"
   class:ant-collapse-item-active="{active}"
   class:ant-collapse-item-disabled="{disabled}">
   <div
     class="ant-collapse-header"
     aria-expanded="{active}"
     on:click="{togglePanel}">
-    <RightOutlined class="ant-collapse-arrow" rotate="{active ? 90 : null}" />
+    <svelte:component
+      this="{expandIcon}"
+      class="ant-collapse-arrow"
+      rotate="{active ? 90 : null}" />
     {#if typeof header === 'function'}
       <svelte:component this="{header}" />
     {:else}{header}{/if}
@@ -21,7 +24,6 @@
 
 <script>
   import { getContext } from "svelte";
-  import { RightOutlined } from "@/components/icons";
   import { slide } from "svelte/transition";
   import { expoInOut } from "svelte/easing";
 
@@ -33,32 +35,43 @@
   export let header;
   // Disable the panel
   export let disabled = false;
+  // Custom CSS class
+  export let className = "";
 
   // ********************** /Props **********************
 
-  // Store from parent Collapse component that has the active keys
-  let activeKeyStore = getContext("activeKeyStore");
-  // Store from parent Collapse component that has the accordion status
-  let isAccordionStore = getContext("isAccordionStore");
+  // Store from parent
+  let collapseStore = getContext("collapseStore");
   // Whether accordion mode is set
   let accordion = false;
   // Whether the panel is active
   let active = false;
-  // Initial icon rotation
 
-  $: active = $activeKeyStore.includes(key);
-  $: accordion = $isAccordionStore;
+  $: active = $collapseStore.activeKey.includes(key);
+  $: accordion = $collapseStore.isAccordion;
+  $: expandIcon = $collapseStore.expandIcon;
 
   function togglePanel() {
     if (disabled) return;
     if (active) {
-      activeKeyStore.set(
-        $activeKeyStore.filter(storedKey => storedKey !== key)
-      );
+      collapseStore.set({
+        ...$collapseStore,
+        activeKey: $collapseStore.activeKey.filter(
+          storedKey => storedKey !== key
+        )
+      });
     } else {
-      accordion
-        ? activeKeyStore.set([key])
-        : activeKeyStore.set([...$activeKeyStore, key]);
+      if (accordion) {
+        collapseStore.set({
+          ...$collapseStore,
+          activeKey: [key]
+        });
+      } else {
+        collapseStore.set({
+          ...$collapseStore,
+          activeKey: [...$collapseStore.activeKey, key]
+        });
+      }
     }
   }
 </script>

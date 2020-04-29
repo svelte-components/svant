@@ -4,6 +4,7 @@ import CollapseBasic from "examples/collapse/demos/basic.demo.svelte";
 import CollapseAccordion from "examples/collapse/demos/accordion.demo.svelte";
 import CollapseNested from "examples/collapse/demos/nested.demo.svelte";
 import CollapseBorderless from "examples/collapse/demos/borderless.demo.svelte";
+import CollapseCustom from "examples/collapse/demos/custom-panel.demo.svelte";
 
 describe("Collapse component", () => {
   const originalConsole = { ...console };
@@ -81,5 +82,19 @@ describe("Collapse component", () => {
   test("borderless", () => {
     const { container } = render(CollapseBorderless);
     expect(container.querySelector(".ant-collapse-borderless")).toBeTruthy();
+  });
+
+  test("custom expand icon", () => {
+    const { container } = render(CollapseCustom);
+    expect(container.querySelector(".anticon-caret-right")).toBeTruthy();
+  });
+
+  test("custom className", async () => {
+    const { container } = render(CollapseCustom);
+    // should pass the classname down to the both the collapse and the panel components
+    expect(
+      container.querySelector(".site-collapse-custom-collapse")
+    ).toBeTruthy();
+    expect(container.querySelector(".site-collapse-custom-panel")).toBeTruthy();
   });
 });
