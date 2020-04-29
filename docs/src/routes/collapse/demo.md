@@ -49,6 +49,15 @@ Customize the Collapse icon and the styles for each panel. Note: the icon will r
 </div>
 <Prism language="svelte" source="{CustomPanelCode}"/>
 
+### Hide Arrow
+
+You can hide the arrow icon by passing `hideArrow` to `CollapsePanel` component.
+
+<div id="components-collapse-demo-custom-hide-arrow">
+  <HideArrow />
+</div>
+<Prism language="svelte" source="{HideArrowCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -70,6 +79,9 @@ Customize the Collapse icon and the styles for each panel. Note: the icon will r
 
   import CustomPanel from './demos/custom-panel.demo.svelte'
   import CustomPanelCode from './demos/custom-panel.demo.txt'
+
+  import HideArrow from './demos/hide-arrow.demo.svelte'
+  import HideArrowCode from './demos/hide-arrow.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

@@ -1,15 +1,18 @@
 <div
   class="ant-collapse-item {className}"
+  class:ant-collapse-no-arrow="{hideArrow}"
   class:ant-collapse-item-active="{active}"
   class:ant-collapse-item-disabled="{disabled}">
   <div
     class="ant-collapse-header"
     aria-expanded="{active}"
     on:click="{togglePanel}">
-    <svelte:component
-      this="{expandIcon}"
-      class="ant-collapse-arrow"
-      rotate="{active ? 90 : null}" />
+    {#if !hideArrow}
+      <svelte:component
+        this="{expandIcon}"
+        class="ant-collapse-arrow"
+        rotate="{active ? 90 : null}" />
+    {/if}
     {#if typeof header === 'function'}
       <svelte:component this="{header}" />
     {:else}{header}{/if}
@@ -37,6 +40,8 @@
   export let disabled = false;
   // Custom CSS class
   export let className = "";
+  // Ability to hide the collpase arrow icon
+  export let hideArrow = false;
 
   // ********************** /Props **********************
 

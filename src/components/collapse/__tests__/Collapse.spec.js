@@ -5,6 +5,7 @@ import CollapseAccordion from "examples/collapse/demos/accordion.demo.svelte";
 import CollapseNested from "examples/collapse/demos/nested.demo.svelte";
 import CollapseBorderless from "examples/collapse/demos/borderless.demo.svelte";
 import CollapseCustom from "examples/collapse/demos/custom-panel.demo.svelte";
+import CollapseHideArrow from "examples/collapse/demos/hide-arrow.demo.svelte";
 
 describe("Collapse component", () => {
   const originalConsole = { ...console };
@@ -96,5 +97,11 @@ describe("Collapse component", () => {
       container.querySelector(".site-collapse-custom-collapse")
     ).toBeTruthy();
     expect(container.querySelector(".site-collapse-custom-panel")).toBeTruthy();
+  });
+
+  test("hide panel arrow", () => {
+    const { container } = render(CollapseHideArrow);
+    // Arrow is hidden on the second of the two panels
+    expect(container.querySelectorAll(".ant-collapse-arrow").length).toEqual(1);
   });
 });
