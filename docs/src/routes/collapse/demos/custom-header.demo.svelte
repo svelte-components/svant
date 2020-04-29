@@ -1,8 +1,10 @@
 <Collapse defaultActiveKey="{['1']}">
   <CollapsePanel key="1">
     <div slot="header" class="geared-panel">
-      <span>This is a custom header</span>
-      <SettingOutlined on:click="{onGearClicked}" />
+      <span>Custom header from the slot</span>
+      <span on:click|stopPropagation="{onGearClicked}">
+        <SettingOutlined />
+      </span>
     </div>
     <div>{text}</div>
   </CollapsePanel>
@@ -25,8 +27,6 @@
   `;
 
   function onGearClicked(event) {
-    // If you don't want the click to trigger the panel:
-    event.stopPropagation();
     console.log("Gear clicked but did not open the panel");
   }
 </script>
@@ -35,5 +35,6 @@
   .geared-panel {
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
 </style>

@@ -67,6 +67,15 @@ You can move the arrow to the right side of the panel as well.
 </div>
 <Prism language="svelte" source="{RightArrowCode}"/>
 
+### Custom Panel Header
+
+You can use the `header` slot to customize a panel's header.
+
+<div id="components-collapse-demo-custom-custom-header">
+  <CustomHeader />
+</div>
+<Prism language="svelte" source="{CustomHeaderCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -94,6 +103,9 @@ You can move the arrow to the right side of the panel as well.
 
   import RightArrow from './demos/right-arrow.demo.svelte'
   import RightArrowCode from './demos/right-arrow.demo.txt'
+
+  import CustomHeader from './demos/custom-header.demo.svelte'
+  import CustomHeaderCode from './demos/custom-header.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

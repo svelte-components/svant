@@ -13,9 +13,7 @@
         class="ant-collapse-arrow"
         rotate="{active ? 90 : null}" />
     {/if}
-    {#if typeof header === 'function'}
-      <svelte:component this="{header}" />
-    {:else}{header}{/if}
+    <slot name="header">{header}</slot>
   </div>
   <div
     class="ant-collapse-content ant-collapse-content-{active ? '' : 'in'}active">
@@ -35,7 +33,7 @@
   // Key to identify and select the panel
   export let key;
   // Header content
-  export let header;
+  export let header = "";
   // Disable the panel
   export let disabled = false;
   // Custom CSS class
