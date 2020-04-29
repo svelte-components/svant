@@ -16,6 +16,8 @@
 
   // Sets the default open panel(s)
   export let defaultActiveKey = "";
+  // Manually override the keys for more control of what opens and when
+  export let activeKey = null;
   // Accordion mode only allows one panel open at a time
   export let accordion = false;
   // Borderless version
@@ -35,20 +37,33 @@
   const collapseStore = writable({
     activeKey: [],
     isAccordion: false,
-    expandIcon
+    expandIcon,
+    usingCustomActiveKey: false
   });
   $: collapseStore.set({
     activeKey:
-      typeof defaultActiveKey === "object"
+      activeKey ||
+      (typeof defaultActiveKey === "object"
         ? defaultActiveKey
-        : [defaultActiveKey],
+        : [defaultActiveKey]),
     isAccordion: !!accordion,
-    expandIcon
+    expandIcon,
+    usingCustomActiveKey: activeKey
   });
   setContext("collapseStore", collapseStore);
 
+  // Need a separate store for last key clicked so the main store watchers don't interfere
+  const lastKeyClickedStore = writable({});
+  setContext("lastKeyClickedStore", lastKeyClickedStore);
+
   // on:change event
-  $: dispatch("change", $collapseStore.activeKey);
+  $: dispatch("change", {
+    currentActiveKey: $collapseStore.activeKey
+  });
+
+  $: dispatch("click", {
+    lastKeyClicked: $lastKeyClickedStore.key
+  });
 
   $: if (expandIconPosition) {
     const baseClassString = "ant-collapse-icon-position-";

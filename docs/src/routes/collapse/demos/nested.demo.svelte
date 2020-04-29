@@ -27,6 +27,6 @@
   `;
 
   function callback(event) {
-    console.log(event.detail);
+    console.log(event.detail.currentActiveKey);
   }
 </script>

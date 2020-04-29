@@ -76,6 +76,15 @@ You can use the `header` slot to customize a panel's header.
 </div>
 <Prism language="svelte" source="{CustomHeaderCode}"/>
 
+### Manual Custom Key
+
+For more control over what opens and when it opens, use the `customKey` prop. The `on:change` event exposes the `lastKeyClicked`.
+
+<div id="components-collapse-demo-custom-manual-active">
+  <ManualActiveKey />
+</div>
+<Prism language="svelte" source="{ManualActiveKeyCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -106,6 +115,9 @@ You can use the `header` slot to customize a panel's header.
 
   import CustomHeader from './demos/custom-header.demo.svelte'
   import CustomHeaderCode from './demos/custom-header.demo.txt'
+
+  import ManualActiveKey from './demos/manual-active.demo.svelte'
+  import ManualActiveKeyCode from './demos/manual-active.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

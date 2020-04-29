@@ -20,6 +20,6 @@
   `;
 
   function callback({ detail }) {
-    console.log(detail);
+    console.log(detail.currentActiveKey);
   }
 </script>

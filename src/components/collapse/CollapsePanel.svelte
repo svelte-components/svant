@@ -25,8 +25,6 @@
 
 <script>
   import { getContext } from "svelte";
-  import { slide } from "svelte/transition";
-  import { expoInOut } from "svelte/easing";
 
   // ********************** Props **********************
 
@@ -45,6 +43,8 @@
 
   // Store from parent
   let collapseStore = getContext("collapseStore");
+  // Store the last key clicked
+  let lastKeyClickedStore = getContext("lastKeyClickedStore");
   // Whether accordion mode is set
   let accordion = false;
   // Whether the panel is active
@@ -53,26 +53,32 @@
   $: active = $collapseStore.activeKey.includes(key);
   $: accordion = $collapseStore.isAccordion;
   $: expandIcon = $collapseStore.expandIcon;
+  $: usingCustomActiveKey = $collapseStore.usingCustomActiveKey;
 
   function togglePanel() {
     if (disabled) return;
+    // Add empty object to ensure this always triggers the click event
+    // even if the key is the same as the last time cicked
+    lastKeyClickedStore.set({ key, unique: {} });
     if (active) {
       collapseStore.set({
         ...$collapseStore,
-        activeKey: $collapseStore.activeKey.filter(
-          storedKey => storedKey !== key
-        )
+        activeKey: usingCustomActiveKey
+          ? $collapseStore.activeKey
+          : $collapseStore.activeKey.filter(storedKey => storedKey !== key)
       });
     } else {
       if (accordion) {
         collapseStore.set({
           ...$collapseStore,
-          activeKey: [key]
+          activeKey: usingCustomActiveKey ? $collapseStore.activeKey : [key]
         });
       } else {
         collapseStore.set({
           ...$collapseStore,
-          activeKey: [...$collapseStore.activeKey, key]
+          activeKey: usingCustomActiveKey
+            ? $collapseStore.activeKey
+            : [...$collapseStore.activeKey, key]
         });
       }
     }

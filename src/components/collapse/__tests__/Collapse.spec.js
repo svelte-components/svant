@@ -112,4 +112,6 @@ describe("Collapse component", () => {
       container.querySelector(".ant-collapse-icon-position-right")
     ).toBeTruthy();
   });
+
+  test("manual active key", () => {});
 });
