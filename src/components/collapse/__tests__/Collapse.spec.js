@@ -6,6 +6,7 @@ import CollapseNested from "examples/collapse/demos/nested.demo.svelte";
 import CollapseBorderless from "examples/collapse/demos/borderless.demo.svelte";
 import CollapseCustom from "examples/collapse/demos/custom-panel.demo.svelte";
 import CollapseHideArrow from "examples/collapse/demos/hide-arrow.demo.svelte";
+import CollapseRightArrow from "examples/collapse/demos/right-arrow.demo.svelte";
 
 describe("Collapse component", () => {
   const originalConsole = { ...console };
@@ -103,5 +104,12 @@ describe("Collapse component", () => {
     const { container } = render(CollapseHideArrow);
     // Arrow is hidden on the second of the two panels
     expect(container.querySelectorAll(".ant-collapse-arrow").length).toEqual(1);
+  });
+
+  test("arrow icon position", () => {
+    const { container } = render(CollapseRightArrow);
+    expect(
+      container.querySelector(".ant-collapse-icon-position-right")
+    ).toBeTruthy();
   });
 });

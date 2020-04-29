@@ -58,6 +58,15 @@ You can hide the arrow icon by passing `hideArrow` to `CollapsePanel` component.
 </div>
 <Prism language="svelte" source="{HideArrowCode}"/>
 
+### Arrow Position
+
+You can move the arrow to the right side of the panel as well.
+
+<div id="components-collapse-demo-custom-right-arrow">
+  <RightArrow />
+</div>
+<Prism language="svelte" source="{RightArrowCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -82,6 +91,9 @@ You can hide the arrow icon by passing `hideArrow` to `CollapsePanel` component.
 
   import HideArrow from './demos/hide-arrow.demo.svelte'
   import HideArrowCode from './demos/hide-arrow.demo.txt'
+
+  import RightArrow from './demos/right-arrow.demo.svelte'
+  import RightArrowCode from './demos/right-arrow.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

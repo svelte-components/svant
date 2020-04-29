@@ -1,5 +1,6 @@
 <div
-  class="ant-collapse {className} ant-collapse-icon-position-left"
+  class="ant-collapse {className}
+  {iconPositonClassName}"
   class:ant-collapse-borderless="{borderless}">
   <slot />
 </div>
@@ -23,6 +24,13 @@
   export let expandIcon = RightOutlined;
   // Custom class for the Collapse wrapper
   export let className = "";
+  // Icon position can be left or right
+  export let expandIconPosition = "left";
+
+  // ********************** /Props **********************
+
+  // Class name for the icon positon - set below
+  let iconPositonClassName = "";
 
   const collapseStore = writable({
     activeKey: [],
@@ -41,6 +49,20 @@
 
   // on:change event
   $: dispatch("change", $collapseStore.activeKey);
+
+  $: if (expandIconPosition) {
+    const baseClassString = "ant-collapse-icon-position-";
+    const leftClass = baseClassString + "left";
+    const rightClass = baseClassString + "right";
+    if (!["right", "left"].includes(expandIconPosition)) {
+      console.warn(
+        `Unsupported value '${expandIconPosition}' used for the expandIconPosition prop on the Collapse component. Valid values are 'right' or 'left'`
+      );
+    }
+    // Default is left
+    iconPositonClassName =
+      expandIconPosition === "right" ? rightClass : leftClass;
+  }
 </script>
 
 <style lang="less" global>
