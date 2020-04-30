@@ -1,5 +1,5 @@
 import { render, fireEvent } from "@testing-library/svelte";
-import { delay } from "../../_util/testHelper.js";
+import { delay } from "../../_util/testHelpers.js";
 import CollapseBasic from "examples/collapse/demos/basic.demo.svelte";
 import CollapseAccordion from "examples/collapse/demos/accordion.demo.svelte";
 import CollapseNested from "examples/collapse/demos/nested.demo.svelte";

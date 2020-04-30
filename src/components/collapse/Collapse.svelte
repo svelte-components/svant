@@ -1,14 +1,13 @@
-<div
-  class="ant-collapse {className}
-  {iconPositonClassName}"
-  class:ant-collapse-borderless="{borderless}">
+<div class="{baseClasses}">
   <slot />
 </div>
 
 <script>
-  import { setContext, createEventDispatcher } from "svelte";
+  import { setContext, getContext, createEventDispatcher } from "svelte";
   import { writable } from "svelte/store";
+  import classNames from "classnames";
   import { RightOutlined } from "@/components/icons";
+  import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
 
   const dispatch = createEventDispatcher();
 
@@ -27,12 +26,18 @@
   // Custom class for the Collapse wrapper
   export let className = "";
   // Icon position can be left or right
-  export let expandIconPosition = "left";
+  export let expandIconPosition = "";
 
   // ********************** /Props **********************
 
   // Class name for the icon positon - set below
   let iconPositonClassName = "";
+  // Classes for the collapse wrapper
+  let baseClasses = "";
+
+  const config = getContext(CONFIG_KEY) || configProvider();
+  const { getPrefixCls, direction } = $config;
+  const prefixCls = getPrefixCls("collapse");
 
   const collapseStore = writable({
     activeKey: [],
@@ -65,19 +70,25 @@
     lastKeyClicked: $lastKeyClickedStore.key
   });
 
-  $: if (expandIconPosition) {
-    const baseClassString = "ant-collapse-icon-position-";
+  $: iconPositonClassName = (function() {
+    const baseClassString = `${prefixCls}-icon-position-`;
     const leftClass = baseClassString + "left";
     const rightClass = baseClassString + "right";
-    if (!["right", "left"].includes(expandIconPosition)) {
+    if (expandIconPosition && !["right", "left"].includes(expandIconPosition)) {
       console.warn(
         `Unsupported value '${expandIconPosition}' used for the expandIconPosition prop on the Collapse component. Valid values are 'right' or 'left'`
       );
     }
-    // Default is left
-    iconPositonClassName =
-      expandIconPosition === "right" ? rightClass : leftClass;
-  }
+    if (!expandIconPosition) {
+      return direction === "rtl" ? leftClass : rightClass;
+    }
+    return expandIconPosition === "right" ? rightClass : leftClass;
+  })();
+
+  $: baseClasses = classNames(prefixCls, iconPositonClassName, className, {
+    [`${prefixCls}-borderless`]: borderless,
+    [`${prefixCls}-rtl`]: direction === "rtl"
+  });
 </script>
 
 <style lang="less" global>

@@ -1,8 +1,4 @@
-<div
-  class="ant-collapse-item {className}"
-  class:ant-collapse-no-arrow="{hideArrow}"
-  class:ant-collapse-item-active="{active}"
-  class:ant-collapse-item-disabled="{disabled}">
+<div class="{baseClasses}">
   <div
     class="ant-collapse-header"
     aria-expanded="{active}"
@@ -15,8 +11,7 @@
     {/if}
     <slot name="header">{header}</slot>
   </div>
-  <div
-    class="ant-collapse-content ant-collapse-content-{active ? '' : 'in'}active">
+  <div class="{contentClasses}">
     <div class="ant-collapse-content-box">
       <slot />
     </div>
@@ -25,6 +20,8 @@
 
 <script>
   import { getContext } from "svelte";
+  import classNames from "classnames";
+  import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
 
   // ********************** Props **********************
 
@@ -49,11 +46,32 @@
   let accordion = false;
   // Whether the panel is active
   let active = false;
+  // Base classes
+  let baseClasses;
+  // Content classes
+  let contentClasses;
+
+  const config = getContext(CONFIG_KEY) || configProvider();
+  const { getPrefixCls } = $config;
+  const prefixCls = getPrefixCls("collapse");
 
   $: active = $collapseStore.activeKey.includes(key);
   $: accordion = $collapseStore.isAccordion;
   $: expandIcon = $collapseStore.expandIcon;
   $: usingCustomActiveKey = $collapseStore.usingCustomActiveKey;
+
+  $: baseClasses = classNames(className, {
+    [`${prefixCls}-item`]: true,
+    [`${prefixCls}-no-arrow`]: hideArrow,
+    [`${prefixCls}-item-active`]: active,
+    [`${prefixCls}-item-disabled`]: disabled
+  });
+
+  $: contentClasses = classNames({
+    [`${prefixCls}-content`]: true,
+    [`${prefixCls}-content-active`]: active,
+    [`${prefixCls}-content-inactive`]: !active
+  });
 
   function togglePanel() {
     if (disabled) return;
