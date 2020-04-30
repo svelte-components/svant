@@ -7,7 +7,6 @@ import InformationModal from "examples/modal/demos/information.demo.svelte";
 import DestroyModal from "examples/modal/demos/update-destroy.demo.svelte";
 import ModalPositioning from "examples/modal/demos/positioning.demo.svelte";
 import DestroyAllModal from "examples/modal/demos/destroy-all.demo.svelte";
-import AfterCloseModal from "./helperComponents/AfterClose.svelte";
 import { delay } from "../../_util/testHelpers";
 import { Modal } from "svant";
 
@@ -158,29 +157,6 @@ describe("Modal component", () => {
     await fireEvent.click(getByText("Vertically centered"));
     await delay(300);
     expect(container.querySelector(".ant-modal-centered")).toBeTruthy();
-  });
-
-  test("afterClose prop", async done => {
-    const mockLogFunction = jest.fn();
-    const originalConsole = { ...console };
-    console = {
-      ...originalConsole,
-      log: string => {
-        mockLogFunction(string);
-      }
-    };
-
-    const { container, getByText } = render(AfterCloseModal);
-    await fireEvent.click(getByText("Open Modal"));
-    await delay(400);
-    await fireEvent.click(getByText("OK"));
-    await delay(400);
-    expect(mockLogFunction).toBeCalledWith("afterClose called");
-
-    // Cleanup
-    container.innerHTML = "";
-    console = originalConsole;
-    done();
   });
 
   // ** Keep this test as the last test **

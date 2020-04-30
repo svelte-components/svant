@@ -133,15 +133,9 @@ Additionally these options are available:
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
       {
-        property: 'afterClose',
-        description: 'Specify a function that will be called when modal is closed completely.',
-        type: 'Function',
-        default: '-'
-      },
-      {
         property: 'bodyStyle',
         description: 'Body style for modal body element. Such as height, padding etc.',
-        type: 'String',
+        type: 'Object',
         default: ''
       },
       {
@@ -277,7 +271,11 @@ Additionally these options are available:
       {
         name: 'ok',
         description: 'Specify a function that will be called when a user clicks the OK button.'
-      }
+      },
+      {
+        property: 'after-close',
+        description: 'Specify a function that will be called when modal is closed completely.'
+      },
     ]
   }
   const methodExtraAttributes = {

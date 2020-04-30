@@ -9,94 +9,90 @@
 </svelte:head>
 
 {#if localVisible}
-  <div class="ant-modal-root" bind:this="{thisModal}">
+  <div class="{prefixCls}-root" bind:this="{thisModal}">
     {#if mask}
       <div
         transition:fade="{{ duration: 100 }}"
-        class="ant-modal-mask"
+        class="{prefixCls}-mask"
         style="{`z-index: ${zIndex};`}
         {maskStyle}"></div>
     {/if}
-    <div
-      class="ant-modal-wrap {wrapClassName}"
-      class:ant-modal-centered="{centered}"
-      role="dialog"
-      style="{`z-index: ${zIndex};`}">
+    <div class="{wrapClasses}" role="dialog" style="{`z-index: ${zIndex};`}">
       <div class="{modalClasses}" role="document" style="{modalStyleString}">
         <div
           transition:fadescale="{{ duration: 200 }}"
-          class="ant-modal-content">
+          class="{prefixCls}-content">
           {#if modalType === 'standard'}
             {#if closeable}
               <button
                 aria-label="Close"
-                class="ant-modal-close"
+                class="{prefixCls}-close"
                 type="button"
-                on:click="{onCancelLocal}">
-                <span class="ant-modal-close-x">
+                on:click="{onCancel}">
+                <span class="{prefixCls}-close-x">
                   <svelte:component
                     this="{closeIcon}"
-                    class="ant-modal-close-icon" />
+                    class="{prefixCls}-close-icon" />
                 </span>
               </button>
             {/if}
             {#if title}
-              <div class="ant-modal-header">
-                <div class="ant-modal-title">{title}</div>
+              <div class="{prefixCls}-header">
+                <div class="{prefixCls}-title">{title}</div>
               </div>
             {/if}
           {/if}
           {#if modalType !== 'standard' && closeable}
             <button
               aria-label="Close"
-              class="ant-modal-close"
+              class="{prefixCls}-close"
               type="button"
-              on:click="{onCancelLocal}">
-              <span class="ant-modal-close-x">
+              on:click="{onCancel}">
+              <span class="{prefixCls}-close-x">
                 <svelte:component
                   this="{closeIcon}"
-                  class="ant-modal-close-icon" />
+                  class="{prefixCls}-close-icon" />
               </span>
             </button>
           {/if}
-          <div class="ant-modal-body" style="{bodyStyle}">
+          <div class="{prefixCls}-body" style="{bodyStyle}">
             {#if modalType === 'standard'}
               <slot />
             {:else}
               <div
-                class="ant-modal-confirm-body-wrapper"
+                class="{prefixCls}-confirm-body-wrapper"
                 class:confirm-body-wrapper--closeable="{closeable}">
-                <div class="ant-modal-confirm-body">
+                <div class="{prefixCls}-confirm-body">
                   {#if icon}
                     <svelte:component this="{icon}" />
                   {/if}
 
                   {#if title}
-                    <span class="ant-modal-confirm-title">{title}</span>
+                    <span class="{prefixCls}-confirm-title">{title}</span>
                   {/if}
 
-                  <div class="ant-modal-confirm-content">
+                  <div class="{prefixCls}-confirm-content">
                     {#if typeof content === 'function'}
                       <svelte:component this="{content}" />
                     {:else}{content}{/if}
                   </div>
                 </div>
-                <div class="ant-modal-confirm-btns">
+                <div class="{prefixCls}-confirm-btns">
                   {#if modalType === 'confirm'}
                     <Button
-                      on:click="{onCancelLocal}"
+                      on:click="{onCancel}"
                       {...cancelButtonProps}
                       focusOnMount="{autoFocusButton === 'cancel'}">
-                      {cancelText}
+                      {cancelText || locale.cancelText}
                     </Button>
                   {/if}
                   <Button
                     type="{okType}"
-                    on:click="{onOkLocal}"
+                    on:click="{onOk}"
                     {...okButtonProps}
                     loading="{confirmLoading}"
                     focusOnMount="{autoFocusButton === 'ok'}">
-                    {okText}
+                    {okText || locale.okText}
                   </Button>
                 </div>
               </div>
@@ -107,18 +103,18 @@
               <slot name="footer">
                 <div>
                   <Button
-                    on:click="{onCancelLocal}"
+                    on:click="{onCancel}"
                     {...cancelButtonProps}
                     focusOnMount="{autoFocusButton === 'cancel'}">
-                    {cancelText}
+                    {cancelText || locale.cancelText}
                   </Button>
                   <Button
                     {...okButtonProps}
                     type="{okType}"
-                    on:click="{onOkLocal}"
+                    on:click="{onOk}"
                     loading="{confirmLoading}"
                     focusOnMount="{autoFocusButton === 'ok'}">
-                    {okText}
+                    {okText || locale.okText}
                   </Button>
                 </div>
               </slot>
@@ -131,8 +127,15 @@
 {/if}
 
 <script>
-  import { createEventDispatcher, onMount, onDestroy } from "svelte";
+  import {
+    createEventDispatcher,
+    onMount,
+    onDestroy,
+    getContext
+  } from "svelte";
   import { fade, fly } from "svelte/transition";
+  import { string as toStyle } from "to-style";
+  import classNames from "classnames";
   import {
     CloseOutlined,
     InfoCircleOutlined,
@@ -142,6 +145,7 @@
   } from "@/components/icons";
   import Button from "../button/Button.svelte";
   import { modalDestroyFunctions } from "./store";
+  import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
 
   const dispatch = createEventDispatcher();
 
@@ -152,7 +156,7 @@
   // User has the option to remove the footer
   export let footer = true;
   // Modal width
-  export let width;
+  export let width = null;
   // Title for the header
   export let title = "";
   // If the ok button is in loading state
@@ -163,18 +167,15 @@
   export let icon = null;
   // confirm and status modals can accept content as an option (string or component)
   export let content = null;
-  // confirm and status modals need to call ok and cancel functions
-  export let onOk = null;
-  export let onCancel = null;
   // Extra props for the buttons
   export let okButtonProps = {};
   export let cancelButtonProps = {};
   // Type of button to use for OK (primary, danger, etc.)
   export let okType = "primary";
   // Text of the ok button
-  export let okText = "OK";
+  export let okText = "";
   // Text of the cancel button
-  export let cancelText = "Cancel";
+  export let cancelText = "";
   // Allow top and bottom positioning
   export let verticalPosition = {};
   // Center modal on page
@@ -187,13 +188,11 @@
   export let mask = true;
   // Close the modal when the mask is clicked
   export let maskClosable = true;
-  // Function to be called after the modal closes
-  export let afterClose = () => {};
-  // Functions for destroying the modal
+  // So the user can call modalInstance.destroy()
   export const destroy = () => {
     localVisible = false;
     scrollableBody = true;
-    afterClose();
+    dispatch("after-close");
     // Remove the destroy function modalDestroyFunctions store
     if (modalType !== "standard") {
       modalDestroyFunctions.set(
@@ -202,7 +201,7 @@
     }
   };
   // Body style for modal body element
-  export let bodyStyle = "";
+  export let bodyStyle = null;
   // Style for the mask
   export let maskStyle = "";
   // The classname for the wrapper
@@ -231,10 +230,17 @@
   let scrollableBody = true;
   // Confirm and status modals need special classes
   let modalClasses;
+  // Wrap classes need to be computed
+  let wrapClasses;
   // Style string for the ant-modal element
   let modalStyleString = width ? `width: ${width};` : "";
   // Ref for the root element
   let thisModal;
+  // we get global configuration or create a default one
+  const config = getContext(CONFIG_KEY) || configProvider();
+  const { getPrefixCls, direction, localeDefinitions } = $config;
+  const locale = localeDefinitions.Modal;
+  const prefixCls = getPrefixCls("modal");
 
   function setClickPosition(e) {
     clickPosition = {
@@ -245,7 +251,7 @@
 
   function setWrapClickClose(e) {
     if (e.target.classList.value.includes("ant-modal-wrap")) {
-      onCancelLocal();
+      onCancel();
     }
   }
 
@@ -254,7 +260,7 @@
       const allModalsOpen = document.querySelectorAll(".ant-modal-root");
       const lastModal = allModalsOpen[allModalsOpen.length - 1];
       if (thisModal === lastModal) {
-        onCancelLocal();
+        onCancel();
       }
     }
   }
@@ -266,7 +272,7 @@
 
     // Add destroy function to the store so we can call Modal.destroyAll()
     if (modalType !== "standard") {
-      modalDestroyFunctions.set([...$modalDestroyFunctions, destroy]);
+      $modalDestroyFunctions.push(destroy);
     }
   });
 
@@ -278,15 +284,17 @@
     }
   });
 
-  $: modalClasses = computeModalClasses();
+  $: wrapClasses = classNames({
+    [`${prefixCls}-wrap`]: true,
+    [wrapClassName]: true,
+    [`${prefixCls}-centered`]: centered,
+    [`${prefixCls}-wrap-rtl`]: direction === "rtl"
+  });
 
-  function computeModalClasses() {
-    let classes = "ant-modal";
-    if (modalType !== "standard") {
-      classes += ` ant-modal-confirm ant-modal-confirm-${modalType}`;
-    }
-    return classes;
-  }
+  $: modalClasses = classNames(prefixCls, {
+    [`${prefixCls}-confirm ${prefixCls}-confirm-${modalType}`]:
+      modalType !== "standard"
+  });
 
   $: if (!width) {
     width = modalType === "standard" ? "520px" : "416px";
@@ -294,10 +302,12 @@
   }
 
   $: if (visible) {
+    // Need the timeout so that we are sure the click
+    // location is set for the opening transition
     setTimeout(() => {
       scrollableBody = false;
       localVisible = true;
-    }, 50);
+    }, 0);
   } else {
     destroy();
   }
@@ -331,6 +341,11 @@
   // We want to close the modal if we clicked outside of it
   $: if (localVisible && mask && maskClosable) {
     document.body.addEventListener("click", setWrapClickClose);
+  }
+
+  // since we are not adding any style we just convert the style object to a style string if it is not already a string
+  $: if (typeof bodyStyle !== "string") {
+    bodyStyle = toStyle(bodyStyle);
   }
 
   // Set click position each time there is a click
@@ -381,19 +396,12 @@
   }
   //*** Transition logic end ***//
 
-  async function onOkLocal() {
-    if (onOk) {
-      confirmLoading = true;
-      await onOk();
-      confirmLoading = false;
-    }
-
+  function onOk() {
     if (modalType !== "standard") destroy();
     dispatch("ok");
   }
 
-  async function onCancelLocal() {
-    onCancel && (await onCancel());
+  function onCancel() {
     if (modalType !== "standard") destroy();
     dispatch("cancel");
   }

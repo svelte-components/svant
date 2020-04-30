@@ -1,20 +1,22 @@
 import Modal from "./Modal.svelte";
 import { modalDestroyFunctions } from "./store";
+import { get } from "svelte/store";
 
 Modal.destroyAll = () => {
-  const unsubscribe = modalDestroyFunctions.subscribe(destroyFunctions => {
-    destroyFunctions.forEach(func => {
-      func();
-    });
+  const destroyFunctions = get(modalDestroyFunctions);
+  destroyFunctions.forEach(func => {
+    func();
   });
 
   // Empty array so we can start over
   modalDestroyFunctions.set([]);
-
-  unsubscribe();
 };
 
 const createModalFunction = modalType => options => {
+  const { onOk, onCancel } = options;
+  delete options.onOk;
+  delete options.onCancel;
+
   const modal = new Modal({
     target: document.body,
     props: {
@@ -27,9 +29,11 @@ const createModalFunction = modalType => options => {
   });
   modal.$on("ok", () => {
     modal.$set({ visible: false });
+    onOk && onOk();
   });
   modal.$on("cancel", () => {
     modal.$set({ visible: false });
+    onCancel && onCancel();
   });
   return modal;
 };
