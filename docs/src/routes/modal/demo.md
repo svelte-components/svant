@@ -135,7 +135,7 @@ Additionally these options are available:
       {
         property: 'bodyStyle',
         description: 'Body style for modal body element. Such as height, padding etc.',
-        type: 'Object',
+        type: 'String|Object',
         default: ''
       },
       {
@@ -183,7 +183,7 @@ Additionally these options are available:
       {
         property: 'maskStyle',
         description: 'Style for modal\'s mask element.',
-        type: 'String',
+        type: 'String|Object',
         default: ''
       },
       {

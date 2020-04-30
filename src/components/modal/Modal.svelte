@@ -14,8 +14,7 @@
       <div
         transition:fade="{{ duration: 100 }}"
         class="{prefixCls}-mask"
-        style="{`z-index: ${zIndex};`}
-        {maskStyle}"></div>
+        style="{`z-index: ${zIndex}; ${maskStyle}`}"></div>
     {/if}
     <div class="{wrapClasses}" role="dialog" style="{`z-index: ${zIndex};`}">
       <div class="{modalClasses}" role="document" style="{modalStyleString}">
@@ -203,7 +202,7 @@
   // Body style for modal body element
   export let bodyStyle = null;
   // Style for the mask
-  export let maskStyle = "";
+  export let maskStyle = null;
   // The classname for the wrapper
   export let wrapClassName = "";
   // Custom z-index
@@ -238,8 +237,11 @@
   let thisModal;
   // we get global configuration or create a default one
   const config = getContext(CONFIG_KEY) || configProvider();
-  const { getPrefixCls, direction, localeDefinitions } = $config;
-  const locale = localeDefinitions.Modal;
+  const {
+    getPrefixCls,
+    direction,
+    locale: { Modal: locale }
+  } = $config;
   const prefixCls = getPrefixCls("modal");
 
   function setClickPosition(e) {
@@ -343,9 +345,12 @@
     document.body.addEventListener("click", setWrapClickClose);
   }
 
-  // since we are not adding any style we just convert the style object to a style string if it is not already a string
+  // Convert style objects to strings
   $: if (typeof bodyStyle !== "string") {
     bodyStyle = toStyle(bodyStyle);
+  }
+  $: if (typeof maskStyle !== "string") {
+    maskStyle = toStyle(maskStyle);
   }
 
   // Set click position each time there is a click

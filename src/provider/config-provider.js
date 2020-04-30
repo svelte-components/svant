@@ -1,22 +1,21 @@
 import { writable } from "svelte/store";
-import allLocale from "./locale";
+import defaultLocale from "./locale/default";
 
 export const CONFIG_KEY = "$config";
 export function configProvider({
   getPopupContainer,
   prefixCls = "ant",
   csp,
-  locale = "en_US",
+  locale = defaultLocale,
   pageHeader,
   size,
   direction,
   space
 } = {}) {
-  const localeDefinitions = allLocale[locale];
   let config = {
     getPrefixCls: getPrefixCls,
     csp,
-    localeDefinitions,
+    locale,
     direction,
     space,
     getPopupContainer,
