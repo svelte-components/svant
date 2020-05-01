@@ -4,82 +4,86 @@ Description of the Modal's function.
 
 ## Examples
 
-### Basic
+<Example
+  id="demo-basic"
+  title="Basic"
+  demoComponent="{Basic}"
+  demoCode="{BasicCode}"/>
 
-<div id="components-modal-demo-basic">
-  <Basic />
-</div>
-<Prism language="svelte" source="{BasicCode}"/>
+<Example
+  id="demo-async-close"
+  title="Asynchronously Close"
+  demoComponent="{AsyncClose}"
+  demoCode="{AsyncCloseCode}">
+  <p slot="description">
+    Asynchronously close a modal dialog when a the OK button is pressed. For example, you can use this pattern when you submit a form.
+  </p>
+</Example>
 
-### Asynchronously Close
+<Example
+  id="demo-custom-footer"
+  title="Customized Footer"
+  demoComponent="{CustomFooter}"
+  demoCode="{CustomFooterCode}">
+  <div slot="description">
+    <p>A more complex example which define a customized footer button bar. The dialog will change to loading state after clicking the submit button, and when the loading is done, the modal dialog will be closed.</p>
+    <p>You could set the footer prop to null if you don't need default footer buttons.</p>
+  </div>
+</Example>
 
-Asynchronously close a modal dialog when a the OK button is pressed. For example, you can use this pattern when you submit a form.
+<Example
+  id="demo-confirm"
+  title="Confirmation Modal Dialog"
+  demoComponent="{ConfirmModal}"
+  demoCode="{ConfirmModalCode}">
+  <p slot="description">
+    Use `Modal.confirm()` to show a confirmation modal dialog. The `onOk` and `onCancel` buttons can return a promise and will delay the modal from closing until completed.
+  </p>
+</Example>
 
-<div id="components-modal-demo-async-close">
-  <AsyncClose />
-</div>
-<Prism language="svelte" source="{AsyncCloseCode}"/>
+<Example
+  id="demo-information"
+  title="Information Modal Dialog"
+  demoComponent="{InformationModal}"
+  demoCode="{InformationModalCode}">
+  <p slot="description">
+    The information modal dialog is used to communicate system status. Only one button is used to close the dialog.
+  </p>
+</Example>
 
-### Customized Footer
+<Example
+  id="demo-update-destroy"
+  title="Manually Updating and Destroying"
+  demoComponent="{UpdateDestroyModal}"
+  demoCode="{UpdateDestroyModalCode}">
+  <p slot="description">
+    Use Svelte's built in `$set` function to update the modal. The `Modal.destroy()` function will destroy a modal.
+  </p>
+</Example>
 
-A more complex example which define a customized footer button bar. The dialog will change to loading state after clicking the submit button, and when the loading is done, the modal dialog will be closed.
+<Example
+  id="demo-update-positioning"
+  title="Positioning"
+  demoComponent="{PositioningModal}"
+  demoCode="{PositioningModalCode}">
+  <p slot="description">
+    You can use the centered prop, or set the verticalPosition's top or bottom to position the modal.
+  </p>
+</Example>
 
-You could set the footer prop to null if you don't need default footer buttons.
-
-<div id="components-modal-demo-async-close">
-  <CustomFooter />
-</div>
-<Prism language="svelte" source="{CustomFooterCode}"/>
-
-### Confirmation Modal Dialog
-
-Use `Modal.confirm()` to show a confirmation modal dialog. The `onOk` and `onCancel` buttons can return a promise and will delay the modal from closing until completed.
-
-<div id="components-modal-demo-confirm">
-  <ConfirmModal />
-</div>
-<Prism language="svelte" source="{ConfirmModalCode}"/>
-
-### Information Modal Dialog
-
-The information modal dialog is used to communicate system status. Only one button is used to close the dialog.
-
-<div id="components-modal-demo-information">
-  <InformationModal />
-</div>
-<Prism language="svelte" source="{InformationModalCode}"/>
-
-### Manually Updating and Destroying
-
-Use Svelte's built in `$set` function to update the modal. The `Modal.destroy()` function will destroy a modal.
-
-<div id="components-modal-demo-update-destroy">
-  <UpdateDestroyModal />
-</div>
-<Prism language="svelte" source="{UpdateDestroyModalCode}"/>
-
-### Positioning
-
-You can use the centered prop, or set the verticalPosition's top or bottom to position the modal.
-
-<div id="components-modal-demo-position">
-  <PositioningModal />
-</div>
-<Prism language="svelte" source="{PositioningModalCode}"/>
-
-### Destroying all Modals Open
-
-`Modal.destroyAll()` will destroy all confirmation modal dialogs.
-
-<div id="components-modal-demo-destroy-all">
-  <DestroyAllModal />
-</div>
-<Prism language="svelte" source="{DestroyAllModalCode}"/>
+<Example
+  id="demo-destroy-all"
+  title="Destroying all Modals Open"
+  demoComponent="{DestroyAllModal}"
+  demoCode="{DestroyAllModalCode}">
+  <p slot="description">
+    `Modal.destroyAll()` will destroy all confirmation modal dialogs.
+  </p>
+</Example>
 
 ## API
 
 <DocsTable {...attributesData}/>
-
 <DocsTable {...eventData}/>
 
 ### Modal.method()
@@ -101,7 +105,7 @@ Additionally these options are available:
 <DocsTable {...methodExtraAttributes}/>
 
 <script>
-  import Prism from 'docs/src/components/prism/Prism.svelte'
+  import Example from 'docs/src/components/Example.svelte';
 
   import Basic from './demos/basic.demo.svelte'
   import BasicCode from './demos/basic.demo.txt'

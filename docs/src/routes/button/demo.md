@@ -1,5 +1,87 @@
+# Button
+
+To trigger an operation.
+
+## Examples
+
+<Example
+  id="demo-type"
+  title="Type"
+  demoComponent="{Type}"
+  demoCode="{TypeCode}">
+  <p slot="description">
+    The following types can be used for the button: `primary`, `default`, `dashed`, and `link`.
+  </p>
+</Example>
+
+<Example
+  id="demo-icons"
+  title="Icons"
+  demoComponent="{Icons}"
+  demoCode="{IconsCode}">
+  <div slot="description">
+    <p>`Button` components can contain an `Icon`. This is done by setting the `icon` property or placing an `Icon` component within the `Button`.</p>
+    <p>If you want specific control over the positioning and placement of the `Icon`, then that should be done by placing the `Icon` component within the `Button` rather than using the `icon` property.</p>
+  </div>
+</Example>
+
+<Example
+  id="demo-size"
+  title="Size"
+  demoComponent="{Size}"
+  demoCode="{SizeCode}">
+  <div slot="description">
+    <p>Supports a default button size as well as a large and small size.</p>
+    <p>If a large or small button is desired, set the `size` property to either `large` or `small` respectively. Omit the `size` property for a button with the default size.</p>
+  </div>
+</Example>
+
+<Example
+  id="demo-disabled"
+  title="Disabled"
+  demoComponent="{Disabled}"
+  demoCode="{DisabledCode}">
+  <p slot="description">
+    To mark a button as disabled, add the `disabled` property to the `Button`.
+  </p>
+</Example>
+
+<Example
+  id="demo-loading"
+  title="Loading"
+  demoComponent="{Loading}"
+  demoCode="{LoadingCode}">
+  <p slot="description">
+    A loading indicator can be added to a button by setting the `loading` property on the `Button`.
+  </p>
+</Example>
+
+<Example
+  id="demo-danger"
+  title="Danger"
+  demoComponent="{Danger}"
+  demoCode="{DangerCode}">
+  <p slot="description">
+    For a red color, use the `danger` property.
+  </p>
+</Example>
+
+<Example
+  id="demo-block"
+  title="Block"
+  demoComponent="{Block}"
+  demoCode="{BlockCode}">
+  <p slot="description">
+    The `block` property will make the button fit to its parent width.
+  </p>
+</Example>
+
+## API
+
+<DocsTable {...attributesData}/>
+
 <script>
-  import Prism from 'docs/src/components/prism/Prism.svelte'
+  import Example from 'docs/src/components/Example.svelte';
 
   import Type from './demos/type.demo.svelte'
   import TypeCode from './demos/type.demo.txt'
@@ -48,63 +130,3 @@
     ]
   }
 </script>
-
-# Button
-
-To trigger an operation.
-
-## Examples
-
-### Type
-
-<div id="components-button-demo-type">
-    <Type />
-</div>
-<Prism language="svelte" source="{TypeCode}"/>
-
-### Icons
-
-<div id="components-button-demo-icons">
-    <Icons />
-</div>
-<Prism language="svelte" source="{IconsCode}"/>
-
-### Size
-
-<div id="components-button-demo-size">
-    <Size />
-</div>
-<Prism language="svelte" source="{SizeCode}"/>
-
-### Disabled
-
-<div id="components-button-demo-disabled">
-    <Disabled />
-</div>
-<Prism language="svelte" source="{DisabledCode}"/>
-
-### Loading
-
-<div id="components-button-demo-loading">
-    <Loading />
-</div>
-
-<Prism language="svelte" source="{LoadingCode}"/>
-
-### Danger
-
-<div id="components-button-demo-danger">
-    <Danger />
-</div>
-<Prism language="svelte" source="{DangerCode}"/>
-
-### Block
-
-<div id="components-button-demo-block">
-    <Block />
-</div>
-<Prism language="svelte" source="{BlockCode}"/>
-
-## API
-
-<DocsTable {...attributesData}/>

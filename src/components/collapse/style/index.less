@@ -12,7 +12,7 @@
   border-radius: @collapse-panel-border-radius;
 
   & > &-item {
-    border-bottom: @border-width-base @border-style-base @border-color-base;
+    // border-bottom: @border-width-base @border-style-base @border-color-base;
 
     &:last-child {
       &,
@@ -93,7 +93,9 @@
 
     &-active {
       max-height: 100vh;
+      overflow: auto;
       transition: max-height .4s cubic-bezier(.65,.04,.54,1.04);
+      border-bottom: @border-width-base @border-style-base @border-color-base;
     }
 
     &-inactive {
@@ -130,6 +132,10 @@
 
   &-borderless > &-item > &-content > &-content-box {
     padding-top: 4px;
+  }
+
+  &-borderless > &-item > &-content-active {
+    border-bottom: none;
   }
 
   & &-item-disabled > &-header {

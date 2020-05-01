@@ -4,86 +4,95 @@ A content area which can be collapsed and expanded.
 
 ## Examples
 
-### Basic
+<Example
+  id="demo-basic"
+  title="Basic"
+  demoComponent="{Basic}"
+  demoCode="{BasicCode}">
+  <p slot="description">
+    By default, any number of panels can be expanded at a time. The first panel is expanded in this example.
+  </p>
+</Example>
 
-By default, any number of panels can be expanded at a time. The first panel is expanded in this example.
+<Example
+  id="demo-accordion"
+  title="Accordion"
+  demoComponent="{Accordion}"
+  demoCode="{AccordionCode}">
+  <p slot="description">
+    In accordion mode, only one panel can be expanded at a time.
+  </p>
+</Example>
 
-<div id="components-collapse-demo-basic">
-  <Basic />
-</div>
-<Prism language="svelte" source="{BasicCode}"/>
+<Example
+  id="demo-nested"
+  title="Nested"
+  demoComponent="{Nested}"
+  demoCode="{NestedCode}">
+  <p slot="description">
+    A `Collapse` can be nested inside another.
+  </p>
+</Example>
 
-### Accordion
+<Example
+  id="demo-borderless"
+  title="Borderless"
+  demoComponent="{Borderless}"
+  demoCode="{BorderlessCode}">
+  <p slot="description">
+    A border-less version of the `Collapse`.
+  </p>
+</Example>
 
-In accordion mode, only one panel can be expanded at a time.
+<Example
+  id="demo-custom-panel"
+  title="Custom Panels"
+  demoComponent="{CustomPanel}"
+  demoCode="{CustomPanelCode}">
+  <p slot="description">
+    Customize the Collapse icon and the styles for each panel. Note: the icon will rotate when opening the panel.
+  </p>
+</Example>
 
-<div id="components-collapse-demo-accordion">
-  <Accordion />
-</div>
-<Prism language="svelte" source="{AccordionCode}"/>
+<Example
+  id="demo-hide-arrow"
+  title="Hide Arrow"
+  demoComponent="{HideArrow}"
+  demoCode="{HideArrowCode}">
+  <p slot="description">
+    You can hide the arrow icon by passing `hideArrow` to `CollapsePanel` component.
+  </p>
+</Example>
 
-### Nested
+<Example
+  id="demo-arrow-position"
+  title="Arrow Position"
+  demoComponent="{RightArrow}"
+  demoCode="{RightArrowCode}">
+  <p slot="description">
+    You can move the arrow to the right side of the panel as well.
+  </p>
+</Example>
 
-A `Collapse` can be nested inside another.
+<Example
+  id="demo-custom-header"
+  title="Custom Panel Header"
+  demoComponent="{CustomHeader}"
+  demoCode="{CustomHeaderCode}">
+  <p slot="description">
+    You can use the `header` slot to customize a panel's header.
+  </p>
+</Example>
 
-<div id="components-collapse-demo-nested">
-  <Nested />
-</div>
-<Prism language="svelte" source="{NestedCode}"/>
-
-### Borderless
-
-A border-less version of the `Collapse`.
-
-<div id="components-collapse-demo-borderless">
-  <Borderless />
-</div>
-<Prism language="svelte" source="{BorderlessCode}"/>
-
-### Custom Panels
-
-Customize the Collapse icon and the styles for each panel. Note: the icon will rotate when opening the panel.
-
-<div id="components-collapse-demo-custom-panel">
-  <CustomPanel />
-</div>
-<Prism language="svelte" source="{CustomPanelCode}"/>
-
-### Hide Arrow
-
-You can hide the arrow icon by passing `hideArrow` to `CollapsePanel` component.
-
-<div id="components-collapse-demo-custom-hide-arrow">
-  <HideArrow />
-</div>
-<Prism language="svelte" source="{HideArrowCode}"/>
-
-### Arrow Position
-
-You can move the arrow to the right side of the panel as well.
-
-<div id="components-collapse-demo-custom-right-arrow">
-  <RightArrow />
-</div>
-<Prism language="svelte" source="{RightArrowCode}"/>
-
-### Custom Panel Header
-
-You can use the `header` slot to customize a panel's header.
-
-<div id="components-collapse-demo-custom-custom-header">
-  <CustomHeader />
-</div>
-<Prism language="svelte" source="{CustomHeaderCode}"/>
-
-### Manual Custom Key
-
-For more control over what opens and when it opens, use the `customKey` prop. The `on:change` event exposes the `lastKeyClicked`.
-
-<div id="components-collapse-demo-custom-manual-active">
-  <ManualActiveKey />
-</div>
-<Prism language="svelte" source="{ManualActiveKeyCode}"/>
+<Example
+  id="demo-custom-manual-active"
+  title="Manual Custom Key"
+  demoComponent="{ManualActiveKey}"
+  demoCode="{ManualActiveKeyCode}">
+  <p slot="description">
+    For more control over what opens and when it opens, use the `customKey` prop. The `on:change` event exposes the `lastKeyClicked`.
+  </p>
+</Example>
 
 ## API
 
@@ -93,7 +102,7 @@ For more control over what opens and when it opens, use the `customKey` prop. Th
 <DocsTable {...panelSlots}/>
 
 <script>
-  import Prism from 'docs/src/components/prism/Prism.svelte'
+  import Example from 'docs/src/components/Example.svelte';
 
   import Basic from './demos/basic.demo.svelte'
   import BasicCode from './demos/basic.demo.txt'

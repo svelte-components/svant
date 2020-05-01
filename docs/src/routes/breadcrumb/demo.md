@@ -4,37 +4,33 @@ A breadcrumb displays the current location within a hierarchy. It allows going b
 
 ## Examples
 
-### Basic Usage
+<Example
+  id="demo-basic"
+  title="Basic"
+  demoComponent="{Basic}"
+  demoCode="{BasicCode}"/>
 
-<div id="components-breadcrumb-demo-basic">
-  <Basic />
-</div>
-<Prism language="svelte" source="{BasicCode}"/>
+<Example
+  id="demo-with-icon"
+  title="With Icons"
+  demoComponent="{WithIcon}"
+  demoCode="{WithIconCode}"/>
 
-### With Icons
+<Example
+  id="demo-text-separator"
+  title="Configuring the Separator"
+  demoComponent="{Separator}"
+  demoCode="{SeparatorCode}">
+  <p slot="description">The separator can be changed using the `separator` prop on the `Breadcrumb` component. Either a string or a Svelte component (for example - an icon component) can be passed.</p>
+</Example>
 
-<div id="components-breadcrumb-demo-icon">
-  <WithIcon />
-</div>
-<Prism language="svelte" source="{WithIconCode}"/>
-
-### Configuring the Separator
-
-The separator can be changed using the `separator` prop on the `Breadcrumb` component. Either a string or a Svelte component (for example - an icon component) can be passed.
-
-<div id="components-breadcrumb-demo-text-separator">
-  <Separator />
-</div>
-<Prism language="svelte" source="{SeparatorCode}"/>
-
-### Using Multiple Separators
-
-The separator can be customized for each BreadcrumbItem individually as well.
-
-<div id="components-breadcrumb-demo-text-separator">
-  <MultipleSeparator />
-</div>
-<Prism language="svelte" source="{MultipleSeparatorCode}"/>
+<Example
+  id="demo-multiple-separators"
+  title="Using Multiple Separators"
+  demoComponent="{MultipleSeparator}"
+  demoCode="{MultipleSeparatorCode}">
+  <p slot="description">The separator can be changed using the `separator` prop on the `Breadcrumb` component. Either a string or a Svelte component (for example - an icon component) can be passed.</p>
+</Example>
 
 ## API
 
@@ -42,7 +38,7 @@ The separator can be customized for each BreadcrumbItem individually as well.
 <DocsTable {...breadcrumbItemAttributesData}/>
 
 <script>
-  import Prism from 'docs/src/components/prism/Prism.svelte';
+  import Example from 'docs/src/components/Example.svelte';
 
   import Basic from './demos/basic.demo.svelte';
   import BasicCode from './demos/basic.demo.txt';
