@@ -87,7 +87,10 @@ For more control over what opens and when it opens, use the `customKey` prop. Th
 
 ## API
 
-<DocsTable {...attributesData}/>
+<DocsTable {...collapseAttributesData}/>
+<DocsTable {...panelAttributesData}/>
+<DocsTable {...collapseEvents}/>
+<DocsTable {...panelSlots}/>
 
 <script>
   import Prism from 'docs/src/components/prism/Prism.svelte'
@@ -120,15 +123,114 @@ For more control over what opens and when it opens, use the `customKey` prop. Th
   import ManualActiveKeyCode from './demos/manual-active.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
-  const attributesData = {
-    title: 'Attributes',
+  const collapseAttributesData = {
+    title: 'Collapse Attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
       {
-        property: 'test',
-        description: 'test description',
+        property: 'activeKey',
+        description: 'Used to override the collapse auto functionality. Allows for manual control over what is open',
+        type: 'Array',
+        default: ''
+      },
+      {
+        property: 'defaultActiveKey',
+        description: 'An array of the keys to be initially opened',
+        type: 'Array',
+        default: ''
+      },
+      {
+        property: 'borderless',
+        description: 'Removes the borders',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'accordion',
+        description: 'If true, only one panel opens at a time',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'expandIcon',
+        description: 'Allows for a customize collapse icon',
+        type: 'SvelteComponent',
+        default: 'RightOutlined'
+      },
+      {
+        property: 'className',
+        description: 'Custom class for the Collapse wrapper',
         type: 'String',
-        default: 'test'
+        default: ''
+      },
+      {
+        property: 'expandIconPosition',
+        description: 'The icon can be displayed on the left or the right',
+        type: "String - `left` | `right`",
+        default: ''
+      }
+    ]
+  }
+
+  const panelAttributesData = {
+    title: 'CollapsePanel Attributes',
+    columns: ['Property', 'Description', 'Type', 'Default'],
+    data: [
+      {
+        property: 'disabled',
+        description: 'If true, panel cannot be opened or closed',
+        type: "Boolean",
+        default: 'false'
+      },
+      {
+        property: 'header',
+        description: 'Title of the panel (Can be replaced with the header slot)',
+        type: "String",
+        default: ''
+      },
+      {
+        property: 'key',
+        description: 'Unique key identifying the panel from among its siblings',
+        type: "String",
+        default: ''
+      },
+      {
+        property: 'className',
+        description: 'Custom CSS class for the panel',
+        type: "String",
+        default: ''
+      },
+      {
+        property: 'hideArrow',
+        description: 'Ability to hide the collapse arrow icon',
+        type: "Boolean",
+        default: 'false'
+      }
+    ]
+  }
+
+  const collapseEvents = {
+    title: 'Collapse Events',
+    columns: ['Name', 'Description'],
+    data: [
+      {
+        name: 'click',
+        description: 'Fired when a panel header is clicked'
+      },
+      {
+        name: 'change',
+        description: 'Fired when a panel is opened or closed'
+      }
+    ]
+  }
+
+  const panelSlots = {
+    title: 'CollapsePanel Slots',
+    columns: ['Name', 'Description'],
+    data: [
+      {
+        name: 'header',
+        description: 'Custom content for the panel header'
       }
     ]
   }
