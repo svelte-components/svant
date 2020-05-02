@@ -1,13 +1,16 @@
+<svelte:head>
+  <title>Button</title>
+</svelte:head>
 <div class="markdown api-container">
-  <Doc />
+  <Buttons />
 </div>
 
 <script>
-  import Doc from "./demo.md";
+  import Buttons from "./demo.md";
 </script>
 
 <style global>
-  [id^="components-button-demo-"] .ant-btn {
+  [id^="button-demo-"] .ant-btn {
     margin-right: 8px;
     margin-bottom: 12px;
   }

@@ -107,6 +107,8 @@ $: props = {
     `
 // GENERATE BY ./scripts/generate.js
 // DON NOT EDIT IT MANUALLY
+
+export { default as Icon } from './base/Icon.svelte';
 ${entryText}
     `.trim()
   );

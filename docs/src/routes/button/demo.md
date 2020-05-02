@@ -5,7 +5,7 @@ To trigger an operation.
 ## Examples
 
 <Example
-  id="demo-type"
+  id="button-demo-type"
   title="Type"
   demoComponent="{Type}"
   demoCode="{TypeCode}">
@@ -15,7 +15,7 @@ To trigger an operation.
 </Example>
 
 <Example
-  id="demo-icons"
+  id="button-demo-icons"
   title="Icons"
   demoComponent="{Icons}"
   demoCode="{IconsCode}">
@@ -26,7 +26,7 @@ To trigger an operation.
 </Example>
 
 <Example
-  id="demo-size"
+  id="button-demo-size"
   title="Size"
   demoComponent="{Size}"
   demoCode="{SizeCode}">
@@ -37,7 +37,7 @@ To trigger an operation.
 </Example>
 
 <Example
-  id="demo-disabled"
+  id="button-demo-disabled"
   title="Disabled"
   demoComponent="{Disabled}"
   demoCode="{DisabledCode}">
@@ -47,7 +47,7 @@ To trigger an operation.
 </Example>
 
 <Example
-  id="demo-loading"
+  id="button-demo-loading"
   title="Loading"
   demoComponent="{Loading}"
   demoCode="{LoadingCode}">
@@ -57,7 +57,7 @@ To trigger an operation.
 </Example>
 
 <Example
-  id="demo-danger"
+  id="button-demo-danger"
   title="Danger"
   demoComponent="{Danger}"
   demoCode="{DangerCode}">
@@ -67,7 +67,7 @@ To trigger an operation.
 </Example>
 
 <Example
-  id="demo-block"
+  id="button-demo-block"
   title="Block"
   demoComponent="{Block}"
   demoCode="{BlockCode}">
@@ -77,8 +77,11 @@ To trigger an operation.
 </Example>
 
 ## API
+To get a customized button, just set <code>type</code>/<code>shape</code>/<code>size</code>/<code>loading</code>/<code>disabled</code>.
 
 <DocsTable {...attributesData}/>
+
+<DocsTable {...eventData}/>
 
 <script>
   import Example from 'docs/src/components/Example.svelte';
@@ -110,23 +113,88 @@ To trigger an operation.
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
       {
-        property: 'color',
-        description: 'The color',
+        property: 'disabled',
+        description: 'The disabled state of button',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'ghost',
+        description: 'Makes the background transparent and inverts the text and border colors',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'href',
+        description: 'The url of link button',
         type: 'String',
-        default: 'white'
+        default: '-'
+      },
+      {
+        property: 'htmlType',
+        description: 'Set the original html type of button',
+        type: 'String',
+        default: 'button'
+      },
+      {
+        property: 'icon',
+        description: 'Set the icon component of button',
+        type: 'SvelteComponent',
+        default: '-'
+      },
+      {
+        property: 'loading',
+        description: 'Set the loading status of button',
+        type: 'Boolean | { delay: Number }',
+        default: 'false'
+      },
+      {
+        property: 'shape',
+        description: 'Can be set to circle, round or omitted',
+        type: 'Boolean | { delay: Number }',
+        default: 'false'
       },
       {
         property: 'size',
-        description: 'The main size',
-        type: 'Number',
-        default: '10'
+        description: 'Set the size of button',
+        type: 'large | middle | small',
+        default: '-'
       },
       {
-        property: 'round',
-        description: 'If the button is round',
+        property: 'target',
+        description: 'Same as target attribute of <a>, works when href is specified',
+        type: 'String',
+        default: '-'
+      },
+      {
+        property: 'type',
+        description: 'Can be set to primary, ghost, dashed, link or omitted (meaning default)',
+        type: 'String',
+        default: 'default'
+      },
+      {
+        property: 'block',
+        description: 'Option to fit button width to its parent width',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'danger',
+        description: 'Set the danger status of button',
         type: 'Boolean',
         default: 'false'
       }
+    ]
+  };
+  
+  const eventData = {
+    title: 'Events',
+    columns: ['Name', 'Description'],
+    data: [
+      {
+        name: 'click',
+        description: 'Specify a function that will be called when a user clicks the button.'
+      },
     ]
   }
 </script>

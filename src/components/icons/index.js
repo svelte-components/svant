@@ -1,5 +1,7 @@
 // GENERATE BY ./scripts/generate.js
 // DON NOT EDIT IT MANUALLY
+
+export { default as Icon } from "./base/Icon.svelte";
 export { default as AccountBookFilled } from "./AccountBookFilled.svelte";
 export { default as AccountBookOutlined } from "./AccountBookOutlined.svelte";
 export { default as AccountBookTwoTone } from "./AccountBookTwoTone.svelte";

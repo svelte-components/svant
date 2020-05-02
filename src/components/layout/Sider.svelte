@@ -74,7 +74,7 @@
 
   const dispatch = createEventDispatcher();
 
-  let customizePrefixCls;
+  let customizePrefixCls = null;
   export { customizePrefixCls as prefixCls };
   let customClasses;
   export { customClasses as class };
