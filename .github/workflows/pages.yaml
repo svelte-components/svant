@@ -41,3 +41,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/__sapper__/export
           enable_jekyll: true
+          cname: svant.dev
+
