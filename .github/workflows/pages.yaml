@@ -23,7 +23,6 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/yarn-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
       - name: Install dependencies
         run: |
           yarn install
@@ -34,9 +33,8 @@ jobs:
         run: |
           yarn test
       - name: Build site
-          run: |
-            yarn build:docs
-
+        run: |
+          yarn build:docs
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
