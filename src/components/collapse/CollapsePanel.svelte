@@ -52,6 +52,10 @@
   let baseClasses;
   // Content classes
   let contentClasses;
+  // Icon for expanding
+  let expandIcon;
+  // To check if the user is using a custom key
+  let usingCustomActiveKey;
 
   const config = getContext(CONFIG_KEY) || configProvider();
   const { getPrefixCls } = $config;
