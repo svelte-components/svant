@@ -1,6 +1,8 @@
 export { default as Breadcrumb } from "./breadcrumb/Breadcrumb.svelte";
 export { default as BreadcrumbItem } from "./breadcrumb/BreadcrumbItem.svelte";
 export { default as Button } from "./button/Button.svelte";
+export { default as Collapse } from "./collapse/Collapse.svelte";
+export { default as CollapsePanel } from "./collapse/CollapsePanel.svelte";
 export { default as Layout } from "./layout/Layout.svelte";
 export { default as Modal } from "./modal/index";
 export { default as Content } from "./layout/Content.svelte";

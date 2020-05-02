@@ -89,6 +89,8 @@
       "ms-transform": `rotate(${rotate}deg)`,
       transform: `rotate(${rotate}deg)`
     };
+  } else {
+    svgStyleObj = {};
   }
 
   $: svgStyle = toStyle(svgStyleObj);
