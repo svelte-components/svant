@@ -9,7 +9,7 @@ Semantic vector graphics.
   demoComponent="{Basic}"
   demoCode="{BasicCode}">
   <p slot="description">
-   Svant offers a list of icons that you can import from <code>svant/icons</code>, there are components for icons with different themes, you can use <code>spin</code> to animate the icon, and <code>rotate</code> to rotate it. </p>
+   Svant offers a list of icons that you can import from `svant/icons`, there are components for icons with different themes, you can use `spin` to animate the icon, and `rotate` to rotate it. </p>
 </Example>
 
 
@@ -19,7 +19,7 @@ Semantic vector graphics.
   demoComponent="{TwoTone}"
   demoCode="{TwoToneCode}">
   <p slot="description">
-  You can set <code>twoToneColor</code> prop to specific primary color for two-tone icons.
+  You can set `twoToneColor` prop to specific primary color for two-tone icons.
   </p>
 </Example>
 
@@ -34,7 +34,7 @@ Semantic vector graphics.
 
 <DocsTable {...attributesData}/>
 
- If you are using the <code>Icon</code> component these are additional attributes besides the above
+ If you are using the `Icon` component these are additional attributes besides the above
 
 <DocsTable {...customAttributesData}/>
 

@@ -12,5 +12,5 @@
     SettingFilled,
     SmileOutlined,
     SyncOutlined
-  } from "@/components/icons";
+  } from "svant/icons";
 </script>

@@ -3,9 +3,5 @@
 <CheckCircleTwoTone twoToneColor="#52c41a" />
 
 <script>
-  import {
-    CheckCircleTwoTone,
-    HeartTwoTone,
-    SmileTwoTone
-  } from "@/components/icons";
+  import { CheckCircleTwoTone, HeartTwoTone, SmileTwoTone } from "svant/icons";
 </script>

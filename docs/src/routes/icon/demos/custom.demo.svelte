@@ -4,7 +4,7 @@
 <script>
   import PandaIcon from "./pandaicon.svelte";
   import HeartIcon from "./harticon.svelte";
-  import { Icon } from "@/components/icons";
+  import { Icon } from "svant/icons";
 
   /*
 ./pandaicon.svelte

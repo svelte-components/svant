@@ -77,7 +77,7 @@ To trigger an operation.
 </Example>
 
 ## API
-To get a customized button, just set <code>type</code>/<code>shape</code>/<code>size</code>/<code>loading</code>/<code>disabled</code>.
+To get a customized button, just set `type`/`shape`/`size`/`loading`/`disabled`.
 
 <DocsTable {...attributesData}/>
 
@@ -119,6 +119,18 @@ To get a customized button, just set <code>type</code>/<code>shape</code>/<code>
         default: 'false'
       },
       {
+        property: 'class',
+        description: 'The class attribute',
+        type: 'String | Object',
+        default: '-'
+      },
+      {
+        property: 'style',
+        description: 'The style attribute',
+        type: 'String | Object',
+        default: '-'
+      },
+      {
         property: 'ghost',
         description: 'Makes the background transparent and inverts the text and border colors',
         type: 'Boolean',
@@ -157,7 +169,7 @@ To get a customized button, just set <code>type</code>/<code>shape</code>/<code>
       {
         property: 'size',
         description: 'Set the size of button',
-        type: 'large | middle | small',
+        type: 'large | default | small',
         default: '-'
       },
       {
