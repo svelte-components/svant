@@ -10,7 +10,7 @@
     "lint:fix": "prettier --write '**/*.js' '**/*.svelte'",
     "create:component": "node scripts/createComponentRoute.js",
     "test": "jest",
-    "build:docs": "cd docs && yarn export",
+    "build:docs": "cd docs && yarn install && yarn export",
     "test:watch": "yarn test --watch"
   },
   "husky": {
