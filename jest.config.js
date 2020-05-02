@@ -18,6 +18,7 @@ module.exports = {
   collectCoverageFrom: [
     "src/**/*.{js,svelte}",
     "!**/node_modules/**",
-    "!src/components/icons/*.svelte"
+    "!src/components/icons/*.svelte",
+    "!src/provider/locale/*.js"
   ]
 };
