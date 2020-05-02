@@ -1,6 +1,6 @@
 <span
   role="img"
-  aria-label="{icon.name}"
+  aria-label="{icon ? icon.name : null}"
   class="{classes}"
   {style}
   {...$$restProps}
@@ -37,7 +37,7 @@
   // ********************** Props **********************
 
   // the icon object from @ant-design/icons-svg
-  export let icon;
+  export let icon = null;
   // rotate icon with animation
   export let spin = false;
   // rotate by n degrees (not working in IE9)
@@ -67,6 +67,7 @@
   let svgClasses;
   let svgStyleObj;
   let svgStyle;
+  let iconNameCls;
 
   // we make the classObj an object so we can add it to the classNames func.
   $: if (typeof classObj === "string") {
@@ -79,8 +80,8 @@
   $: if (typeof style !== "string") {
     style = toStyle(style);
   }
-
-  $: classes = classNames(["anticon", `anticon-${icon.name}`], classObj);
+  $: iconNameCls = icon ? `anticon-${icon.name}` : null;
+  $: classes = classNames(["anticon", iconNameCls], classObj);
 
   $: svgClasses = spin ? "anticon-spin" : null;
 
@@ -114,12 +115,12 @@
     });
   }
 
-  $: if (typeof icon.icon === "function") {
+  $: if (icon && typeof icon.icon === "function") {
     iconConfig = icon.icon(
       _twoToneColor.primaryColor,
       _twoToneColor.secondaryColor
     );
-  } else {
+  } else if (icon) {
     iconConfig = icon.icon;
   }
 
@@ -131,8 +132,9 @@
     } else {
       if (svgStyleObj) {
         let existingStyle = customeSvg.getAttribute("style") || "";
-        let styleObj = parse(existingStyle);
-        customeSvg.setAttribute("style", toStyle(...styleObj, ...svgStyleObj));
+        let styleObj = parse(existingStyle) || {};
+        existingStyle = Object.assign(existingStyle, svgStyleObj);
+        customeSvg.setAttribute("style", toStyle(existingStyle));
       }
       if (svgClasses) {
         let classAttr =

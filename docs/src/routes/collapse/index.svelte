@@ -1,3 +1,6 @@
+<svelte:head>
+  <title>Collapse</title>
+</svelte:head>
 <div class="markdown api-container">
   <Collapse />
 </div>

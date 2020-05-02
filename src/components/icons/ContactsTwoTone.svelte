@@ -1,7 +1,7 @@
 <Icon {...props} on:click="{e => dispatch('click', e)}" />
 
 <script>
-  // GENERATE BY ./scripts/generate.js
+  // GENERATE BY scripts/generateIcons.js
   // DON NOT EDIT IT MANUALLY
   import Icon from "@/components/icons/base/Icon.svelte";
   import ContactsTwoToneSvg from "@ant-design/icons-svg/lib/asn/ContactsTwoTone";
@@ -12,7 +12,6 @@
   export let spin = false;
   export let rotate = false;
   export let style = "";
-  export let tabIndex = null;
 
   export let twoToneColor = null;
 
@@ -31,7 +30,6 @@
     rotate,
     style,
     class: className,
-    tabIndex,
     twoToneColor,
     width,
     height,
