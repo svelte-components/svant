@@ -167,9 +167,9 @@ A content area which can be collapsed and expanded.
         default: 'RightOutlined'
       },
       {
-        property: 'className',
-        description: 'Custom class for the Collapse wrapper',
-        type: 'String',
+        property: 'class',
+        description: 'Custom classes or class object for the Collapse wrapper',
+        type: 'String | Object',
         default: ''
       },
       {
@@ -204,8 +204,8 @@ A content area which can be collapsed and expanded.
         default: ''
       },
       {
-        property: 'className',
-        description: 'Custom CSS class for the panel',
+        property: 'class',
+        description: 'Custom classes or class object for the panel',
         type: "String",
         default: ''
       },

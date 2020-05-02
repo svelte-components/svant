@@ -1,18 +1,18 @@
 <div class="{baseClasses}">
   <div
-    class="ant-collapse-header"
+    class="{prefixCls}-header"
     aria-expanded="{active}"
     on:click="{togglePanel}">
     {#if !hideArrow}
       <svelte:component
         this="{expandIcon}"
-        class="ant-collapse-arrow"
+        class="{prefixCls}-arrow"
         rotate="{active ? 90 : null}" />
     {/if}
     <slot name="header">{header}</slot>
   </div>
   <div class="{contentClasses}">
-    <div class="ant-collapse-content-box">
+    <div class="{prefixCls}-content-box">
       <slot />
     </div>
   </div>
@@ -31,10 +31,12 @@
   export let header = "";
   // Disable the panel
   export let disabled = false;
-  // Custom CSS class
-  export let className = "";
   // Ability to hide the collpase arrow icon
   export let hideArrow = false;
+
+  // this exports the classObj as class so we can set class={{'abc':true}}
+  let classObj = null;
+  export { classObj as class };
 
   // ********************** /Props **********************
 
@@ -60,7 +62,15 @@
   $: expandIcon = $collapseStore.expandIcon;
   $: usingCustomActiveKey = $collapseStore.usingCustomActiveKey;
 
-  $: baseClasses = classNames(className, {
+  // we make the classObj an object so we can add it to the classNames func.
+  $: if (typeof classObj === "string") {
+    classObj = {
+      [classObj]: true
+    };
+  }
+
+  $: baseClasses = classNames({
+    ...classObj,
     [`${prefixCls}-item`]: true,
     [`${prefixCls}-no-arrow`]: hideArrow,
     [`${prefixCls}-item-active`]: active,
@@ -79,25 +89,25 @@
     // even if the key is the same as the last time cicked
     lastKeyClickedStore.set({ key, unique: {} });
     if (active) {
-      collapseStore.set({
+      $collapseStore = {
         ...$collapseStore,
         activeKey: usingCustomActiveKey
           ? $collapseStore.activeKey
           : $collapseStore.activeKey.filter(storedKey => storedKey !== key)
-      });
+      };
     } else {
       if (accordion) {
-        collapseStore.set({
+        $collapseStore = {
           ...$collapseStore,
           activeKey: usingCustomActiveKey ? $collapseStore.activeKey : [key]
-        });
+        };
       } else {
-        collapseStore.set({
+        $collapseStore = {
           ...$collapseStore,
           activeKey: usingCustomActiveKey
             ? $collapseStore.activeKey
             : [...$collapseStore.activeKey, key]
-        });
+        };
       }
     }
   }

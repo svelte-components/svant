@@ -23,10 +23,11 @@
   export let borderless = false;
   // Custom expand icon
   export let expandIcon = RightOutlined;
-  // Custom class for the Collapse wrapper
-  export let className = "";
   // Icon position can be left or right
   export let expandIconPosition = "";
+  // This exports the classObj as class so we can set class={{'abc':true}}
+  let classObj = null;
+  export { classObj as class };
 
   // ********************** /Props **********************
 
@@ -34,6 +35,13 @@
   let iconPositonClassName = "";
   // Classes for the collapse wrapper
   let baseClasses = "";
+
+  // we make the classObj an object so we can add it to the classNames func.
+  $: if (typeof classObj === "string") {
+    classObj = {
+      [classObj]: true
+    };
+  }
 
   const config = getContext(CONFIG_KEY) || configProvider();
   const { getPrefixCls, direction } = $config;
@@ -45,7 +53,10 @@
     expandIcon,
     usingCustomActiveKey: false
   });
-  $: collapseStore.set({
+
+  setContext("collapseStore", collapseStore);
+
+  $: $collapseStore = {
     activeKey:
       activeKey ||
       (typeof defaultActiveKey === "object"
@@ -54,8 +65,7 @@
     isAccordion: !!accordion,
     expandIcon,
     usingCustomActiveKey: activeKey
-  });
-  setContext("collapseStore", collapseStore);
+  };
 
   // Need a separate store for last key clicked so the main store watchers don't interfere
   const lastKeyClickedStore = writable({});
@@ -80,12 +90,13 @@
       );
     }
     if (!expandIconPosition) {
-      return direction === "rtl" ? leftClass : rightClass;
+      return direction === "rtl" ? rightClass : leftClass;
     }
     return expandIconPosition === "right" ? rightClass : leftClass;
   })();
 
-  $: baseClasses = classNames(prefixCls, iconPositonClassName, className, {
+  $: baseClasses = classNames(prefixCls, iconPositonClassName, {
+    ...classObj,
     [`${prefixCls}-borderless`]: borderless,
     [`${prefixCls}-rtl`]: direction === "rtl"
   });

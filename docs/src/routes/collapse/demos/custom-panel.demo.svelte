@@ -2,23 +2,23 @@
   borderless
   defaultActiveKey="{['1']}"
   expandIcon="{CaretRightOutlined}"
-  className="site-collapse-custom-collapse">
+  class="{{ 'site-collapse-custom-collapse': true }}">
   <CollapsePanel
     header="This is panel header 1"
     key="1"
-    className="site-collapse-custom-panel">
+    class="site-collapse-custom-panel">
     <p>{text}</p>
   </CollapsePanel>
   <CollapsePanel
     header="This is panel header 2"
     key="2"
-    className="site-collapse-custom-panel">
+    class="site-collapse-custom-panel">
     <p>{text}</p>
   </CollapsePanel>
   <CollapsePanel
     header="This is panel header 3"
     key="3"
-    className="site-collapse-custom-panel">
+    class="site-collapse-custom-panel">
     <p>{text}</p>
   </CollapsePanel>
 </Collapse>

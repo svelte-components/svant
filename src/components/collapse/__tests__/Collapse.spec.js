@@ -91,9 +91,9 @@ describe("Collapse component", () => {
     expect(container.querySelector(".anticon-caret-right")).toBeTruthy();
   });
 
-  test("custom className", async () => {
+  test("custom class", async () => {
     const { container } = render(CollapseCustom);
-    // should pass the classname down to the both the collapse and the panel components
+    // should pass the class down to the both the collapse and the panel components
     expect(
       container.querySelector(".site-collapse-custom-collapse")
     ).toBeTruthy();

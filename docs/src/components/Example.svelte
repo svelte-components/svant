@@ -5,8 +5,8 @@
     <section class="code-box-demo">
       <svelte:component this="{demoComponent}" />
     </section>
-    <Collapse {activeKey} className="demo-code-collapse">
-      <CollapsePanel key="1" hideArrow className="demo-code-collapse-panel">
+    <Collapse {activeKey} class="demo-code-collapse">
+      <CollapsePanel key="1" hideArrow class="demo-code-collapse-panel">
         <div slot="header" class="demo-panel-header">
           <div class="toggle-code-wrapper" on:click="{toggleCollapse}">
             <div class="toggle-code">
@@ -20,7 +20,6 @@
               data-clipboard-text="{demoCode}"
               on:mouseenter="{onCopyHover}"
               on:mouseleave="{onCopyLeave}"
-              on:click="{onCopyClicked}"
               class:green-icon="{recentlyCopied}">
               <svelte:component
                 this="{recentlyCopied ? CheckOutlined : CopyOutlined}"
@@ -62,6 +61,7 @@
     // This cannot run on the server
     clipboard = new ClipboardJS(".clipboard");
     isClipboardSupported = ClipboardJS.isSupported();
+    clipboard.on("success", onCopyClicked);
   });
 
   onDestroy(() => {
