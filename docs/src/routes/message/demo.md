@@ -10,7 +10,7 @@ Display global messages as feedback in response to user operations.
   demoComponent="{Basic}"
   demoCode="{BasicCode}">
   <p slot="description">
-    Basic description if the Message component goes here
+    A basic example of an information message.
   </p>
 </Example>
 
