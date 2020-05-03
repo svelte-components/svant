@@ -1,14 +1,14 @@
 <div>
-  <CheckBoxGroup
+  <CheckboxGroup
     options="{plainOptions}"
     defaultValue="{['Apple']}"
     on:change="{onChange}" />
   <br />
   <br />
-  <CheckBoxGroup {options} defaultValue="{['Pear']}" on:change="{onChange}" />
+  <CheckboxGroup {options} defaultValue="{['Pear']}" on:change="{onChange}" />
   <br />
   <br />
-  <CheckBoxGroup
+  <CheckboxGroup
     options="{optionsWithDisabled}"
     disabled
     defaultValue="{['Apple']}"
@@ -16,7 +16,7 @@
 </div>
 
 <script>
-  import { CheckBoxGroup } from "svant";
+  import { CheckboxGroup } from "svant";
 
   const plainOptions = ["Apple", "Pear", "Orange"];
   const options = [

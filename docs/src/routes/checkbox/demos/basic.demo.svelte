@@ -1,7 +1,7 @@
-<CheckBox on:change="{onChange}">Checkbox</CheckBox>
+<Checkbox on:change="{onChange}">Checkbox</Checkbox>
 
 <script>
-  import { CheckBox } from "svant";
+  import { Checkbox } from "svant";
   function onChange({ detail }) {
     console.log(`checked = ${detail.target.checked}`);
   }

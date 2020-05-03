@@ -31,7 +31,7 @@
   import { writable } from "svelte/store";
   import classNames from "classnames";
 
-  import Checkbox from "./CheckBox.svelte";
+  import Checkbox from "./Checkbox.svelte";
 
   const dispatch = createEventDispatcher();
 
@@ -63,13 +63,12 @@
   let classString;
 
   let context = writable({
-    toggleOption: toggleOption,
-    value: value,
-    disabled: disabled,
-    name: name,
-
-    registerValue: registerValue,
-    cancelValue: cancelValue
+    value,
+    disabled,
+    name,
+    toggleOption,
+    registerValue,
+    cancelValue
   });
 
   setContext("groupContext", context);
@@ -85,13 +84,12 @@
   });
 
   $: $context = {
-    toggleOption: toggleOption,
-    value: value,
-    disabled: disabled,
-    name: name,
-
-    registerValue: registerValue,
-    cancelValue: cancelValue
+    value,
+    disabled,
+    name,
+    toggleOption,
+    registerValue,
+    cancelValue
   };
 
   onMount(() => {

@@ -1,13 +1,13 @@
-<CheckBoxGroup style="{{ width: '100%' }}" on:change="{onChange}">
-  <CheckBox value="A">A</CheckBox>
-  <CheckBox value="B">B</CheckBox>
-  <CheckBox value="C">C</CheckBox>
-  <CheckBox value="D">D</CheckBox>
-  <CheckBox value="E">E</CheckBox>
-</CheckBoxGroup>
+<CheckboxGroup style="{{ width: '100%' }}" on:change="{onChange}">
+  <Checkbox value="A">A</Checkbox>
+  <Checkbox value="B">B</Checkbox>
+  <Checkbox value="C">C</Checkbox>
+  <Checkbox value="D">D</Checkbox>
+  <Checkbox value="E">E</Checkbox>
+</CheckboxGroup>
 
 <script>
-  import { CheckBoxGroup, CheckBox } from "svant";
+  import { CheckboxGroup, Checkbox } from "svant";
   function onChange({ detail }) {
     console.log("checked = ", detail);
   }

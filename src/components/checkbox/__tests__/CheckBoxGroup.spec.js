@@ -1,15 +1,15 @@
-import CheckBox from "../CheckBox.svelte";
-import CheckBoxGroup from "../CheckBoxGroup.svelte";
+import Checkbox from "../Checkbox.svelte";
+import CheckboxGroup from "../CheckboxGroup.svelte";
 import { render } from "@/components/_util/testHelpers";
 import { get } from "svelte/store";
-describe("CheckBoxGroup component", () => {
+describe("CheckboxGroup component", () => {
   test("should render default", () => {
-    const { container } = render(CheckBoxGroup);
+    const { container } = render(CheckboxGroup);
     expect(container.innerHTML).toContain("ant-checkbox-group");
   });
 
   test("should render with options", () => {
-    const { container } = render(CheckBoxGroup, {
+    const { container } = render(CheckboxGroup, {
       options: [
         {
           label: "Checkbox 1",
@@ -29,7 +29,7 @@ describe("CheckBoxGroup component", () => {
   });
 
   test("should render with sting options", () => {
-    const { container } = render(CheckBoxGroup, {
+    const { container } = render(CheckboxGroup, {
       options: ["Checkbox 1", "Checkbox 2"]
     });
     const inputs = container.getElementsByTagName("INPUT");
@@ -40,7 +40,7 @@ describe("CheckBoxGroup component", () => {
   });
 
   test('context should have expected values"', () => {
-    const { component } = render(CheckBoxGroup, {
+    const { component } = render(CheckboxGroup, {
       name: "test",
       value: ["abc"],
       disabled: true
@@ -57,7 +57,7 @@ describe("CheckBoxGroup component", () => {
   });
 
   test("should set value appropriately when toggleOption is called, if value is not passed", () => {
-    const { component } = render(CheckBoxGroup, {
+    const { component } = render(CheckboxGroup, {
       options: [
         {
           label: "Checkbox 1",
@@ -87,7 +87,7 @@ describe("CheckBoxGroup component", () => {
   });
 
   test("should only emit values and not change the prop is value is present in the props", () => {
-    const { component } = render(CheckBoxGroup, {
+    const { component } = render(CheckboxGroup, {
       value: ["1"],
       options: [
         {
@@ -120,17 +120,17 @@ describe("CheckBoxGroup component", () => {
   test("should emit value change if one of the checkboxes changes", () => {
     let checkBoxContainer1;
 
-    const { component } = render(CheckBoxGroup, {
+    const { component } = render(CheckboxGroup, {
       $$slots: {
         default: [
           {
-            component: CheckBox,
+            component: Checkbox,
             options: { value: "check1" },
             renderResults: ({ container }) => {
               checkBoxContainer1 = container;
             }
           },
-          { component: CheckBox, options: { value: "check2" } }
+          { component: Checkbox, options: { value: "check2" } }
         ]
       }
     });
@@ -151,19 +151,19 @@ describe("CheckBoxGroup component", () => {
     let checkBoxContainer1;
     let checkBoxContainer2;
 
-    render(CheckBoxGroup, {
+    render(CheckboxGroup, {
       disabled: true,
       $$slots: {
         default: [
           {
-            component: CheckBox,
+            component: Checkbox,
             options: { value: "check1" },
             renderResults: ({ container }) => {
               checkBoxContainer1 = container;
             }
           },
           {
-            component: CheckBox,
+            component: Checkbox,
             options: { value: "check2" },
             renderResults: ({ container }) => {
               checkBoxContainer2 = container;

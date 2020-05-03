@@ -99,7 +99,7 @@ Description of the Checkbox's function.
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
-    title: 'CheckBox Attributes',
+    title: 'Checkbox Attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
       {
@@ -136,7 +136,7 @@ Description of the Checkbox's function.
   };
   
   const groupAttributesData = {
-    title: 'CheckBoxGroup Attributes',
+    title: 'CheckboxGroup Attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
       {
@@ -174,7 +174,7 @@ Description of the Checkbox's function.
   
   
   const checkBoxEventData = {
-    title: 'CheckBox Events',
+    title: 'Checkbox Events',
     columns: ['Name', 'Description'],
     data: [
       {
@@ -185,7 +185,7 @@ Description of the Checkbox's function.
   };
   
   const checkBoxGroupEventData = {
-    title: 'CheckBoxGroup Events',
+    title: 'CheckboxGroup Events',
     columns: ['Name', 'Description'],
     data: [
       {
@@ -196,7 +196,7 @@ Description of the Checkbox's function.
   };
   
   const checkBoxBindData = {
-    title: 'CheckBoxGroup Bind',
+    title: 'CheckboxGroup Bind',
     columns: ['Name', 'Description'],
     data: [
       {

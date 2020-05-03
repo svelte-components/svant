@@ -103,7 +103,9 @@
     $context && $context.registerValue(value);
     let valid = "checked" in $$props || $context || !("value" in $$props);
     if (!valid) {
-      console.warn("`value` is not validate prop, do you mean `checked`?");
+      console.warn(
+        "`value` is not a valid prop when checkbox is not used in a group, do you mean `checked`?"
+      );
     }
   });
 

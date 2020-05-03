@@ -1,21 +1,21 @@
 <div>
   <div className="site-checkbox-all-wrapper">
-    <CheckBox
+    <Checkbox
       {indeterminate}
       on:change="{onCheckAllChange}"
       checked="{checkAll}">
       Check all
-    </CheckBox>
+    </Checkbox>
   </div>
   <br />
-  <CheckBoxGroup
+  <CheckboxGroup
     options="{plainOptions}"
     value="{checkedList}"
     on:change="{onChange}" />
 </div>
 
 <script>
-  import { CheckBoxGroup, CheckBox } from "svant";
+  import { CheckboxGroup, Checkbox } from "svant";
 
   const plainOptions = ["Apple", "Pear", "Orange"];
   let checkedList = ["Apple", "Orange"];

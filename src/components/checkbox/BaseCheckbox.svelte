@@ -10,15 +10,9 @@
     {tabIndex}
     class="{`${prefixCls}-input`}"
     checked="{!!checked}"
-    on:click="{e => {
-      dispatch('click', e);
-    }}"
-    on:focus="{e => {
-      dispatch('focus', e);
-    }}"
-    on:blur="{e => {
-      dispatch('blur', e);
-    }}"
+    on:click
+    on:focus
+    on:blur
     on:change="{handleChange}"
     {autoFocus}
     bind:this="{input}"
@@ -81,23 +75,21 @@
     style = toStyle(style);
   }
 
-  $: {
-    globalProps = Object.keys($$restProps).reduce((prev, key) => {
-      if (
-        key.substr(0, 5) === "aria-" ||
-        key.substr(0, 5) === "data-" ||
-        key === "role"
-      ) {
-        prev[key] = $$restProps[key];
-      }
-      return prev;
-    }, {});
+  $: globalProps = Object.keys($$restProps).reduce((prev, key) => {
+    if (
+      key.substr(0, 5) === "aria-" ||
+      key.substr(0, 5) === "data-" ||
+      key === "role"
+    ) {
+      prev[key] = $$restProps[key];
+    }
+    return prev;
+  }, {});
 
-    classString = classNames(prefixCls, classObj, {
-      [`${prefixCls}-checked`]: checked,
-      [`${prefixCls}-disabled`]: disabled
-    });
-  }
+  $: classString = classNames(prefixCls, classObj, {
+    [`${prefixCls}-checked`]: checked,
+    [`${prefixCls}-disabled`]: disabled
+  });
 
   onMount(() => {
     checked = "checked" in $$props ? checked : defaultChecked;

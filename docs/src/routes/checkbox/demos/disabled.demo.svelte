@@ -1,9 +1,9 @@
 <div>
-  <CheckBox disabled />
+  <Checkbox disabled />
   <br />
-  <CheckBox defaultChecked disabled />
+  <Checkbox defaultChecked disabled />
 </div>
 
 <script>
-  import { CheckBox } from "svant";
+  import { Checkbox } from "svant";
 </script>

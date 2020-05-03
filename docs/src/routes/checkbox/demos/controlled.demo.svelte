@@ -1,6 +1,6 @@
 <div>
   <p style="{{ marginBottom: '20px' }}">
-    <CheckBox {checked} {disabled} on:change="{onChange}">{label}</CheckBox>
+    <Checkbox {checked} {disabled} on:change="{onChange}">{label}</Checkbox>
   </p>
   <p>
     <Button type="primary" size="small" on:click="{toggleChecked}">
@@ -17,7 +17,7 @@
 </div>
 
 <script>
-  import { CheckBox } from "svant";
+  import { Checkbox } from "svant";
   import { Button } from "svant";
   let checked = true;
   let disabled = false;
