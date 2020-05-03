@@ -1,12 +1,4 @@
-<label
-  class="{classString}"
-  {style}
-  on:mouseenter="{e => {
-    dispatch('mouseenter', e);
-  }}"
-  on:mouseleave="{e => {
-    dispatch('mouseleave', e);
-  }}">
+<label class="{classString}" {style} on:mouseenter on:mouseleave>
   <BaseCheckbox
     {prefixCls}
     class="{checkboxClass}"
@@ -57,7 +49,7 @@
   const { getPrefixCls } = $config;
   const prefixCls = getPrefixCls("checkbox");
 
-  let context = getContext("groupContext") || writable(null);
+  let context = getContext("checkBoxGroupContext") || writable(null);
 
   let _prevValue = value;
   let classString;

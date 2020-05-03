@@ -71,7 +71,7 @@
     cancelValue
   });
 
-  setContext("groupContext", context);
+  setContext("checkBoxGroupContext", context);
 
   const config = getContext(CONFIG_KEY) || configProvider();
   const { getPrefixCls, direction } = $config;

@@ -22,6 +22,7 @@
     "name": "Data Entry",
     "children": [
       "checkbox",
+      "radio",
       "input"
     ]
   },

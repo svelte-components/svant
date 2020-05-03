@@ -45,7 +45,7 @@ describe("CheckboxGroup component", () => {
       value: ["abc"],
       disabled: true
     });
-    const context = component.$$.context.get("groupContext");
+    const context = component.$$.context.get("checkBoxGroupContext");
     const contextVal = get(context);
 
     expect(typeof contextVal.registerValue).toEqual("function");
@@ -73,7 +73,7 @@ describe("CheckboxGroup component", () => {
     const onChange = jest.fn();
     component.$on("change", onChange);
 
-    const context = component.$$.context.get("groupContext");
+    const context = component.$$.context.get("checkBoxGroupContext");
     const contextVal = get(context);
 
     contextVal.toggleOption({
@@ -104,7 +104,7 @@ describe("CheckboxGroup component", () => {
     const onChange = jest.fn();
     component.$on("change", onChange);
 
-    const context = component.$$.context.get("groupContext");
+    const context = component.$$.context.get("checkBoxGroupContext");
     const contextVal = get(context);
 
     contextVal.toggleOption({
