@@ -1,7 +1,7 @@
 <Layout>
   <Header theme="light" class="header">
     <a class="logo" href="/">
-      <img alt="logo" src="/ant_logo.svg" />
+      <img alt="logo" src="/svant_logo.svg" />
       Svant
     </a>
   </Header>
@@ -43,16 +43,20 @@
     overflow: hidden;
     color: rgba(0, 0, 0, 0.85);
     font-size: 18px;
+    font-weight: 500;
     line-height: 64px;
     white-space: nowrap;
     text-decoration: none;
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    &:hover {
+      color: rgba(0, 0, 0, 0.85);
+    }
     img {
       position: relative;
       top: -1.5px;
       height: 32px;
-      margin-right: 16px;
+      margin-right: 12px;
     }
   }
   .body {
