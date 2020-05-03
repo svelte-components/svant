@@ -9,3 +9,5 @@ export { default as Content } from "./layout/Content.svelte";
 export { default as Footer } from "./layout/Footer.svelte";
 export { default as Header } from "./layout/Header.svelte";
 export { default as Sider } from "./layout/Sider.svelte";
+export { default as CheckBox } from "./checkbox/CheckBox.svelte";
+export { default as CheckBoxGroup } from "./checkbox/CheckBoxGroup.svelte";

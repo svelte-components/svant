@@ -20,7 +20,9 @@
   },
   {
     "name": "Data Entry",
-    "children": []
+    "children": [
+      "checkbox"
+    ]
   },
   {
     "name": "Data Display",
