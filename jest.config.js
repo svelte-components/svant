@@ -19,6 +19,7 @@ module.exports = {
     "src/**/*.{js,svelte}",
     "!**/node_modules/**",
     "!src/components/icons/*.svelte",
-    "!src/provider/locale/*.js"
+    "!src/provider/locale/*.js",
+    "!src/tests/*.js"
   ]
 };
