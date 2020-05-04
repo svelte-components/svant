@@ -10,7 +10,9 @@
               [`${prefixCls}-${message.type}`]: true,
               [`${prefixCls}-rtl`]: direction === 'rtl'
             })}">
-            <InfoCircleFilled />
+            <svelte:component
+              this="{getMessageIcon(message.type)}"
+              spin="{message.type === 'loading'}" />
             <span>{message.content}</span>
           </div>
         </div>
@@ -26,17 +28,32 @@
   import messages from "./store.js";
   import classNames from "classnames";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
-  import { InfoCircleFilled } from "@/components/icons";
+  import {
+    InfoCircleFilled,
+    CheckCircleFilled,
+    CloseCircleFilled,
+    ExclamationCircleFilled,
+    LoadingOutlined
+  } from "@/components/icons";
 
   const config = getContext(CONFIG_KEY) || configProvider();
   const { getPrefixCls, direction } = $config;
   const prefixCls = getPrefixCls("message");
 
-  $: $messages.forEach(message => {
-    setTimeout(() => {
-      $messages = $messages.filter(m => m !== message);
-    }, 2000);
-  });
+  function getMessageIcon(type) {
+    switch (type) {
+      case "success":
+        return CheckCircleFilled;
+      case "error":
+        return CloseCircleFilled;
+      case "warning":
+        return ExclamationCircleFilled;
+      case "loading":
+        return LoadingOutlined;
+      default:
+        return InfoCircleFilled;
+    }
+  }
 </script>
 
 <style lang="less" global>
