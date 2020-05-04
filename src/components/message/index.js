@@ -64,6 +64,7 @@ if (typeof document !== "undefined") {
   Message.info = createMessageFunction("info");
   Message.success = createMessageFunction("success");
   Message.warning = createMessageFunction("warning");
+  Message.warn = createMessageFunction("warning");
   Message.error = createMessageFunction("error");
   Message.loading = createMessageFunction("loading");
 }

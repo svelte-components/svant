@@ -11,7 +11,7 @@
               [`${prefixCls}-rtl`]: direction === 'rtl'
             })}">
             <svelte:component
-              this="{getMessageIcon(message.type)}"
+              this="{message.icon || getMessageIcon(message.type)}"
               spin="{message.type === 'loading'}" />
             <span>{message.content}</span>
           </div>

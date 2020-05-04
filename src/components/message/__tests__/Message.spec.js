@@ -116,4 +116,12 @@ describe("Message component", () => {
     expect(container.innerHTML).not.toContain("Loading...");
     expect(container.innerHTML).toContain("Loaded!");
   });
+
+  test("custom icon", async () => {
+    const { container } = render(MessagePromise);
+    const button = container.getElementsByTagName("BUTTON")[0];
+    await fireEvent.click(button);
+    await delay(2500);
+    expect(container.innerHTML).toContain("anticon-fire");
+  });
 });

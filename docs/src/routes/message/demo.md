@@ -67,6 +67,19 @@ Display global messages as feedback in response to user operations.
 
 ## API
 
+This components provides the following static methods:
+
+- message.success
+- message.error
+- message.info
+- message.warning
+- message.warn // alias of warning
+- message.loading
+
+Each returns a promise that resolves when the message closes.
+
+If no additional configuration is needed, a string can be passed as the argument and will render as the content of the message. Otherwise a config object should be passed.
+
 <DocsTable {...attributesData}/>
 
 <script>
@@ -92,14 +105,32 @@ Display global messages as feedback in response to user operations.
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
-    title: 'Attributes',
+    title: 'Config Attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
       {
-        property: 'test',
-        description: 'test description',
+        property: 'content',
+        description: 'Content of the message',
         type: 'String',
-        default: 'test'
+        default: '-'
+      },
+      {
+        property: 'duration',
+        description: "Time (milliseconds) before auto-dismiss, don't dismiss if set to 0",
+        type: 'Number',
+        default: "3000"
+      },
+      {
+        property: 'icon',
+        description: "Custom icon",
+        type: 'SvelteComponent',
+        default: "-"
+      },
+      {
+        property: 'key',
+        description: "A unique identifier for the message",
+        type: 'String|Number',
+        default: "-"
       }
     ]
   }

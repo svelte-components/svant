@@ -2,17 +2,20 @@
 
 <script>
   import { Button, message } from "svant";
+  import { FireFilled } from "svant/icons";
 
   const startAction = () => {
     message
       .loading({ content: "Action in progress..", duration: 1500 })
       .then(() =>
-        message.success({ content: "Loading finished", duration: 1500 })
+        message.success({ content: "Loading finished", duration: 800 })
       )
       .then(() =>
-        message.info({
+        message.error({
+          // we want the icon to be red
           content: "Loading finished is finished",
-          duration: 1500
+          duration: 1500,
+          icon: FireFilled
         })
       );
   };
