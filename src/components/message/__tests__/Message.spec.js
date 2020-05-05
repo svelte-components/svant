@@ -6,6 +6,7 @@ import MessageDuration from "examples/message/demos/duration.demo.svelte";
 import MessageLoading from "examples/message/demos/loading.demo.svelte";
 import MessagePromise from "examples/message/demos/promise.demo.svelte";
 import MessageUpdate from "examples/message/demos/update.demo.svelte";
+import MessageConfig from "./config.demo.svelte";
 
 describe("Message component", () => {
   afterEach(() => {
@@ -123,5 +124,27 @@ describe("Message component", () => {
     await fireEvent.click(button);
     await delay(2500);
     expect(container.innerHTML).toContain("anticon-fire");
+  });
+
+  test("global config", async () => {
+    const { container } = render(MessageConfig);
+    const button = container.getElementsByTagName("BUTTON")[0];
+    await fireEvent.click(button);
+    const messageWrapper = container.querySelector(".ant-message");
+    expect(messageWrapper.style.top).toEqual("100px");
+    expect(messageWrapper.innerHTML).toContain("ant-message-rtl");
+
+    // maxCount
+    for (let iteration in [1, 2, 3, 4, 5, 6]) {
+      await fireEvent.click(button);
+    }
+    await delay(1000);
+    expect(
+      (
+        container.innerHTML.match(
+          /This is a message with some global config/g
+        ) || []
+      ).length
+    ).toEqual(3);
   });
 });

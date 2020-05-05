@@ -4,8 +4,8 @@ import messageStore from "./store";
 import { nanoid } from "nanoid";
 
 if (typeof document !== "undefined") {
-  // Create the component if it doesn't exist
   if (!document.getElementById("svant-messages-wrapper")) {
+    // Create the component if it doesn't exist
     new Message({ target: document.body });
   }
 
@@ -17,9 +17,12 @@ if (typeof document !== "undefined") {
       };
 
       const destroy = () => {
-        messageStore.set(
-          get(messageStore).filter(message => message.id !== newMessageData.id)
-        );
+        messageStore.set({
+          config: get(messageStore).config,
+          messages: get(messageStore).messages.filter(
+            message => message.id !== newMessageData.id
+          )
+        });
       };
 
       if (options.duration !== 0) {
@@ -27,7 +30,7 @@ if (typeof document !== "undefined") {
         newMessageData.currentTimeout = setTimeout(() => {
           destroy();
           resolve(destroy);
-        }, options.duration || 3000);
+        }, options.duration || get(messageStore).config.duration || 3000);
       }
 
       if (typeof options === "string") {
@@ -42,18 +45,34 @@ if (typeof document !== "undefined") {
       // If the user passes the same key they want to update the message
       let existingMessage =
         options.key &&
-        get(messageStore).find(message => message.id === options.key);
+        get(messageStore).messages.find(message => message.id === options.key);
       if (existingMessage) {
-        let currentMessages = [...get(messageStore)];
+        let currentMessages = [...get(messageStore).messages];
         const index = currentMessages.map(m => m.id).indexOf(options.key);
         currentMessages[index] = newMessageData;
         if (options.duration || options.duration === 0) {
           // The user passed a duration with the update so clear the original timeout
           clearTimeout(existingMessage.currentTimeout);
         }
-        messageStore.set(currentMessages);
+        messageStore.set({
+          config: get(messageStore).config,
+          messages: currentMessages
+        });
       } else {
-        messageStore.set([...get(messageStore), { ...newMessageData }]);
+        messageStore.set({
+          config: get(messageStore).config,
+          messages: [...get(messageStore).messages, { ...newMessageData }]
+        });
+      }
+
+      const { maxCount } = get(messageStore).config;
+      if (maxCount && get(messageStore).messages.length > maxCount) {
+        const messagesCopy = [...get(messageStore).messages];
+        messagesCopy.splice(0, 1);
+        messageStore.set({
+          config: get(messageStore).config,
+          messages: [...messagesCopy]
+        });
       }
 
       // We expose destroy so that the user can remove the message asynchronously
@@ -67,6 +86,12 @@ if (typeof document !== "undefined") {
   Message.warn = createMessageFunction("warning");
   Message.error = createMessageFunction("error");
   Message.loading = createMessageFunction("loading");
+  Message.config = config => {
+    messageStore.set({
+      config,
+      messages: get(messageStore).messages
+    });
+  };
 }
 
 export default Message;

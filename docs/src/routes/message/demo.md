@@ -67,7 +67,7 @@ Display global messages as feedback in response to user operations.
 
 ## API
 
-This components provides the following static methods:
+This component provides the following static methods:
 
 - message.success
 - message.error
@@ -82,8 +82,17 @@ If no additional configuration is needed, a string can be passed as the argument
 
 <DocsTable {...attributesData}/>
 
+### Global Configuration
+
+A `message.config` method is also provided.
+
+<Prism language="javascript" source="{configExampleCode}" />
+
+<DocsTable {...configAttributesData}/>
+
 <script>
   import Example from 'docs/src/components/Example.svelte';
+  import Prism from 'docs/src/components/prism/Prism.svelte';
 
   import Basic from './demos/basic.demo.svelte'
   import BasicCode from './demos/basic.demo.txt'
@@ -104,6 +113,13 @@ If no additional configuration is needed, a string can be passed as the argument
   import UpdateCode from './demos/update.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
+
+  const configExampleCode = `message.config({
+  top: 100,
+  duration: 2000,
+  maxCount: 3,
+  rtl: true,
+});`
   const attributesData = {
     title: 'Config Attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
@@ -131,6 +147,36 @@ If no additional configuration is needed, a string can be passed as the argument
         description: "A unique identifier for the message",
         type: 'String|Number',
         default: "-"
+      }
+    ]
+  }
+  const configAttributesData = {
+    title: 'Global Config Attributes',
+    columns: ['Property', 'Description', 'Type', 'Default'],
+    data: [
+      {
+        property: 'duration',
+        description: 'Time before auto-dismiss, in milliseconds',
+        type: 'Number',
+        default: '3000'
+      },
+      {
+        property: 'maxCount',
+        description: 'Max messages to show at one time, drop oldest if limit is exceeded',
+        type: 'Number',
+        default: ''
+      },
+      {
+        property: 'top',
+        description: 'Distance from top (pixels)',
+        type: 'Number',
+        default: ''
+      },
+      {
+        property: 'top',
+        description: 'Whether to enable RTL (Right to left) mode',
+        type: 'Boolean',
+        default: 'false'
       }
     ]
   }

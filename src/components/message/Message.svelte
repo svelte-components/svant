@@ -1,6 +1,9 @@
-<div class="{prefixCls}" id="svant-messages-wrapper">
+<div
+  class="{prefixCls}"
+  id="svant-messages-wrapper"
+  style="{messageConfig.top ? `top: ${messageConfig.top}px;` : ''}">
   <span>
-    {#each $messages as message (message.id)}
+    {#each $messagesStore.messages as message (message.id)}
       <div class="{prefixCls}-notice" animate:flip>
         <div
           class="{prefixCls}-notice-content"
@@ -8,7 +11,7 @@
           <div
             class="{classNames(`${prefixCls}-custom-content`, {
               [`${prefixCls}-${message.type}`]: true,
-              [`${prefixCls}-rtl`]: direction === 'rtl'
+              [`${prefixCls}-rtl`]: messageConfig.rtl || direction === 'rtl'
             })}">
             <svelte:component
               this="{message.icon || getMessageIcon(message.type)}"
@@ -25,7 +28,7 @@
   import { fly } from "svelte/transition";
   import { flip } from "svelte/animate";
   import { getContext } from "svelte";
-  import messages from "./store.js";
+  import messagesStore from "./store.js";
   import classNames from "classnames";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
   import {
@@ -39,6 +42,10 @@
   const config = getContext(CONFIG_KEY) || configProvider();
   const { getPrefixCls, direction } = $config;
   const prefixCls = getPrefixCls("message");
+
+  let messageConfig;
+
+  $: messageConfig = $messagesStore.config;
 
   function getMessageIcon(type) {
     switch (type) {
