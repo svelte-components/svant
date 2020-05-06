@@ -1,5 +1,5 @@
 <Button type="primary" on:click="{openNotification}">
-  Open the notification box
+  Open styled notification box
 </Button>
 
 <script>
@@ -10,9 +10,16 @@
       message: "Notification Title",
       description:
         "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-      onClick: () => {
-        message.info("Notification Clicked!");
-      }
+      style: {
+        marginLeft: 335 - 600
+      },
+      className: "test-notification-demo-class"
     });
   };
 </script>
+
+<style>
+  :global("test-notification-demo-class") {
+    width: 600px;
+  }
+</style>

@@ -10,8 +10,18 @@
       message: "Notification Title",
       description:
         "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-      onClick: () => {
-        message.info("Notification Clicked!");
+      key: "custom_key",
+      onClose: () => {
+        message.info("Notification closed");
+      },
+      button: {
+        type: "primary",
+        size: "small",
+        text: "Confirm",
+        onClick: () => {
+          message.info("Close button clicked!");
+          notification.close("custom_key");
+        }
       }
     });
   };

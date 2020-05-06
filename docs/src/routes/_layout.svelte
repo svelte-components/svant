@@ -66,7 +66,7 @@
 
   .layout-sidebar {
     position: fixed;
-    top: 104px; /* top nav + 40px padding */
+    top: 64px; /* top nav */
     bottom: 0;
     overflow-y: scroll;
   }

@@ -20,6 +20,7 @@ module.exports = {
     "!**/node_modules/**",
     "!src/components/icons/*.svelte",
     "!src/provider/locale/*.js",
-    "!src/tests/*.js"
+    "!src/tests/*.js",
+    "!**/__tests__/**"
   ]
 };

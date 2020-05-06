@@ -6,6 +6,7 @@ export { default as CollapsePanel } from "./collapse/CollapsePanel.svelte";
 export { default as Layout } from "./layout/Layout.svelte";
 export { default as message } from "./message/index";
 export { default as Modal } from "./modal/index";
+export { default as notification } from "./notification/index";
 export { default as Content } from "./layout/Content.svelte";
 export { default as Footer } from "./layout/Footer.svelte";
 export { default as Header } from "./layout/Header.svelte";

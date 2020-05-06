@@ -4,15 +4,15 @@
 
 <script>
   import { notification, Button, message } from "svant";
+  import { SmileOutlined } from "svant/icons";
 
   const openNotification = () => {
     notification.open({
       message: "Notification Title",
       description:
         "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-      onClick: () => {
-        message.info("Notification Clicked!");
-      }
+      icon: SmileOutlined,
+      iconColor: "#108ee9"
     });
   };
 </script>

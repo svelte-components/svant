@@ -69,12 +69,12 @@ Display global messages as feedback in response to user operations.
 
 This component provides the following static methods:
 
-- message.success
-- message.error
-- message.info
-- message.warning
-- message.warn // alias of warning
-- message.loading
+- `message.success`
+- `message.error`
+- `message.info`
+- `message.warning`
+- `message.warn // alias of warning`
+- `message.loading`
 
 Each returns a promise that resolves when the message closes.
 
@@ -151,7 +151,7 @@ A `message.config` method is also provided.
     ]
   }
   const configAttributesData = {
-    title: 'Global Config Attributes',
+    title: 'Global Config Options',
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
       {

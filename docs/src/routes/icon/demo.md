@@ -1,4 +1,5 @@
 # Icon
+
 Semantic vector graphics.
 
 ## Examples
@@ -11,7 +12,6 @@ Semantic vector graphics.
   <p slot="description">
    Svant offers a list of icons that you can import from `svant/icons`, there are components for icons with different themes, you can use `spin` to animate the icon, and `rotate` to rotate it. </p>
 </Example>
-
 
 <Example
   id="icon-demo-twotone"
@@ -34,7 +34,7 @@ Semantic vector graphics.
 
 <DocsTable {...attributesData}/>
 
- If you are using the `Icon` component these are additional attributes besides the above
+If you are using the `Icon` component these are additional attributes besides the above
 
 <DocsTable {...customAttributesData}/>
 
@@ -42,7 +42,6 @@ Semantic vector graphics.
 
 <script>
   import Example from 'docs/src/components/Example.svelte';
-  
   import DocsTable from 'docs/src/components/DocsTable.svelte'
 
   import Basic from './demos/basic.demo.svelte'
@@ -88,7 +87,7 @@ Semantic vector graphics.
       },
     ]
   };
-  
+
   const customAttributesData = {
     title: 'Custom Icon attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
@@ -101,7 +100,7 @@ Semantic vector graphics.
       },
     ]
   };
-  
+
   const eventData = {
     title: 'Events',
     columns: ['Name', 'Description'],

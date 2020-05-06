@@ -1,4 +1,4 @@
-<Button on:click="{loading}">Display a loading indicator</Button>
+<Button type="primary" on:click="{loading}">Display a loading indicator</Button>
 
 <script>
   import { Button, message } from "svant";
