@@ -57,7 +57,3 @@
       typeof hasSider === "boolean" ? hasSider : siders.length > 0
   });
 </script>
-
-<style global lang="less">
-  @import "style/index";
-</style>

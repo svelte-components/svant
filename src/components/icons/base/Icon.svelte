@@ -153,7 +153,3 @@
     }
   }
 </script>
-
-<style global lang="less">
-  @import "styles/index.less";
-</style>
