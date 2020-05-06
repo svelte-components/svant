@@ -15,7 +15,10 @@ const fs = require("fs");
     .then(
       function(output) {
         const css = csso.minify(output.css).css;
-        fs.writeFileSync(path.join(__dirname, "../docs/static/svant.css"), css);
+        fs.writeFileSync(
+          path.join(__dirname, "../docs/static/svant.min.css"),
+          css
+        );
       },
       function(error) {
         console.error(error);
@@ -32,7 +35,10 @@ const fs = require("fs");
     .then(
       function(output) {
         const css = csso.minify(output.css).css;
-        fs.writeFileSync(path.join(__dirname, "../docs/static/docs.css"), css);
+        fs.writeFileSync(
+          path.join(__dirname, "../docs/static/docs.min.css"),
+          css
+        );
       },
       function(error) {
         console.error(error);
