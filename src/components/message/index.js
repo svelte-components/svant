@@ -3,11 +3,12 @@ import { get } from "svelte/store";
 import messageStore from "./store";
 import { nanoid } from "nanoid";
 
-if (typeof document !== "undefined") {
-  if (!document.getElementById("svant-messages-wrapper")) {
-    // Create the component if it doesn't exist
-    new Message({ target: document.body });
-  }
+if (
+  typeof document !== "undefined" &&
+  !document.getElementById("svant-messages-wrapper")
+) {
+  // Create the component if it doesn't exist
+  new Message({ target: document.body });
 
   const createMessageFunction = type => options => {
     return new Promise(resolve => {
