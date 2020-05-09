@@ -14,6 +14,16 @@ Description of the Tag's function.
   </p>
 </Example>
 
+<Example
+  id="tag-demo-color"
+  title="Colors"
+  demoComponent="{Color}"
+  demoCode="{ColorCode}">
+  <p slot="description">
+    The Tag has a set of predefined colors. The color can also be set to a custom hex color string.
+  </p>
+</Example>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -23,6 +33,9 @@ Description of the Tag's function.
 
   import Basic from './demos/basic.demo.svelte'
   import BasicCode from './demos/basic.demo.txt'
+
+  import Color from './demos/color.demo.svelte'
+  import ColorCode from './demos/color.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

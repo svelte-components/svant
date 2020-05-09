@@ -1,6 +1,7 @@
 {#if visible}
   <span
     class="{wrapperClasses}"
+    style="{tagStyle}"
     transition:fadeScale="{{ duration: 200, easing: cubicInOut, baseScale: 0.5 }}">
     <slot />
     {#if closable}
@@ -14,6 +15,8 @@
   import { fadeScale } from "@/components/_util/transitions";
   import { cubicInOut } from "svelte/easing";
   import classNames from "classnames";
+  import { string as toStyle } from "to-style";
+  import { PresetStatusColors, PresetColors } from "../_util/colors";
   import { createEventDispatcher, getContext } from "svelte";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
 
@@ -29,6 +32,8 @@
   // this exports the classObj as class so the button user can set class={{'abc':true}}
   let classObj = null;
   export { classObj as class };
+  // Color of the tag
+  export let color = "";
 
   // ********************** /Props **********************
 
@@ -36,10 +41,33 @@
   let visible = true;
   // Clases for the tag wrapper
   let wrapperClasses;
+  // this allows us to get the style as object e.x  style={{'color':'red'}}.
+  export let style = null;
+  // style object for the tag that includes custom color
+  let tagStyle;
+
+  const PresetColorRegex = new RegExp(
+    `^(${PresetColors.join("|")})(-inverse)?$`
+  );
+  const PresetStatusColorRegex = new RegExp(
+    `^(${PresetStatusColors.join("|")})$`
+  );
 
   $: wrapperClasses = classNames(prefixCls, {
     ...classObj,
+    [`${prefixCls}-${color}`]: isPresetColor(),
+    [`${prefixCls}-has-color`]: color && !isPresetColor(),
     [`${prefixCls}-rtl`]: direction === "rtl"
+  });
+
+  // Convert the style object to a style string
+  $: if (typeof style !== "string") {
+    style = toStyle(style);
+  }
+
+  $: tagStyle = toStyle({
+    backgroundColor: color && !isPresetColor() ? color : undefined,
+    ...style
   });
 
   function onClose(event) {
@@ -49,5 +77,10 @@
     };
     dispatch("close", event);
     if (!prevented) visible = false;
+  }
+
+  function isPresetColor() {
+    if (!color) return false;
+    return PresetColorRegex.test(color) || PresetStatusColorRegex.test(color);
   }
 </script>
