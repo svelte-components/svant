@@ -27,7 +27,8 @@
   {
     "name": "Data Display",
     "children": [
-      "collapse"
+      "collapse",
+      "tag"
     ]
   },
   {

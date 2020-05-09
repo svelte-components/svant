@@ -13,3 +13,4 @@ export { default as Header } from "./layout/Header.svelte";
 export { default as Sider } from "./layout/Sider.svelte";
 export { default as Checkbox } from "./checkbox/Checkbox.svelte";
 export { default as CheckboxGroup } from "./checkbox/CheckboxGroup.svelte";
+export { default as Tag } from "./tag/Tag.svelte";
