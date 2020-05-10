@@ -50,6 +50,16 @@ Description of the Tag's function.
   demoComponent="{AddRemove}"
   demoCode="{AddRemoveCode}"/>
 
+<Example
+  id="tag-demo-visibility"
+  title="Controlled Visibility"
+  demoComponent="{Visibility}"
+  demoCode="{VisibilityCode}">
+  <p slot="description">
+    The visibility can be controlled using the `visible` prop.
+  </p>
+</Example>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -71,6 +81,9 @@ Description of the Tag's function.
 
   import AddRemove from './demos/add-remove.demo.svelte'
   import AddRemoveCode from './demos/add-remove.demo.txt'
+
+  import Visibility from './demos/visibility.demo.svelte'
+  import VisibilityCode from './demos/visibility.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

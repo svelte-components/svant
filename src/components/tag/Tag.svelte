@@ -1,4 +1,4 @@
-{#if visible}
+{#if localVisible}
   <span
     class="{wrapperClasses}"
     style="{tagStyle}"
@@ -44,11 +44,13 @@
   export let icon = null;
   // Disable the transition so the tag will just appear or disappear
   export let disableTransition = false;
+  // Allow the user to control visibility manually
+  export let visible = true;
 
   // ********************** /Props **********************
 
-  // Whether the tag is shown
-  let visible = true;
+  // Used when the user clicks to close icon
+  let localVisible = true;
   // Clases for the tag wrapper
   let wrapperClasses;
   // this allows us to get the style as object e.x  style={{'color':'red'}}.
@@ -62,6 +64,9 @@
   const PresetStatusColorRegex = new RegExp(
     `^(${PresetStatusColors.join("|")})$`
   );
+
+  // Visibility variables should always match
+  $: localVisible = visible;
 
   $: if (typeof classObj === "string") {
     classObj = {
@@ -92,7 +97,7 @@
       prevented = true;
     };
     dispatch("close", event);
-    if (!prevented) visible = false;
+    if (!prevented) localVisible = false;
   }
 
   function isPresetColor() {
