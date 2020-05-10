@@ -49,4 +49,17 @@ describe("Tag component", () => {
     const { container } = render(Tag, { icon: CheckCircleOutlined });
     expect(container.innerHTML).toContain("anticon-check-circle");
   });
+
+  test("checkable, checked true", () => {
+    const { container } = render(Tag, { checked: true });
+    expect(container.innerHTML).toContain(
+      "ant-tag-checkable ant-tag-checkable-checked"
+    );
+  });
+
+  test("checkable, checked false", () => {
+    const { container } = render(Tag, { checked: false });
+    expect(container.innerHTML).toContain("ant-tag-checkable");
+    expect(container.innerHTML).not.toContain("ant-tag-checkable-checked");
+  });
 });

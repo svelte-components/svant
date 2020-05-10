@@ -46,6 +46,8 @@
   export let disableTransition = false;
   // Allow the user to control visibility manually
   export let visible = true;
+  // Checkable tags
+  export let checked = null;
 
   // ********************** /Props **********************
 
@@ -78,6 +80,8 @@
     ...classObj,
     [`${prefixCls}-${color}`]: isPresetColor(),
     [`${prefixCls}-has-color`]: color && !isPresetColor(),
+    [`${prefixCls}-checkable`]: checked !== null,
+    [`${prefixCls}-checkable-checked`]: checked,
     [`${prefixCls}-rtl`]: direction === "rtl"
   });
 

@@ -60,6 +60,16 @@ Description of the Tag's function.
   </p>
 </Example>
 
+<Example
+  id="tag-demo-checkable"
+  title="Checkable"
+  demoComponent="{Checkable}"
+  demoCode="{CheckableCode}">
+  <p slot="description">
+    Use the `checked` prop to make the `Tag` work like a checkbox. Click a tag to toggle its checked state.
+  </p>
+</Example>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -84,6 +94,9 @@ Description of the Tag's function.
 
   import Visibility from './demos/visibility.demo.svelte'
   import VisibilityCode from './demos/visibility.demo.txt'
+
+  import Checkable from './demos/checkable.demo.svelte'
+  import CheckableCode from './demos/checkable.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
