@@ -3,7 +3,12 @@
     class="{wrapperClasses}"
     style="{tagStyle}"
     transition:fadeScale="{{ duration: 200, easing: cubicInOut, baseScale: 0.5 }}">
-    <slot />
+    {#if icon}
+      <svelte:component this="{icon}" />
+    {/if}
+    <span>
+      <slot />
+    </span>
     {#if closable}
       <CloseOutlined on:click="{onClose}" />
     {/if}
@@ -34,6 +39,8 @@
   export { classObj as class };
   // Color of the tag
   export let color = "";
+  // Icon for the tag
+  export let icon = null;
 
   // ********************** /Props **********************
 

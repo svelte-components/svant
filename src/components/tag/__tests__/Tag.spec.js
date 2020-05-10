@@ -2,6 +2,7 @@ import Tag from "../Tag.svelte";
 import { fireEvent } from "@testing-library/svelte";
 import { render, clearContext, delay } from "@/components/_util/testHelpers";
 import { PresetColors } from "@/components/_util/colors.js";
+import { CheckCircleOutlined } from "@/components/icons";
 
 describe("Tag component", () => {
   afterEach(() => {
@@ -42,5 +43,10 @@ describe("Tag component", () => {
     expect(
       container.querySelector(".ant-tag-has-color").style.backgroundColor
     ).toEqual("rgb(255, 85, 0)");
+  });
+
+  test("icon", () => {
+    const { container } = render(Tag, { icon: CheckCircleOutlined });
+    expect(container.innerHTML).toContain("anticon-check-circle");
   });
 });

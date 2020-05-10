@@ -24,6 +24,16 @@ Description of the Tag's function.
   </p>
 </Example>
 
+<Example
+  id="tag-demo-icon"
+  title="Icon"
+  demoComponent="{Icon}"
+  demoCode="{IconCode}">
+  <p slot="description">
+    `Tag` components can contain an `Icon`. This is done by setting the `icon` property or placing an `Icon` component within the `Tag`.
+  </p>
+</Example>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -36,6 +46,9 @@ Description of the Tag's function.
 
   import Color from './demos/color.demo.svelte'
   import ColorCode from './demos/color.demo.txt'
+
+  import Icon from './demos/icon.demo.svelte'
+  import IconCode from './demos/icon.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
