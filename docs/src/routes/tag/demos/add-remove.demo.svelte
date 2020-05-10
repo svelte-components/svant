@@ -1,7 +1,5 @@
-{#each tags as tag (`tag-${randomNumber()}`)}
-  <Tag closable disableTransition="{true}" on:close="{() => removeTag(tag)}">
-    {tag}
-  </Tag>
+{#each tags as tag, index (tag.id)}
+  <Tag closable on:close="{() => removeTag(tag.id)}">{tag.label}</Tag>
 {/each}
 
 {#if !inputVisible}
@@ -24,20 +22,21 @@
   import { PlusOutlined } from "svant/icons";
   import { tick } from "svelte";
 
-  let tags = ["Tag one", "Tag 2"];
+  let tags = [
+    { label: "Tag one", id: 1 },
+    { label: "Tag two", id: 2 }
+  ];
   let inputVisible = false;
   let newTagValue = "";
 
-  const randomNumber = () => Math.floor(Math.random() * Math.floor(10000));
-
   const addTag = () => {
-    tags = [...tags, newTagValue];
-    newTagValue = "";
     inputVisible = false;
+    tags[tags.length] = { label: newTagValue, id: tags.length + 1 };
+    newTagValue = "";
   };
 
   const removeTag = tag => {
-    tags.splice(tags.indexOf(tag), 1);
+    tags = tags.filter(t => t.id !== tag.id);
   };
 
   const onClickAddTag = async () => {

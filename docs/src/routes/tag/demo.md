@@ -73,6 +73,7 @@ Description of the Tag's function.
 ## API
 
 <DocsTable {...attributesData}/>
+<DocsTable {...eventData}/>
 
 <script>
   import Example from 'docs/src/components/Example.svelte';
@@ -104,14 +105,62 @@ Description of the Tag's function.
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
       {
-        property: 'test',
-        description: 'test description',
+        property: 'closable',
+        description: 'Whether the Tag can be closed',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'visible',
+        description: 'Whether the Tag is closed or not',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'color',
+        description: 'Color of the tag. See examples above in the `Color` and `Status` sections for details',
         type: 'String',
-        default: 'test'
+        default: ''
+      },
+      {
+        property: 'class',
+        description: "Class name or class object (e.x. class={{'abc':true}}) for the Tag.",
+        type: 'String|Object',
+        default: ''
+      },
+      {
+        property: 'icon',
+        description: 'Sets the icon of the tag',
+        type: 'SvelteComponent',
+        default: ''
+      },
+      {
+        property: 'checked',
+        description: 'Checked status of Tag. If this prop is included the tag will be `checkable` and the background will be transparent by default',
+        type: 'Boolean',
+        default: ''
+      },
+      {
+        property: 'disableTransition',
+        description: 'Disable the fade and scale effect when the tag appears/disappears',
+        type: 'Boolean',
+        default: 'false'
       }
     ]
   }
 
-  // Events
-  // CLick
+  const eventData = {
+    title: 'Events',
+    columns: ['Name', 'Description'],
+    data: [
+      {
+        name: 'click',
+        description: 'Specify a function that will be called when a user clicks the tag.'
+      },
+      {
+        name: 'close',
+        description: 'Specify a function that will be called when the user closes the tag by clicking the close icon. To prevent the tag from closing, a `event.detail.preventClose()` function is exposed.'
+      }
+    ]
+  }
 </script>
