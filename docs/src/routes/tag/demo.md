@@ -34,6 +34,16 @@ Description of the Tag's function.
   </p>
 </Example>
 
+<Example
+  id="tag-demo-status"
+  title="Status"
+  demoComponent="{Status}"
+  demoCode="{StatusCode}">
+  <p slot="description">
+    There are five different preset colors that can be used to communicate status. The following can be set using the `color` property. `success`, `processing`, `error`, `default`, and `warning`.
+  </p>
+</Example>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -49,6 +59,9 @@ Description of the Tag's function.
 
   import Icon from './demos/icon.demo.svelte'
   import IconCode from './demos/icon.demo.txt'
+
+  import Status from './demos/status.demo.svelte'
+  import StatusCode from './demos/status.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
