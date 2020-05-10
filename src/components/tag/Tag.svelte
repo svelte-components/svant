@@ -2,7 +2,8 @@
   <span
     class="{wrapperClasses}"
     style="{tagStyle}"
-    transition:fadeScale="{{ duration: 200, easing: cubicInOut, baseScale: 0.5 }}">
+    transition:fadeScale="{{ duration: disableTransition ? 0 : 200, easing: cubicInOut, baseScale: 0.5 }}"
+    on:click>
     {#if icon}
       <svelte:component this="{icon}" />
     {/if}
@@ -41,6 +42,8 @@
   export let color = "";
   // Icon for the tag
   export let icon = null;
+  // Disable the transition so the tag will just appear or disappear
+  export let disableTransition = false;
 
   // ********************** /Props **********************
 
@@ -59,6 +62,12 @@
   const PresetStatusColorRegex = new RegExp(
     `^(${PresetStatusColors.join("|")})$`
   );
+
+  $: if (typeof classObj === "string") {
+    classObj = {
+      [classObj]: true
+    };
+  }
 
   $: wrapperClasses = classNames(prefixCls, {
     ...classObj,

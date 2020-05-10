@@ -21,6 +21,14 @@ describe("Input component", () => {
     expect(container.innerHTML).toContain('placeholder="Test Placeholder"');
   });
 
+  test("class", () => {
+    const { container } = render(Input, {
+      value: "",
+      class: "test-class"
+    });
+    expect(container.innerHTML).toContain("test-class");
+  });
+
   test("input event", async () => {
     const { container, component } = render(Input, { value: "" });
     const onInput = jest.fn();

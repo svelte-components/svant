@@ -44,6 +44,12 @@ Description of the Tag's function.
   </p>
 </Example>
 
+<Example
+  id="tag-demo-add-remove"
+  title="Add & Remove Dynamically"
+  demoComponent="{AddRemove}"
+  demoCode="{AddRemoveCode}"/>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -63,6 +69,9 @@ Description of the Tag's function.
   import Status from './demos/status.demo.svelte'
   import StatusCode from './demos/status.demo.txt'
 
+  import AddRemove from './demos/add-remove.demo.svelte'
+  import AddRemoveCode from './demos/add-remove.demo.txt'
+
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
     title: 'Attributes',
@@ -76,4 +85,7 @@ Description of the Tag's function.
       }
     ]
   }
+
+  // Events
+  // CLick
 </script>
