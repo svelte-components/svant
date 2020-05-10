@@ -3,6 +3,7 @@ export { default as BreadcrumbItem } from "./breadcrumb/BreadcrumbItem.svelte";
 export { default as Button } from "./button/Button.svelte";
 export { default as Collapse } from "./collapse/Collapse.svelte";
 export { default as CollapsePanel } from "./collapse/CollapsePanel.svelte";
+export { default as Input } from "./input/Input.svelte";
 export { default as Layout } from "./layout/Layout.svelte";
 export { default as message } from "./message/index";
 export { default as Modal } from "./modal/index";

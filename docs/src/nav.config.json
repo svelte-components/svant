@@ -21,7 +21,8 @@
   {
     "name": "Data Entry",
     "children": [
-      "checkbox"
+      "checkbox",
+      "input"
     ]
   },
   {
