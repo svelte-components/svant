@@ -1,6 +1,6 @@
 # Select
 
-Description of the Select's function.
+A Select component to select values from a list of options.
 
 ## Examples
 
@@ -10,7 +10,7 @@ Description of the Select's function.
   demoComponent="{Basic}"
   demoCode="{BasicCode}">
   <p slot="description">
-    Basic description of the Select component goes here
+    Basic `Select` usage examples
   </p>
 </Example>
 
@@ -38,4 +38,3 @@ Description of the Select's function.
     ]
   }
 </script>
-  

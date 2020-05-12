@@ -1,6 +1,6 @@
 # Modal
 
-Description of the Modal's function.
+Modal dialogs.
 
 ## Examples
 

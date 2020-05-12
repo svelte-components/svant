@@ -57,6 +57,7 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
+  width: 100%;
 
   &:not(.@{select-prefix-cls}-disabled):hover &-selector {
     .hover();
@@ -161,8 +162,7 @@
   &-dropdown {
     .reset-component;
     position: absolute;
-    top: -9999px;
-    left: -9999px;
+    width: 100%;
     z-index: @zindex-dropdown;
     box-sizing: border-box;
     padding: @select-dropdown-edge-child-vertical-padding 0;
@@ -242,6 +242,7 @@
 
       &-state {
         flex: none;
+        user-select: none;
       }
 
       &-active:not(&-disabled) {
