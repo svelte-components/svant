@@ -1,6 +1,6 @@
 # Tag
 
-Description of the Tag's function.
+Tag for categorizing or markup.
 
 ## Examples
 

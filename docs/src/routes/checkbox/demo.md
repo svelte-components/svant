@@ -1,7 +1,5 @@
 # Checkbox
 
-Description of the Checkbox's function.
-
 ## Examples
 
 <Example
@@ -159,8 +157,6 @@ Description of the Checkbox's function.
       }
     ]
   };
-
-
   const checkBoxEventData = {
     title: 'Checkbox Events',
     columns: ['Name', 'Description'],

@@ -16,7 +16,7 @@
 </span>
 
 <script>
-  import { onMount, getContext } from "svelte";
+  import { getContext } from "svelte";
 
   // ********************** Props **********************
 

@@ -7,7 +7,8 @@ module.exports = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
     "^examples/(.*)$": "<rootDir>/docs/src/routes/$1",
-    "^svant(.*)$": "<rootDir>/src/components$1"
+    "^svant(.*)$": "<rootDir>/src/components$1",
+    "^svelte(.*)$": "<rootDir>/node_modules/svelte$1"
   },
   testPathIgnorePatterns: ["node_modules"],
   bail: false,
