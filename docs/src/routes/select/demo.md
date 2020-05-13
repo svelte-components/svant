@@ -14,6 +14,16 @@ A Select component to select values from a list of options.
   </p>
 </Example>
 
+<Example
+  id="select-demo-search"
+  title="Search Field"
+  demoComponent="{Search}"
+  demoCode="{SearchCode}">
+  <p slot="description">
+    Use the `searchable` prop to search the options while the Select is expanded. By default it will search the label for an exact match, but a `searchFunction` can be passed for customizing the search.
+  </p>
+</Example>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -23,6 +33,9 @@ A Select component to select values from a list of options.
 
   import Basic from './demos/basic.demo.svelte'
   import BasicCode from './demos/basic.demo.txt'
+
+  import Search from './demos/search.demo.svelte'
+  import SearchCode from './demos/search.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

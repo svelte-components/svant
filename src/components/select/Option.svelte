@@ -1,20 +1,22 @@
-<div
-  aria-selected="{isCurrentlySelected}"
-  class="{classes}"
-  on:click="{onClick}"
-  on:mouseenter="{() => {
-    isCurrentlyHovered = true;
-  }}"
-  on:mouseleave="{() => {
-    isCurrentlyHovered = false;
-  }}">
-  <div class="ant-select-item-option-content">{label}</div>
-  <span
-    class="ant-select-item-option-state"
-    unselectable="on"
-    aria-hidden="true"
-    style="user-select: none;"></span>
-</div>
+{#if visible}
+  <div
+    aria-selected="{isCurrentlySelected}"
+    class="{classes}"
+    on:click="{onClick}"
+    on:mouseenter="{() => {
+      isCurrentlyHovered = true;
+    }}"
+    on:mouseleave="{() => {
+      isCurrentlyHovered = false;
+    }}">
+    <div class="ant-select-item-option-content">{label}</div>
+    <span
+      class="ant-select-item-option-state"
+      unselectable="on"
+      aria-hidden="true"
+      style="user-select: none;"></span>
+  </div>
+{/if}
 
 <script>
   import { getContext, onMount, tick } from "svelte";
@@ -44,6 +46,8 @@
   let classes = "";
   // Gives hover state
   let isCurrentlyHovered = false;
+  // Visibility based on search
+  let visible = true;
 
   onMount(async () => {
     await tick();
@@ -61,6 +65,11 @@
     [`${prefixCls}-item-option-selected`]: isCurrentlySelected,
     [`${prefixCls}-item-option-active`]: isCurrentlyHovered
   });
+
+  $: visible = (function() {
+    if (!$store.searchValue) return true;
+    return $store.searchFunction($store.searchValue, { label, value });
+  })();
 
   function onClick() {
     if (!disabled) {

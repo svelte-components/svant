@@ -1,6 +1,8 @@
 import { render, clearContext, delay } from "@/components/_util/testHelpers";
 import { fireEvent } from "@testing-library/svelte";
+import Select from "../Select.svelte";
 import SelectBasic from "examples/select/demos/basic.demo.svelte";
+import SelectSearch from "examples/select/demos/search.demo.svelte";
 
 describe("Select component", () => {
   const originalConsole = { ...console };
@@ -76,7 +78,7 @@ describe("Select component", () => {
     const select = container.querySelectorAll(".ant-select")[1];
     expect(select.className).toContain("disabled");
     await fireEvent.click(select);
-    expect(container.querySelector(".ant-select-dropdown")).toBeFalsy();
+    expect(container.querySelector(".ant-select-dropdown-open")).toBeFalsy();
   });
 
   test("loading icon", async () => {
@@ -90,6 +92,7 @@ describe("Select component", () => {
     const { container } = render(SelectBasic);
     await delay(300);
     const select = container.querySelectorAll(".ant-select")[3];
+    const dropdown = container.querySelectorAll(".ant-select-dropdown")[3];
     expect(select.innerHTML).not.toContain("anticon-close-circle");
     await fireEvent.mouseEnter(select);
     expect(select.innerHTML).toContain("anticon-close-circle");
@@ -97,14 +100,52 @@ describe("Select component", () => {
     expect(select.innerHTML).not.toContain("anticon-close-circle");
     await fireEvent.click(select);
     expect(
-      container.querySelector(".ant-select-item-option-selected")
+      dropdown.querySelector(".ant-select-item-option-selected")
     ).toBeTruthy();
     await fireEvent.mouseEnter(select);
     const clearIcon = select.querySelector(".anticon-close-circle");
     await fireEvent.click(clearIcon);
-    await fireEvent.mouseEnter(select);
     expect(
-      container.querySelector(".ant-select-item-option-selected")
+      dropdown.querySelector(".ant-select-item-option-selected")
     ).toBeFalsy();
+  });
+
+  test("placeholder", () => {
+    const { container } = render(Select, {
+      placeholder: "Test Placeholder",
+      value: ""
+    });
+    const placeholder = container.querySelector(
+      ".ant-select-selection-placeholder"
+    );
+    expect(placeholder.innerHTML).toContain("Test Placeholder");
+  });
+
+  test("search field", async () => {
+    const { container } = render(SelectSearch);
+    await delay(300);
+    const select = container.querySelector(".ant-select");
+    const dropdown = container.querySelector(".ant-select-dropdown");
+    await fireEvent.click(select);
+    expect(select.innerHTML).toContain("anticon-search");
+    expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(3);
+    const input = select.querySelector("input");
+    await fireEvent.input(input, { target: { value: "j" } });
+    expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(1);
+    await fireEvent.input(input, { target: { value: "jj" } });
+    expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(0);
+    expect(dropdown.innerHTML).toContain("no-results");
+  });
+
+  test("close on click outside", async () => {
+    const { container } = render(SelectBasic);
+    await delay(300);
+    const selects = container.querySelectorAll(".ant-select");
+    await fireEvent.click(selects[0]);
+    const dropdown = container.querySelectorAll(".ant-select-dropdown")[0];
+    expect(dropdown.className).toContain("ant-select-dropdown-open");
+    // click outside
+    await fireEvent.mouseUp(container.querySelector(".ant-message"));
+    expect(dropdown.className).not.toContain("ant-select-dropdown-open");
   });
 });
