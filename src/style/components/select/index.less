@@ -165,7 +165,6 @@
     width: 100%;
     z-index: @zindex-dropdown;
     box-sizing: border-box;
-    padding: @select-dropdown-edge-child-vertical-padding 0;
     overflow: hidden;
     font-size: @font-size-base;
     // Fix select render lag of long text in chrome
@@ -176,23 +175,20 @@
     border-radius: @border-radius-base;
     outline: none;
     box-shadow: @box-shadow-base;
+    overflow-y: scroll;
+    max-height: 0;
+    padding: 0;
+    transition: all .2s @ease-in-out;
 
     &.slide-up-enter.slide-up-enter-active&-placement-bottomLeft,
     &.slide-up-appear.slide-up-appear-active&-placement-bottomLeft {
       animation-name: antSlideUpIn;
     }
 
-    &.slide-up-enter.slide-up-enter-active&-placement-topLeft,
-    &.slide-up-appear.slide-up-appear-active&-placement-topLeft {
-      animation-name: antSlideDownIn;
-    }
-
-    &.slide-up-leave.slide-up-leave-active&-placement-bottomLeft {
-      animation-name: antSlideUpOut;
-    }
-
-    &.slide-up-leave.slide-up-leave-active&-placement-topLeft {
-      animation-name: antSlideDownOut;
+    &-open {
+      max-height: 100vh;
+      transition: all.2s @ease-in-out;
+      padding: @select-dropdown-edge-child-vertical-padding 0;
     }
 
     &-hidden {
