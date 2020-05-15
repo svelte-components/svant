@@ -10,16 +10,21 @@
       isCurrentlyHovered = false;
     }}">
     <div class="ant-select-item-option-content">{label}</div>
-    <span
-      class="ant-select-item-option-state"
-      unselectable="on"
-      aria-hidden="true"
-      style="user-select: none;"></span>
+    {#if $store.mode === 'multiple' && isCurrentlySelected}
+      <span
+        class="ant-select-item-option-state"
+        unselectable="on"
+        aria-hidden="true"
+        style="user-select: none;">
+        <CheckOutlined />
+      </span>
+    {/if}
   </div>
 {/if}
 
 <script>
   import { getContext, onMount, tick } from "svelte";
+  import { CheckOutlined } from "@/components/icons";
   import classNames from "classnames";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
 
@@ -51,12 +56,20 @@
 
   onMount(async () => {
     await tick();
-    if ($store.selectedValue === value) {
+    if (
+      $store.mode === "multiple" &&
+      $store.selectedValue.indexOf(value) >= 0
+    ) {
+      $store.selectedLabel = [...$store.selectedLabel, label];
+    } else if ($store.selectedValue === value) {
       $store.selectedLabel = label;
     }
   });
 
-  $: isCurrentlySelected = $store.selectedValue === value;
+  $: isCurrentlySelected =
+    $store.selectedValue &&
+    ($store.selectedValue === value ||
+      $store.selectedValue.indexOf(value) >= 0);
 
   $: classes = classNames({
     [`${prefixCls}-item`]: true,
@@ -73,12 +86,28 @@
 
   function onClick() {
     if (!disabled) {
-      store.set({
-        ...$store,
-        selectedValue: value,
-        selectedLabel: label,
-        popupVisible: false
-      });
+      if ($store.mode === "multiple" && isCurrentlySelected) {
+        store.set({
+          ...$store,
+          selectedValue: $store.selectedValue.filter(v => v !== value),
+          selectedLabel: $store.selectedLabel.filter(l => l !== label),
+          searchValue: ""
+        });
+      } else if ($store.mode === "multiple") {
+        store.set({
+          ...$store,
+          selectedValue: [...$store.selectedValue, value],
+          selectedLabel: [...$store.selectedLabel, label],
+          searchValue: ""
+        });
+      } else {
+        store.set({
+          ...$store,
+          selectedValue: value,
+          selectedLabel: label,
+          popupVisible: false
+        });
+      }
     }
   }
 </script>

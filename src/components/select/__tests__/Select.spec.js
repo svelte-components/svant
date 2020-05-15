@@ -3,6 +3,7 @@ import { fireEvent } from "@testing-library/svelte";
 import Select from "../Select.svelte";
 import SelectBasic from "examples/select/demos/basic.demo.svelte";
 import SelectSearch from "examples/select/demos/search.demo.svelte";
+import SelectMultiple from "examples/select/demos/multiple.demo.svelte";
 
 describe("Select component", () => {
   const originalConsole = { ...console };
@@ -147,5 +148,113 @@ describe("Select component", () => {
     // click outside
     await fireEvent.mouseUp(container.querySelector(".ant-message"));
     expect(dropdown.className).not.toContain("ant-select-dropdown-open");
+  });
+
+  test("close on escape press", async () => {
+    const { container } = render(SelectBasic);
+    await delay(300);
+    const selects = container.querySelectorAll(".ant-select");
+    await fireEvent.click(selects[0]);
+    const dropdown = container.querySelectorAll(".ant-select-dropdown")[0];
+    expect(dropdown.className).toContain("ant-select-dropdown-open");
+    // press escape
+    await fireEvent.keyDown(document.body, {
+      key: "Escape",
+      keyCode: 27,
+      which: 27
+    });
+    expect(dropdown.className).not.toContain("ant-select-dropdown-open");
+  });
+
+  describe("multiple select", () => {
+    test("can display multiple options", async () => {
+      const { container } = render(SelectMultiple);
+      await delay(300);
+      const select = container.querySelector(".ant-select");
+      expect(
+        select.querySelectorAll(".ant-select-selection-item").length
+      ).toEqual(2);
+      await fireEvent.click(select);
+      const dropdown = container.querySelector(".ant-select-dropdown");
+      await fireEvent.click(
+        dropdown.querySelectorAll(".ant-select-item-option")[1]
+      );
+      // dropdown should not close
+      expect(dropdown).toBeVisible();
+      expect(
+        select.querySelectorAll(".ant-select-selection-item").length
+      ).toEqual(3);
+      // should be able to deselect
+      await fireEvent.click(
+        dropdown.querySelectorAll(".ant-select-item-option")[1]
+      );
+      await delay(300);
+      expect(
+        select.querySelectorAll(".ant-select-selection-item").length
+      ).toEqual(2);
+    });
+
+    test("can search", async () => {
+      const { container } = render(SelectMultiple);
+      await delay(300);
+      const select = container.querySelector(".ant-select");
+      const dropdown = container.querySelector(".ant-select-dropdown");
+      await fireEvent.click(select);
+      expect(
+        dropdown.querySelectorAll(".ant-select-item").length > 1
+      ).toBeTruthy();
+      const input = select.querySelector("input");
+      await fireEvent.input(input, { target: { value: "b" } });
+      expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(1);
+      await fireEvent.input(input, { target: { value: "jj" } });
+      expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(0);
+      expect(dropdown.innerHTML).toContain("no-results");
+    });
+
+    test("backspace removes last selected item", async () => {
+      const { container } = render(SelectMultiple);
+      await delay(300);
+      const select = container.querySelector(".ant-select");
+      expect(
+        select.querySelectorAll(".ant-select-selection-item").length
+      ).toEqual(2);
+      await fireEvent.click(select);
+      // press escape
+      await fireEvent.keyDown(document.body, {
+        key: "Backspace",
+        keyCode: 8,
+        which: 8
+      });
+      await delay(300);
+      expect(
+        select.querySelectorAll(".ant-select-selection-item").length
+      ).toEqual(1);
+    });
+
+    test("tag close icon removes option", async () => {
+      const { container } = render(SelectMultiple);
+      await delay(300);
+      const select = container.querySelector(".ant-select");
+      expect(
+        select.querySelectorAll(".ant-select-selection-item").length
+      ).toEqual(2);
+      expect(select.innerHTML).toContain("anticon-close");
+      await fireEvent.click(select.querySelector(".anticon-close"));
+      await delay(300);
+      expect(
+        select.querySelectorAll(".ant-select-selection-item").length
+      ).toEqual(1);
+    });
+
+    test("focus on input after item selected or deselected", async () => {
+      const { container } = render(SelectMultiple);
+      await delay(300);
+      const select = container.querySelector(".ant-select");
+      const input = select.querySelector("input");
+      await fireEvent.click(select);
+      const dropdown = container.querySelector(".ant-select-dropdown");
+      await fireEvent.click(dropdown.querySelector(".ant-select-item-option"));
+      expect(input).toBe(document.activeElement);
+    });
   });
 });

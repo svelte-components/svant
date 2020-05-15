@@ -9,8 +9,31 @@
       isInputHovered = false;
     }}">
     <div class="{prefixCls}-selector">
-      {#if searchable}
-        <span class="ant-select-selection-search">
+      {#if mode === 'multiple' && $store.selectedValue}
+        {#each $store.selectedValue as value, index (value)}
+          <span
+            class="{prefixCls}-selection-item"
+            transition:fadeScale="{{ duration: 200, easing: cubicInOut, baseScale: 0.5 }}">
+            <span class="{prefixCls}-selection-item-content">
+              {$store.selectedLabel[index]}
+            </span>
+            <span
+              class="{prefixCls}-selection-item-remove"
+              on:click|stopPropagation="{() => {
+                removeOption(index);
+              }}"
+              unselectable="on"
+              aria-hidden="true"
+              style="user-select: none;">
+              <CloseOutlined />
+            </span>
+          </span>
+        {/each}
+      {/if}
+      {#if searchable || mode === 'multiple'}
+        <span
+          class="{prefixCls}-selection-search"
+          style="{mode === 'multiple' ? `width: ${inputWidth}` : ''}">
           <input
             autocomplete="off"
             class="{prefixCls}-selection-search-input"
@@ -23,33 +46,35 @@
         </span>
       {/if}
 
-      {#if placeholder && !$store.selectedLabel}
+      {#if showPlaceholder}
         <span class="{prefixCls}-selection-placeholder">
           {#if !$store.searchValue}{placeholder}{/if}
         </span>
-      {:else}
+      {:else if mode !== 'multiple'}
         <span class="{prefixCls}-selection-item">
           {#if !$store.searchValue}{$store.selectedLabel || ''}{/if}
         </span>
       {/if}
     </div>
-    <span
-      class="{iconWrapperClasses}"
-      unselectable="on"
-      aria-hidden="true"
-      style="user-select: none;">
-      {#if $store.popupVisible && searchable}
-        <SearchOutlined />
-      {:else if showClearIcon}
-        <span on:click|stopPropagation="{onClearableClicked}">
-          <CloseCircleFilled />
-        </span>
-      {:else if loading}
-        <LoadingOutlined spin />
-      {:else}
-        <DownOutlined />
-      {/if}
-    </span>
+    {#if mode !== 'multiple'}
+      <span
+        class="{iconWrapperClasses}"
+        unselectable="on"
+        aria-hidden="true"
+        style="user-select: none;">
+        {#if $store.popupVisible && searchable}
+          <SearchOutlined />
+        {:else if showClearIcon}
+          <span on:click|stopPropagation="{onClearableClicked}">
+            <CloseCircleFilled />
+          </span>
+        {:else if loading}
+          <LoadingOutlined spin />
+        {:else}
+          <DownOutlined />
+        {/if}
+      </span>
+    {/if}
   </div>
 
   <div id="{popupId}" class="{popupClasses}">
@@ -77,6 +102,7 @@
     DownOutlined,
     LoadingOutlined,
     CloseCircleFilled,
+    CloseOutlined,
     SearchOutlined,
     InboxOutlined
   } from "@/components/icons";
@@ -89,10 +115,17 @@
     tick,
     createEventDispatcher
   } from "svelte";
+  import {
+    onClickOutside,
+    onEscape,
+    onBackspace
+  } from "@/components/_util/events";
+  import { fadeScale } from "@/components/_util/transitions";
+  import { cubicInOut } from "svelte/easing";
   import { nanoid } from "nanoid";
-  import { onClickOutside } from "../_util/events";
   import { string as toStyle } from "to-style";
   import classNames from "classnames";
+  import calculateSize from "calculate-size";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
 
   const config = getContext(CONFIG_KEY) || configProvider();
@@ -119,6 +152,8 @@
   export let searchable = false;
   // Custom search function
   export let searchFunction = null;
+  // Mode can be multiple or tags
+  export let mode = "single";
 
   // ********************** /Props **********************
 
@@ -143,13 +178,20 @@
   let wrapperId = "select-wrapper-" + nanoid();
   // store a popup id so we can narrow down the popper if multiple selects are on the screen
   let popupId = "select-popup-" + nanoid();
-  // Register click outside event and save the unbind function for destroy - set onMount
+  // Register events and save the unbind function for destroy - set onMount
   let unbindClickOutside;
+  let unbindEscapePress;
+  let unbindBackspacePress;
+  // function to determine if placeholder displays
+  let showPlaceholder = false;
+  // Input needs an explicit with in multiple mode
+  let inputWidth = "4px";
 
   let store = writable({
     popupVisible: false,
     searchFunction: null,
-    searchValue: ""
+    searchValue: "",
+    mode
   });
   setContext("store", store);
 
@@ -161,33 +203,54 @@
     unbindClickOutside = onClickOutside(wrapper, () => {
       if ($store.popupVisible) $store.popupVisible = false;
     });
+    unbindEscapePress = onEscape(() => {
+      if ($store.popupVisible) $store.popupVisible = false;
+    });
+    unbindBackspacePress = onBackspace(() => {
+      if (mode === "multiple" && $store.selectedValue.length) {
+        const wrapper = document.getElementById(wrapperId);
+        const input = wrapper.querySelector(
+          `.${prefixCls}-selection-search-input`
+        );
+        // Check if input has focus
+        if (document.activeElement === input) {
+          const index = $store.selectedValue.length - 1;
+          removeOption(index);
+        }
+      }
+    });
   });
 
   onDestroy(() => {
     if (typeof document !== "undefined") {
       unbindClickOutside();
+      unbindEscapePress();
+      unbindBackspacePress();
     }
   });
+
+  $: $store.mode = mode;
 
   $: if (typeof style !== "string") {
     style = toStyle(style);
   }
 
   $: $store.searchFunction = (function() {
-    if (!searchable) return null;
+    if (!searchable && mode !== "multiple") return null;
     return (
       searchFunction || ((input, option) => option.label.indexOf(input) >= 0)
     );
   })();
 
   $: classes = classNames(prefixCls, {
-    [`${prefixCls}-single`]: true,
+    [`${prefixCls}-single`]: mode !== "multiple",
+    [`${prefixCls}-multiple`]: mode === "multiple",
     [`${prefixCls}-show-arrow`]: true,
     [`${prefixCls}-open`]: $store.popupVisible,
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-allow-clear`]: clearable,
-    [`${prefixCls}-show-search`]: searchable
+    [`${prefixCls}-show-search`]: searchable || mode === "multiple"
   });
 
   $: popupClasses = classNames({
@@ -232,8 +295,48 @@
       : false;
   })();
 
-  // TODO: Escape should close
-  // TODO: config-provider size and RTL
+  $: showPlaceholder = (function() {
+    if (!placeholder) return false;
+    if (
+      mode === "multiple" &&
+      $store.selectedValue &&
+      !$store.selectedValue.length
+    )
+      return true;
+    if (!$store.selectedValue) return true;
+  })();
+
+  $: inputWidth = (function() {
+    if (typeof document !== "undefined" && document.getElementById(wrapperId)) {
+      const item = document
+        .getElementById(wrapperId)
+        .querySelector(`.${prefixCls}`);
+      const size = calculateSize($store.searchValue, {
+        font: "Arial",
+        fontSize: window.getComputedStyle(item).fontSize
+      });
+      return `${size.width + $store.searchValue.length}px`;
+    }
+  })();
+
+  // In multiple mode, make sure focus stays on
+  // the input even after selecting/deselecting options
+  $: (function() {
+    if (
+      typeof document !== "undefined" &&
+      mode === "multiple" &&
+      $store.selectedValue &&
+      $store.popupVisible
+    ) {
+      const wrapper = document.getElementById(wrapperId);
+      const input = wrapper.querySelector(
+        `.${prefixCls}-selection-search-input`
+      );
+      input.focus();
+    }
+  })();
+
+  //********* TODO: config-provider size and RTL ******//
 
   function onSelectClick() {
     if (!disabled) {
@@ -248,6 +351,16 @@
       selectedLabel: "",
       popupVisible: false
     });
+  }
+
+  function removeOptionAttribute(attr, index) {
+    // Need to assign with '=' so that we can use stopPropagation so that the dropdown doesn't open
+    $store[attr] = $store[attr].filter(l => l !== $store[attr][index]);
+  }
+
+  function removeOption(index) {
+    removeOptionAttribute("selectedValue", index);
+    removeOptionAttribute("selectedLabel", index);
   }
 </script>
 
