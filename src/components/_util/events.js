@@ -14,3 +14,21 @@ export function onClickOutside(element, callback) {
     document.body.removeEventListener("touchend", handler);
   };
 }
+
+const createKeydownEvent = keycode => {
+  return function(callback) {
+    const handler = event => {
+      if (event.keyCode === keycode) {
+        callback();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    // Unbind function
+    return () => {
+      document.removeEventListener("keydown", handler);
+    };
+  };
+};
+
+export const onEscape = createKeydownEvent(27);
+export const onBackspace = createKeydownEvent(8);

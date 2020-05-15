@@ -1,7 +1,6 @@
 <Select
   bind:value
   searchable
-  clearable
   {searchFunction}
   style="{{ width: 200 }}"
   placeholder="Select a person"

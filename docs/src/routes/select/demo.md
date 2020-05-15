@@ -24,6 +24,17 @@ A Select component to select values from a list of options.
   </p>
 </Example>
 
+
+<Example
+  id="select-demo-multiple"
+  title="Multiple Select"
+  demoComponent="{Multiple}"
+  demoCode="{MultipleCode}">
+  <p slot="description">
+    Show more than one selection using `multiple` mode. Multiple mode is searchable as well.
+  </p>
+</Example>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -36,6 +47,9 @@ A Select component to select values from a list of options.
 
   import Search from './demos/search.demo.svelte'
   import SearchCode from './demos/search.demo.txt'
+
+  import Multiple from './demos/multiple.demo.svelte'
+  import MultipleCode from './demos/multiple.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
