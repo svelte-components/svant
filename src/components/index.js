@@ -18,3 +18,4 @@ export { default as Tag } from "./tag/Tag.svelte";
 export { default as Radio } from "./radio/Radio.svelte";
 export { default as RadioButton } from "./radio/RadioButton.svelte";
 export { default as RadioGroup } from "./radio/RadioGroup.svelte";
+export { default as Switch } from "./switch/Switch.svelte";
