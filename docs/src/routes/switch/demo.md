@@ -1,6 +1,6 @@
 # Switch
 
-Description of the Switch's function.
+Switch is used to represent switching between two states (e.x on-off)
 
 ## Examples
 

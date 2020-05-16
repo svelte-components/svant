@@ -1,12 +1,8 @@
 import Switch from "../Switch.svelte";
-import { render, clearContext } from "@/components/_util/testHelpers";
+import { render } from "@/components/_util/testHelpers";
 import { tick } from "svelte";
 
 describe("Switch component", () => {
-  afterEach(() => {
-    clearContext();
-  });
-
   test("should render", () => {
     const { container } = render(Switch);
     expect(container.innerHTML).toContain("ant-switch");

@@ -42,8 +42,6 @@
   export let loading = false;
   // set the size of switch, can be set to `default` or `small`
   export let size = null;
-  // the class prefix
-  export let prefixCls = null;
   // this allows us to get the style as object
   export let style = null;
   // this exports the classObj as class so the button user can set class={{'abc':true}}
@@ -67,7 +65,7 @@
   }
   const config = getContext(CONFIG_KEY) || configProvider();
   const { getPrefixCls, direction, size: configSize } = $config;
-  prefixCls = prefixCls || getPrefixCls("switch");
+  const prefixCls = getPrefixCls("switch");
 
   $: classes = classNames(classObj, {
     [prefixCls]: true,
