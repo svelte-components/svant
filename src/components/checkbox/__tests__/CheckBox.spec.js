@@ -100,7 +100,7 @@ describe("Checkbox component", () => {
     render(Checkbox, {
       value: "test",
       $$context: {
-        groupContext: writable(mockGroupContext)
+        checkBoxGroupContext: writable(mockGroupContext)
       }
     });
     expect(mockGroupContext.registerValue).toHaveBeenCalledWith("test");
@@ -118,7 +118,7 @@ describe("Checkbox component", () => {
     const { container } = render(Checkbox, {
       value: "test",
       $$context: {
-        groupContext: writable(mockGroupContext)
+        checkBoxGroupContext: writable(mockGroupContext)
       }
     });
     const input = container.getElementsByTagName("INPUT")[0];
@@ -137,7 +137,7 @@ describe("Checkbox component", () => {
     const { component } = render(Checkbox, {
       value: "test",
       $$context: {
-        groupContext: writable(mockGroupContext)
+        checkBoxGroupContext: writable(mockGroupContext)
       }
     });
     component.$destroy();
@@ -157,7 +157,7 @@ describe("Checkbox component", () => {
     const { container } = render(Checkbox, {
       disabled: true,
       $$context: {
-        groupContext: writable(mockGroupContext)
+        checkBoxGroupContext: writable(mockGroupContext)
       }
     });
     const input = container.getElementsByTagName("INPUT")[0];
