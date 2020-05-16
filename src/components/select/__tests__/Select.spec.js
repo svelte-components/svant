@@ -25,18 +25,16 @@ describe("Select component", () => {
     await delay(300);
     const selectedValue = container.querySelector(".ant-select-selection-item");
     expect(selectedValue.innerHTML).toContain("Lucy");
+    const options = container.querySelectorAll(
+      ".ant-select-dropdown .ant-select-item-option"
+    );
     const select = container.querySelector(".ant-select");
     await fireEvent.click(select);
-    expect(
-      container.querySelector(".ant-select-item-option-active")
-    ).toBeFalsy();
+    expect(options[1].className).toContain("ant-select-item-option-active");
     const firstOption = container.querySelector(".ant-select-item");
     await fireEvent.mouseEnter(firstOption);
     expect(firstOption.className).toContain("ant-select-item-option-active");
-    await fireEvent.mouseLeave(firstOption);
-    expect(firstOption.className).not.toContain(
-      "ant-select-item-option-active"
-    );
+    expect(options[1].className).not.toContain("ant-select-item-option-active");
     await fireEvent.click(firstOption);
     expect(selectedValue.innerHTML).toContain("Jack");
     expect(firstOption.className).toContain("ant-select-item-option-selected");
@@ -135,7 +133,7 @@ describe("Select component", () => {
     expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(1);
     await fireEvent.input(input, { target: { value: "jj" } });
     expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(0);
-    expect(dropdown.innerHTML).toContain("no-results");
+    await fireEvent.input(input, { target: { value: "j" } });
   });
 
   test("close on click outside", async () => {
@@ -208,7 +206,6 @@ describe("Select component", () => {
       expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(1);
       await fireEvent.input(input, { target: { value: "jj" } });
       expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(0);
-      expect(dropdown.innerHTML).toContain("no-results");
     });
 
     test("backspace removes last selected item", async () => {
@@ -255,6 +252,95 @@ describe("Select component", () => {
       const dropdown = container.querySelector(".ant-select-dropdown");
       await fireEvent.click(dropdown.querySelector(".ant-select-item-option"));
       expect(input).toBe(document.activeElement);
+    });
+
+    test("single mode keyboard navigation and selection", async () => {
+      // Should allow arrows to change active
+      const { container, component } = render(SelectBasic);
+      await delay(300);
+      const select = container.querySelector(".ant-select");
+      await fireEvent.click(select);
+      const options = container.querySelectorAll(
+        ".ant-select-dropdown .ant-select-item-option"
+      );
+      expect(options[1].className).toContain("ant-select-item-option-active");
+      await fireEvent.keyDown(document.body, {
+        key: "ArrowDown",
+        keyCode: 40,
+        which: 40
+      });
+      expect(options[2].className).toContain("ant-select-item-option-active");
+      await fireEvent.keyDown(document.body, {
+        key: "Enter",
+        keyCode: 13,
+        which: 13
+      });
+      await fireEvent.keyDown(document.body, {
+        key: "ArrowUp",
+        keyCode: 38,
+        which: 38
+      });
+      await fireEvent.keyDown(document.body, {
+        key: "ArrowUp",
+        keyCode: 38,
+        which: 38
+      });
+      expect(options[0].className).toContain("ant-select-item-option-active");
+      expect(container.querySelector(".ant-select-dropdown-open")).toBeTruthy();
+      expect(component.$$.ctx[0]).toEqual("lucy");
+      await fireEvent.keyDown(document.body, {
+        key: "Enter",
+        keyCode: 13,
+        which: 13
+      });
+      expect(container.querySelector(".ant-select-dropdown-open")).toBeFalsy();
+      // Selected label should have changed
+      expect(component.$$.ctx[0]).toEqual("jack");
+    });
+
+    test("multiple and tags mode keyboard navigation and selection", async () => {
+      const { container } = render(SelectMultiple);
+      await delay(300);
+      const select = container.querySelector(".ant-select");
+      await fireEvent.click(select);
+      const options = container.querySelectorAll(
+        ".ant-select-dropdown .ant-select-item-option"
+      );
+      // Two items should be selected
+      expect(options[0].className).toContain("ant-select-item-option-selected");
+      expect(options[2].className).toContain("ant-select-item-option-selected");
+      // remove both selected items with the enter key
+      await fireEvent.keyDown(document.body, {
+        key: "Enter",
+        keyCode: 13,
+        which: 13
+      });
+      await fireEvent.keyDown(document.body, {
+        key: "ArrowDown",
+        keyCode: 40,
+        which: 40
+      });
+      await fireEvent.keyDown(document.body, {
+        key: "ArrowDown",
+        keyCode: 40,
+        which: 40
+      });
+      await fireEvent.keyDown(document.body, {
+        key: "Enter",
+        keyCode: 13,
+        which: 13
+      });
+      expect(
+        container.querySelector(".ant-select-item-option-selected")
+      ).toBeFalsy();
+      // dropdown should still be open
+      expect(container.querySelector(".ant-select-dropdown-open")).toBeTruthy();
+      await fireEvent.keyDown(document.body, {
+        key: "Enter",
+        keyCode: 13,
+        which: 13
+      });
+      expect(options[2].className).toContain("ant-select-item-option-selected");
     });
   });
 });

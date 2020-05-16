@@ -57,13 +57,9 @@ const createComponentFiles = (folder, component) => {
 
   // Add test file
   const testFileContent = `import ${component} from "../${component}.svelte";
-  import { render, clearContext } from "@/components/_util/testHelpers";
+  import { render } from "@/components/_util/testHelpers";
 
 describe("${component} component", () => {
-  afterEach(() => {
-    clearContext();
-  });
-
   test("should render", () => {
     const { container } = render(${component});
     expect(container.innerHTML).toContain("ant-${folder}")
