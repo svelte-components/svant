@@ -15,11 +15,11 @@ export function onClickOutside(element, callback) {
   };
 }
 
-const createKeydownEvent = keycode => {
+const createKeydownEvent = key => {
   return function(callback) {
     const handler = event => {
-      if (event.keyCode === keycode) {
-        callback();
+      if (event.key === key) {
+        callback(event);
       }
     };
     document.addEventListener("keydown", handler);
@@ -30,5 +30,8 @@ const createKeydownEvent = keycode => {
   };
 };
 
-export const onEscape = createKeydownEvent(27);
-export const onBackspace = createKeydownEvent(8);
+export const onEnter = createKeydownEvent("Enter");
+export const onEscape = createKeydownEvent("Escape");
+export const onBackspace = createKeydownEvent("Backspace");
+export const onArrowUp = createKeydownEvent("ArrowUp");
+export const onArrowDown = createKeydownEvent("ArrowDown");

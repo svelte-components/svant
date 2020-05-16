@@ -4,7 +4,7 @@
       <li>
         <div class="group-title">{section.name}</div>
         <ul>
-          {#each section.children as link (`${section.name}-${link}`)}
+          {#each section.children.sort() as link (`${section.name}-${link}`)}
             <li>
               <a
                 class:current-link="{segment === link}"

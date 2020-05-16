@@ -9,7 +9,7 @@
       isInputHovered = false;
     }}">
     <div class="{prefixCls}-selector">
-      {#if mode === 'multiple' && $store.selectedValue}
+      {#if !isSingleMode && $store.selectedValue}
         {#each $store.selectedValue as value, index (value)}
           <span
             class="{prefixCls}-selection-item"
@@ -30,10 +30,10 @@
           </span>
         {/each}
       {/if}
-      {#if searchable || mode === 'multiple'}
+      {#if searchable || !isSingleMode}
         <span
           class="{prefixCls}-selection-search"
-          style="{mode === 'multiple' ? `width: ${inputWidth}` : ''}">
+          style="{!isSingleMode ? `width: ${inputWidth}` : ''}">
           <input
             autocomplete="off"
             class="{prefixCls}-selection-search-input"
@@ -42,6 +42,7 @@
             aria-autocomplete="list"
             readonly=""
             bind:value="{$store.searchValue}"
+            on:input="{onSearchInput}"
             style="opacity: {$store.popupVisible ? '1' : '0'};" />
         </span>
       {/if}
@@ -50,13 +51,13 @@
         <span class="{prefixCls}-selection-placeholder">
           {#if !$store.searchValue}{placeholder}{/if}
         </span>
-      {:else if mode !== 'multiple'}
+      {:else if isSingleMode}
         <span class="{prefixCls}-selection-item">
           {#if !$store.searchValue}{$store.selectedLabel || ''}{/if}
         </span>
       {/if}
     </div>
-    {#if mode !== 'multiple'}
+    {#if isSingleMode}
       <span
         class="{iconWrapperClasses}"
         unselectable="on"
@@ -77,12 +78,15 @@
     {/if}
   </div>
 
-  <div id="{popupId}" class="{popupClasses}">
+  <div id="{popupId}" class="{popupClasses}" bind:this="{dropdownNode}">
     <div
       class="{noOptions ? `${prefixCls}-item-empty` : ''}"
       style="max-height: 256px; overflow-y: auto; overflow-anchor: none;">
       <div class="" style="display: flex; flex-direction: column;">
         <slot />
+        {#each $store.addedTags || [] as addedTag (addedTag.id)}
+          <Option value="{addedTag.value}" label="{addedTag.value}" />
+        {/each}
         {#if noOptions}
           <slot name="no-search-results">
             <div class="no-results">
@@ -118,8 +122,12 @@
   import {
     onClickOutside,
     onEscape,
-    onBackspace
+    onBackspace,
+    onArrowUp,
+    onArrowDown,
+    onEnter
   } from "@/components/_util/events";
+  import Option from "./Option.svelte";
   import { fadeScale } from "@/components/_util/transitions";
   import { cubicInOut } from "svelte/easing";
   import { nanoid } from "nanoid";
@@ -182,15 +190,26 @@
   let unbindClickOutside;
   let unbindEscapePress;
   let unbindBackspacePress;
+  let unbindArrowUpPress;
+  let unbindArrowDownPress;
+  let unbindEnterPress;
   // function to determine if placeholder displays
   let showPlaceholder = false;
   // Input needs an explicit with in multiple mode
   let inputWidth = "4px";
+  // keep track of single mode
+  let isSingleMode = true;
+  // Set the dropdown to the store so we can use it in child options
+  let dropdownNode;
+
+  //********* TODO: config-provider size and RTL ******//
 
   let store = writable({
     popupVisible: false,
     searchFunction: null,
     searchValue: "",
+    activeOptionIndex: 0,
+    options: [],
     mode
   });
   setContext("store", store);
@@ -198,16 +217,34 @@
   onMount(async () => {
     $store.selectedValue = value;
     $store.selectedLabel = selectedLabel;
+    $store.dropdownNode = dropdownNode;
 
     const wrapper = document.getElementById(wrapperId);
+
     unbindClickOutside = onClickOutside(wrapper, () => {
       if ($store.popupVisible) $store.popupVisible = false;
     });
+
     unbindEscapePress = onEscape(() => {
       if ($store.popupVisible) $store.popupVisible = false;
     });
+
+    unbindArrowUpPress = onArrowUp(event => {
+      if ($store.popupVisible) {
+        event.preventDefault();
+        navigateDropdown("ArrowUp");
+      }
+    });
+
+    unbindArrowDownPress = onArrowDown(event => {
+      if ($store.popupVisible) {
+        event.preventDefault();
+        navigateDropdown("ArrowDown");
+      }
+    });
+
     unbindBackspacePress = onBackspace(() => {
-      if (mode === "multiple" && $store.selectedValue.length) {
+      if (!isSingleMode && $store.selectedValue.length && !$store.searchValue) {
         const wrapper = document.getElementById(wrapperId);
         const input = wrapper.querySelector(
           `.${prefixCls}-selection-search-input`
@@ -219,6 +256,33 @@
         }
       }
     });
+
+    unbindEnterPress = onEnter(() => {
+      const activeNode = dropdownNode.querySelector(
+        `.${prefixCls}-item-option-active`
+      );
+      if (
+        $store.popupVisible &&
+        activeNode &&
+        !activeNode.classList.contains(`${prefixCls}-item-option-disabled`)
+      ) {
+        const value = activeNode.dataset.optionValue;
+        const label = activeNode.innerText;
+        if (isSingleMode) {
+          $store.selectedValue = value;
+          $store.selectedLabel = label;
+          $store.popupVisible = false;
+        } else if ($store.selectedValue.includes(value)) {
+          // already selected - remove it
+          $store.selectedValue = $store.selectedValue.filter(v => v != value);
+          $store.selectedLabel = $store.selectedLabel.filter(l => l != label);
+        } else {
+          // select in multiple mode
+          $store.selectedValue = [...$store.selectedValue, value];
+          $store.selectedLabel = [...$store.selectedLabel, label];
+        }
+      }
+    });
   });
 
   onDestroy(() => {
@@ -226,31 +290,52 @@
       unbindClickOutside();
       unbindEscapePress();
       unbindBackspacePress();
+      unbindArrowUpPress();
+      unbindArrowDownPress();
+      unbindEnterPress();
     }
   });
 
   $: $store.mode = mode;
 
+  // Keep the options up to date with the current visible options when searching
+  $: if (typeof $store.searchValue) {
+    const allOptionNodes =
+      $store.dropdownNode &&
+      $store.dropdownNode.querySelectorAll(`.${prefixCls}-item-option`);
+    if (allOptionNodes) {
+      const visibleOptions = [];
+      allOptionNodes.forEach(node => {
+        visibleOptions.push(node.dataset.optionValue);
+      });
+      $store.options = [...visibleOptions];
+    }
+  }
+
+  $: isSingleMode = !["multiple", "tags"].includes(mode);
+
   $: if (typeof style !== "string") {
     style = toStyle(style);
   }
 
-  $: $store.searchFunction = (function() {
-    if (!searchable && mode !== "multiple") return null;
-    return (
-      searchFunction || ((input, option) => option.label.indexOf(input) >= 0)
-    );
-  })();
+  // If the user passes a search function we want the options to use it
+  $: if (!searchable && isSingleMode) {
+    $store.searchFunction = null;
+  } else {
+    $store.searchFunction =
+      searchFunction || ((input, option) => option.label.indexOf(input) >= 0);
+  }
 
   $: classes = classNames(prefixCls, {
-    [`${prefixCls}-single`]: mode !== "multiple",
-    [`${prefixCls}-multiple`]: mode === "multiple",
+    [`${prefixCls}-single`]: isSingleMode,
+    [`${prefixCls}-multiple`]: !isSingleMode,
     [`${prefixCls}-show-arrow`]: true,
     [`${prefixCls}-open`]: $store.popupVisible,
+    [`${prefixCls}-focused`]: $store.popupVisible,
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-allow-clear`]: clearable,
-    [`${prefixCls}-show-search`]: searchable || mode === "multiple"
+    [`${prefixCls}-show-search`]: searchable || !isSingleMode
   });
 
   $: popupClasses = classNames({
@@ -288,55 +373,43 @@
   }
 
   // We need to know when there are no options so that we can display an empty message
-  $: (async function() {
-    await tick();
-    noOptions = $store.searchValue
-      ? !document.getElementById(popupId).querySelector(`.${prefixCls}-item`)
-      : false;
-  })();
+  $: noOptions = !$store.options.length;
 
   $: showPlaceholder = (function() {
     if (!placeholder) return false;
-    if (
-      mode === "multiple" &&
-      $store.selectedValue &&
-      !$store.selectedValue.length
-    )
+    if (!isSingleMode && $store.selectedValue && !$store.selectedValue.length) {
       return true;
+    }
     if (!$store.selectedValue) return true;
   })();
 
-  $: inputWidth = (function() {
-    if (typeof document !== "undefined" && document.getElementById(wrapperId)) {
-      const item = document
-        .getElementById(wrapperId)
-        .querySelector(`.${prefixCls}`);
-      const size = calculateSize($store.searchValue, {
-        font: "Arial",
-        fontSize: window.getComputedStyle(item).fontSize
-      });
-      return `${size.width + $store.searchValue.length}px`;
-    }
-  })();
+  // Set input width as the user types to allow maximum space for selected options
+  $: if (
+    typeof document !== "undefined" &&
+    document.getElementById(wrapperId)
+  ) {
+    const item = document
+      .getElementById(wrapperId)
+      .querySelector(`.${prefixCls}`);
+    const size = calculateSize($store.searchValue, {
+      font: "Arial",
+      fontSize: window.getComputedStyle(item).fontSize
+    });
+    inputWidth = `${size.width + $store.searchValue.length}px`;
+  }
 
   // In multiple mode, make sure focus stays on
   // the input even after selecting/deselecting options
-  $: (function() {
-    if (
-      typeof document !== "undefined" &&
-      mode === "multiple" &&
-      $store.selectedValue &&
-      $store.popupVisible
-    ) {
-      const wrapper = document.getElementById(wrapperId);
-      const input = wrapper.querySelector(
-        `.${prefixCls}-selection-search-input`
-      );
-      input.focus();
-    }
-  })();
-
-  //********* TODO: config-provider size and RTL ******//
+  $: if (
+    typeof document !== "undefined" &&
+    !isSingleMode &&
+    $store.selectedValue &&
+    $store.popupVisible
+  ) {
+    const wrapper = document.getElementById(wrapperId);
+    const input = wrapper.querySelector(`.${prefixCls}-selection-search-input`);
+    input.focus();
+  }
 
   function onSelectClick() {
     if (!disabled) {
@@ -361,6 +434,22 @@
   function removeOption(index) {
     removeOptionAttribute("selectedValue", index);
     removeOptionAttribute("selectedLabel", index);
+  }
+
+  function navigateDropdown(key) {
+    if (key === "ArrowUp" && $store.activeOptionIndex) {
+      $store.activeOptionIndex = $store.activeOptionIndex - 1;
+    } else if (
+      key === "ArrowDown" &&
+      $store.activeOptionIndex >= 0 &&
+      $store.options.length !== $store.activeOptionIndex + 1
+    ) {
+      $store.activeOptionIndex = $store.activeOptionIndex + 1;
+    }
+  }
+
+  function onSearchInput() {
+    $store.activeOptionIndex = 0;
   }
 </script>
 
