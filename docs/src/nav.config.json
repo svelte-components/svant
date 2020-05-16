@@ -23,7 +23,8 @@
     "children": [
       "checkbox",
       "radio",
-      "input"
+      "input",
+      "switch"
     ]
   },
   {
