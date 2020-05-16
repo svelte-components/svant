@@ -1,14 +1,10 @@
 import Tag from "../Tag.svelte";
 import { fireEvent } from "@testing-library/svelte";
-import { render, clearContext, delay } from "@/components/_util/testHelpers";
+import { render, delay } from "@/components/_util/testHelpers";
 import { PresetColors } from "@/components/_util/colors.js";
 import { CheckCircleOutlined } from "@/components/icons";
 
 describe("Tag component", () => {
-  afterEach(() => {
-    clearContext();
-  });
-
   test("should render", () => {
     const { container } = render(Tag);
     expect(container.innerHTML).toContain("ant-tag");
