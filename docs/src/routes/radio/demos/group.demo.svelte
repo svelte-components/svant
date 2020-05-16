@@ -8,7 +8,7 @@
 <script>
   import { Radio, RadioGroup } from "svant";
   let value = 1;
-  function onChange({detail}) {
+  function onChange({ detail }) {
     console.log("radio checked", detail);
     value = detail;
   }
