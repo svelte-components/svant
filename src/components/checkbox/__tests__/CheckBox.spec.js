@@ -1,6 +1,7 @@
 import Checkbox from "../Checkbox.svelte";
 import { writable } from "svelte/store";
 import { clearContext, render } from "@/components/_util/testHelpers";
+import { fireEvent } from "@testing-library/dom";
 
 describe("Checkbox component", () => {
   afterEach(() => {
@@ -40,10 +41,8 @@ describe("Checkbox component", () => {
     const onChange = jest.fn();
     component.$on("change", onChange);
     const input = container.getElementsByTagName("INPUT")[0];
-    const evt = document.createEvent("HTMLEvents");
-    evt.initEvent("change", false, true);
     input.checked = true;
-    input.dispatchEvent(evt);
+    fireEvent.change(input);
     expect(onChange).toHaveBeenCalled();
   });
   test("should trigger mouseenter when over the label", () => {
@@ -51,9 +50,7 @@ describe("Checkbox component", () => {
     const onMouseOver = jest.fn();
     component.$on("mouseenter", onMouseOver);
     const label = container.getElementsByTagName("LABEL")[0];
-    const evt = document.createEvent("HTMLEvents");
-    evt.initEvent("mouseenter", false, true);
-    label.dispatchEvent(evt);
+    fireEvent.mouseEnter(label);
     expect(onMouseOver).toHaveBeenCalled();
   });
   test("should trigger mouseleave when over the label", () => {
@@ -61,9 +58,7 @@ describe("Checkbox component", () => {
     const onMouseOver = jest.fn();
     component.$on("mouseleave", onMouseOver);
     const label = container.getElementsByTagName("LABEL")[0];
-    const evt = document.createEvent("HTMLEvents");
-    evt.initEvent("mouseleave", false, true);
-    label.dispatchEvent(evt);
+    fireEvent.mouseLeave(label);
     expect(onMouseOver).toHaveBeenCalled();
   });
   test("should not render span of children without slots", () => {
@@ -100,7 +95,7 @@ describe("Checkbox component", () => {
     render(Checkbox, {
       value: "test",
       $$context: {
-        checkBoxGroupContext: writable(mockGroupContext)
+        checkBoxGroupStore: writable(mockGroupContext)
       }
     });
     expect(mockGroupContext.registerValue).toHaveBeenCalledWith("test");
@@ -118,7 +113,7 @@ describe("Checkbox component", () => {
     const { container } = render(Checkbox, {
       value: "test",
       $$context: {
-        checkBoxGroupContext: writable(mockGroupContext)
+        checkBoxGroupStore: writable(mockGroupContext)
       }
     });
     const input = container.getElementsByTagName("INPUT")[0];
@@ -137,7 +132,7 @@ describe("Checkbox component", () => {
     const { component } = render(Checkbox, {
       value: "test",
       $$context: {
-        checkBoxGroupContext: writable(mockGroupContext)
+        checkBoxGroupStore: writable(mockGroupContext)
       }
     });
     component.$destroy();
@@ -157,7 +152,7 @@ describe("Checkbox component", () => {
     const { container } = render(Checkbox, {
       disabled: true,
       $$context: {
-        checkBoxGroupContext: writable(mockGroupContext)
+        checkBoxGroupStore: writable(mockGroupContext)
       }
     });
     const input = container.getElementsByTagName("INPUT")[0];

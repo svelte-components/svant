@@ -27,6 +27,10 @@
   export let prefixCls = null;
   // this allows us to get the style as object
   export let style = null;
+  // the radio value
+  export let value = null;
+  // disables the radio
+  export let disabled = false;
   // allows you to bind:focus so you can programmatically focus the checkbox
   export let focus = null;
   // allows you to bind:blur so you can programmatically blur the checkbox
@@ -35,7 +39,6 @@
   // this exports the classObj as class so the button user can set class={{'abc':true}}
   let classObj = null;
   export { classObj as class };
-  // ********************** /Props **********************
 
   // since we are not adding any style we just convert the style object to a style sting if it is not already a string
   $: if (typeof style !== "string") {
@@ -46,18 +49,18 @@
   const { getPrefixCls, direction } = $config;
   prefixCls = prefixCls || getPrefixCls("radio");
 
-  let context = getContext("radioGroupContext") || writable(null);
+  let context = getContext("radioGroupStore") || writable(null);
 
   let radioProps;
   let childSlot;
   let wrapperClassString;
 
-  $: radioProps = { ...$$restProps };
+  $: radioProps = { ...$$restProps, disabled, value };
 
   $: if ($context) {
     radioProps.name = context.name;
-    radioProps.checked = $$props.value === $context.value;
-    radioProps.disabled = $$props.disabled || $context.disabled;
+    radioProps.checked = value === $context.value;
+    radioProps.disabled = disabled || $context.disabled;
   }
 
   $: if (childSlot && !childSlot.hasChildNodes()) {

@@ -49,7 +49,7 @@
   const { getPrefixCls } = $config;
   const prefixCls = getPrefixCls("checkbox");
 
-  let context = getContext("checkBoxGroupContext") || writable(null);
+  let context = getContext("checkBoxGroupStore") || writable(null);
 
   let _prevValue = value;
   let classString;

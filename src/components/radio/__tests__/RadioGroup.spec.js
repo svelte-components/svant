@@ -3,6 +3,7 @@ import RadioGroup from "../RadioGroup.svelte";
 import RadioButton from "../RadioButton.svelte";
 import { render } from "@/components/_util/testHelpers";
 import { get } from "svelte/store";
+import { fireEvent } from "@testing-library/dom";
 describe("RadioGroup component", () => {
   test("should render default", () => {
     const { container } = render(RadioGroup);
@@ -29,7 +30,7 @@ describe("RadioGroup component", () => {
     expect(container.innerHTML).toContain("Radio 2");
   });
 
-  test("should render with sting options", () => {
+  test("should render with string options", () => {
     const { container } = render(RadioGroup, {
       options: ["Radio 1", "Radio 2"]
     });
@@ -46,7 +47,7 @@ describe("RadioGroup component", () => {
       value: ["abc"],
       disabled: true
     });
-    const context = component.$$.context.get("radioGroupContext");
+    const context = component.$$.context.get("radioGroupStore");
     const contextVal = get(context);
 
     expect(typeof contextVal.setValue).toEqual("function");
@@ -74,13 +75,9 @@ describe("RadioGroup component", () => {
     });
     const onChange = jest.fn();
     component.$on("change", onChange);
-
     const input = radioContainer1.getElementsByTagName("INPUT")[0];
-    const evt = document.createEvent("HTMLEvents");
-    evt.initEvent("change", false, true);
     input.checked = true;
-    input.dispatchEvent(evt);
-
+    fireEvent.change(input);
     expect(onChange).toHaveBeenCalled();
     expect(onChange.mock.calls[0][0].detail).toEqual("radio1");
   });

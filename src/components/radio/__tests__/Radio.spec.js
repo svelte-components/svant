@@ -1,6 +1,7 @@
 import { clearContext, render } from "@/components/_util/testHelpers";
 import Radio from "../Radio.svelte";
 import { writable } from "svelte/store";
+import { fireEvent } from "@testing-library/dom";
 
 describe("Radio component", () => {
   afterEach(() => {
@@ -36,10 +37,8 @@ describe("Radio component", () => {
     const onChange = jest.fn();
     component.$on("change", onChange);
     const input = container.getElementsByTagName("INPUT")[0];
-    const evt = document.createEvent("HTMLEvents");
-    evt.initEvent("change", false, true);
     input.checked = true;
-    input.dispatchEvent(evt);
+    fireEvent.change(input);
     expect(onChange).toHaveBeenCalled();
   });
 
@@ -48,9 +47,7 @@ describe("Radio component", () => {
     const onMouseOver = jest.fn();
     component.$on("mouseenter", onMouseOver);
     const label = container.getElementsByTagName("LABEL")[0];
-    const evt = document.createEvent("HTMLEvents");
-    evt.initEvent("mouseenter", false, true);
-    label.dispatchEvent(evt);
+    fireEvent.mouseEnter(label);
     expect(onMouseOver).toHaveBeenCalled();
   });
   test("should trigger mouseleave when over the label", () => {
@@ -58,9 +55,7 @@ describe("Radio component", () => {
     const onMouseLeave = jest.fn();
     component.$on("mouseleave", onMouseLeave);
     const label = container.getElementsByTagName("LABEL")[0];
-    const evt = document.createEvent("HTMLEvents");
-    evt.initEvent("mouseleave", false, true);
-    label.dispatchEvent(evt);
+    fireEvent.mouseLeave(label);
     expect(onMouseLeave).toHaveBeenCalled();
   });
 
@@ -95,14 +90,12 @@ describe("Radio component", () => {
     const { container } = render(Radio, {
       value: "test",
       $$context: {
-        radioGroupContext: writable(mockGroupContext)
+        radioGroupStore: writable(mockGroupContext)
       }
     });
     const input = container.getElementsByTagName("INPUT")[0];
-    const evt = document.createEvent("HTMLEvents");
-    evt.initEvent("change", false, true);
     input.checked = true;
-    input.dispatchEvent(evt);
+    fireEvent.change(input);
     expect(mockGroupContext.setValue).toHaveBeenCalledWith("test");
   });
 
@@ -118,7 +111,7 @@ describe("Radio component", () => {
     const { container } = render(Radio, {
       disabled: true,
       $$context: {
-        checkBoxGroupContext: writable(mockGroupContext)
+        checkBoxGroupStore: writable(mockGroupContext)
       }
     });
     const input = container.getElementsByTagName("INPUT")[0];

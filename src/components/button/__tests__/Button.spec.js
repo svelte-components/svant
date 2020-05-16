@@ -3,11 +3,12 @@ import { getByText, getAllByText } from "@testing-library/dom";
 import flushPromises from "flush-promises";
 import ButtonTypesDemo from "examples/button/demos/type.demo.svelte";
 import ButtonIconDemo from "examples/button/demos/icons.demo.svelte";
-import ButtonSizeDemo from "examples/button/demos/size.demo.svelte";
 import ButtonDisabledDemo from "examples/button/demos/disabled.demo.svelte";
 import ButtonLoadingdDemo from "examples/button/demos/loading.demo.svelte";
 import ButtonDangerDemo from "examples/button/demos/danger.demo.svelte";
 import ButtonBlockDemo from "examples/button/demos/block.demo.svelte";
+import { Button } from "@/components";
+import { tick } from "svelte";
 
 describe("Button component", () => {
   test("should render component types", () => {
@@ -31,20 +32,19 @@ describe("Button component", () => {
   });
 
   test("should render component sizes", async () => {
-    const { container } = render(ButtonSizeDemo);
-
-    getByText(container, "Large").click();
-    await flushPromises();
+    const { component, container } = render(Button, { size: "large" });
     expect(container.querySelector(".ant-btn-lg")).toBeTruthy();
     expect(container.querySelector(".ant-btn-sm")).toBeFalsy();
 
-    getAllByText(container, "Default")[0].click();
-    await flushPromises();
+    component.$set({ size: "default" });
+    await tick();
+
     expect(container.querySelector(".ant-btn-lg")).toBeFalsy();
     expect(container.querySelector(".ant-btn-sm")).toBeFalsy();
 
-    getByText(container, "Small").click();
-    await flushPromises();
+    component.$set({ size: "small" });
+    await tick();
+
     expect(container.querySelector(".ant-btn-sm")).toBeTruthy();
     expect(container.querySelector(".ant-btn-lg")).toBeFalsy();
   });

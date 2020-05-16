@@ -56,7 +56,7 @@
   let customizeSize = null;
   export { customizeSize as size };
   // this exports the classObj as class so the button user can set class={{'abc':true}}
-  let classObj = null;
+  let classObj = {};
   export { classObj as class };
   // ********************** /Props **********************
 
@@ -71,22 +71,9 @@
   const groupPrefixCls = `${prefixCls}-group`;
   let classString;
   let groupNode;
-  let context = writable({
-    value: value,
-    disabled: disabled,
-    name: name,
-    radioButtonGroup: false,
-    setValue: setValue
-  });
+  let context = writable({ value, disabled, name, setValue });
 
-  context.subscribe(context => {
-    if (!classObj) {
-      classObj = {};
-    }
-    classObj[`${groupPrefixCls}-button-group`] = context.radioButtonGroup;
-  });
-
-  setContext("radioGroupContext", context);
+  setContext("radioGroupStore", context);
 
   $: classString = classNames(
     groupPrefixCls,
@@ -107,6 +94,7 @@
   };
   onMount(() => {
     value = value || $$props.defaultValue;
+    classObj[`${groupPrefixCls}-button-group`] = hasButtonGroupChild();
   });
 
   function getOptions() {
@@ -126,5 +114,11 @@
   function setValue(v) {
     value = v;
     dispatch("change", value);
+  }
+  function hasButtonGroupChild() {
+    return (
+      groupNode &&
+      groupNode.getElementsByClassName(`${prefixCls}-button-wrapper`).length
+    );
   }
 </script>
