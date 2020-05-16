@@ -34,7 +34,8 @@
     "name": "Feedback",
     "children": [
       "modal",
-      "message"
+      "message",
+      "notification"
     ]
   },
   {

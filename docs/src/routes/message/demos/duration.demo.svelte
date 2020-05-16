@@ -1,5 +1,5 @@
-<Button on:click="{success}">Customized display duration</Button>
-<Button on:click="{infinite}">Open never closing message</Button>
+<Button type="primary" on:click="{success}">Customized display duration</Button>
+<Button type="primary" on:click="{infinite}">Open never closing message</Button>
 
 <script>
   import { Button, message } from "svant";

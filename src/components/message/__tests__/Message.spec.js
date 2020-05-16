@@ -60,7 +60,7 @@ describe("Message component", () => {
     expect(container.innerHTML).toContain("anticon-exclamation-circle");
   });
 
-  test("warning type", async () => {
+  test("loading type", async () => {
     const { container } = render(MessageLoading);
     const button = container.getElementsByTagName("BUTTON")[0];
     await fireEvent.click(button);

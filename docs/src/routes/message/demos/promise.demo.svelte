@@ -1,4 +1,6 @@
-<Button on:click="{startAction}">Display sequential messages</Button>
+<Button type="primary" on:click="{startAction}">
+  Display sequential messages
+</Button>
 
 <script>
   import { Button, message } from "svant";

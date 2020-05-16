@@ -81,7 +81,7 @@ Description of the Checkbox's function.
 
   import Basic from './demos/basic.demo.svelte'
   import BasicCode from './demos/basic.demo.txt'
-  
+
   import Disabled from './demos/disabled.demo.svelte'
   import DisabledCode from './demos/disabled.demo.txt'
 
@@ -90,10 +90,10 @@ Description of the Checkbox's function.
 
   import Group from './demos/group.demo.svelte'
   import GroupCode from './demos/group.demo.txt'
-  
+
   import CheckAll from './demos/checkall.demo.svelte'
   import CheckAllCode from './demos/checkall.demo.txt'
-  
+
   import GroupSlot from './demos/groupslot.demo.svelte'
   import GroupSlotCode from './demos/groupslot.demo.txt'
 
@@ -134,7 +134,7 @@ Description of the Checkbox's function.
       }
     ]
   };
-  
+
   const groupAttributesData = {
     title: 'CheckboxGroup Attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
@@ -183,7 +183,7 @@ Description of the Checkbox's function.
       },
     ]
   };
-  
+
   const checkBoxGroupEventData = {
     title: 'CheckboxGroup Events',
     columns: ['Name', 'Description'],
@@ -194,7 +194,7 @@ Description of the Checkbox's function.
       },
     ]
   };
-  
+
   const checkBoxBindData = {
     title: 'CheckboxGroup Bind',
     columns: ['Name', 'Description'],
