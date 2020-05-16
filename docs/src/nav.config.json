@@ -33,7 +33,8 @@
   {
     "name": "Feedback",
     "children": [
-      "modal"
+      "modal",
+      "message"
     ]
   },
   {

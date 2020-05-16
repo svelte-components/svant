@@ -2,15 +2,15 @@
 <table class="docs-table">
   <thead>
     <tr>
-      {#each columns as column (column)}
+      {#each columns as column}
         <th>{column}</th>
       {/each}
     </tr>
   </thead>
   <tbody>
-    {#each data as row (`${columns[0].toLowerCase()}-${row[columns[0].toLowerCase()]}`)}
+    {#each data as row}
       <tr>
-        {#each columns as column (`${column.toLowerCase()}-${row[column.toLowerCase()]}`)}
+        {#each columns as column}
           <td>{row[column.toLowerCase()]}</td>
         {/each}
       </tr>

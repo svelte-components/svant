@@ -57,10 +57,14 @@ const createComponentFiles = (folder, component) => {
   writeFileSync(`${rootDir}/src/components/${folder}/style/index.less`, "");
 
   // Add test file
-  const testFileContent = `import { render } from "@testing-library/svelte";
-import ${component} from '../${component}.svelte'
+  const testFileContent = `import ${component} from "../${component}.svelte";
+  import { render, clearContext } from "@/components/_util/testHelpers";
 
 describe("${component} component", () => {
+  afterEach(() => {
+    clearContext();
+  });
+
   test("should render", () => {
     const { container } = render(${component});
     expect(container.innerHTML).toContain("ant-${folder}")
@@ -92,7 +96,10 @@ const createDocumentationFiles = (folder, component, navSection) => {
   mkdirSync(routeDir);
 
   // Make index.svelte
-  const indexTemplate = `<div class="markdown api-container">
+  const indexTemplate = `<svelte:head>
+  <title>${component}</title>
+</svelte:head>
+<div class="markdown api-container">
   <${component} />
 </div>
 
@@ -110,19 +117,22 @@ Description of the ${component}'s function.
 
 ## Examples
 
-### Basic
-
-<div id="components-${folder}-demo-basic">
-  <Basic />
-</div>
-<Prism language="svelte" source="{BasicCode}"/>
+<Example
+  id="${folder}-demo-basic"
+  title="Basic"
+  demoComponent="{Basic}"
+  demoCode="{BasicCode}">
+  <p slot="description">
+    Basic description of the ${component} component goes here
+  </p>
+</Example>
 
 ## API
 
 <DocsTable {...attributesData}/>
 
 <script>
-  import Prism from 'docs/src/components/prism/Prism.svelte'
+  import Example from 'docs/src/components/Example.svelte';
 
   import Basic from './demos/basic.demo.svelte'
   import BasicCode from './demos/basic.demo.txt'
