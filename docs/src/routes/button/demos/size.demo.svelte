@@ -1,21 +1,13 @@
-<Button
-  on:click="{() => {
-    size = 'large';
-  }}">
-  Large
-</Button>
-<Button
-  on:click="{() => {
-    size = 'default';
-  }}">
-  Default
-</Button>
-<Button
-  on:click="{() => {
-    size = 'small';
-  }}">
-  Small
-</Button>
+<RadioGroup
+  on:change="{s => {
+    size = s.detail;
+  }}"
+  defaultValue="default"
+  style="{{ marginBottom: '16px' }}">
+  <RadioButton value="large">Large</RadioButton>
+  <RadioButton value="default">Default</RadioButton>
+  <RadioButton value="small">Small</RadioButton>
+</RadioGroup>
 <br />
 <Button type="primary" {size}>Primary</Button>
 <Button {size}>Default</Button>
@@ -31,7 +23,7 @@
 <Button type="primary" icon="{DownloadOutlined}" {size}>Download</Button>
 
 <script>
-  import { Button } from "svant";
+  import { Button, RadioGroup, RadioButton } from "svant";
   import { DownloadOutlined } from "svant/icons";
   let size;
 </script>
