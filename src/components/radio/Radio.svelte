@@ -1,12 +1,8 @@
 <label
   class="{wrapperClassString}"
   {style}
-  on:mouseenter="{e => {
-    dispatch('mouseenter', e);
-  }}"
-  on:mouseleave="{e => {
-    dispatch('mouseleave', e);
-  }}">
+  on:mouseenter
+  on:mouseleav>
   <BaseCheckbox
     {...radioProps}
     {prefixCls}
