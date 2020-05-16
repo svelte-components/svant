@@ -15,3 +15,6 @@ export { default as Sider } from "./layout/Sider.svelte";
 export { default as Checkbox } from "./checkbox/Checkbox.svelte";
 export { default as CheckboxGroup } from "./checkbox/CheckboxGroup.svelte";
 export { default as Tag } from "./tag/Tag.svelte";
+export { default as Radio } from "./radio/Radio.svelte";
+export { default as RadioButton } from "./radio/RadioButton.svelte";
+export { default as RadioGroup } from "./radio/RadioGroup.svelte";

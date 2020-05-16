@@ -2,6 +2,7 @@ import Checkbox from "../Checkbox.svelte";
 import CheckboxGroup from "../CheckboxGroup.svelte";
 import { render } from "@/components/_util/testHelpers";
 import { get } from "svelte/store";
+import { fireEvent } from "@testing-library/dom";
 describe("CheckboxGroup component", () => {
   test("should render default", () => {
     const { container } = render(CheckboxGroup);
@@ -28,7 +29,7 @@ describe("CheckboxGroup component", () => {
     expect(container.innerHTML).toContain("Checkbox 2");
   });
 
-  test("should render with sting options", () => {
+  test("should render with string options", () => {
     const { container } = render(CheckboxGroup, {
       options: ["Checkbox 1", "Checkbox 2"]
     });
@@ -45,7 +46,7 @@ describe("CheckboxGroup component", () => {
       value: ["abc"],
       disabled: true
     });
-    const context = component.$$.context.get("groupContext");
+    const context = component.$$.context.get("checkBoxGroupStore");
     const contextVal = get(context);
 
     expect(typeof contextVal.registerValue).toEqual("function");
@@ -73,7 +74,7 @@ describe("CheckboxGroup component", () => {
     const onChange = jest.fn();
     component.$on("change", onChange);
 
-    const context = component.$$.context.get("groupContext");
+    const context = component.$$.context.get("checkBoxGroupStore");
     const contextVal = get(context);
 
     contextVal.toggleOption({
@@ -104,7 +105,7 @@ describe("CheckboxGroup component", () => {
     const onChange = jest.fn();
     component.$on("change", onChange);
 
-    const context = component.$$.context.get("groupContext");
+    const context = component.$$.context.get("checkBoxGroupStore");
     const contextVal = get(context);
 
     contextVal.toggleOption({
@@ -138,11 +139,8 @@ describe("CheckboxGroup component", () => {
     component.$on("change", onChange);
 
     const input = checkBoxContainer1.getElementsByTagName("INPUT")[0];
-    const evt = document.createEvent("HTMLEvents");
-    evt.initEvent("change", false, true);
     input.checked = true;
-    input.dispatchEvent(evt);
-
+    fireEvent.change(input);
     expect(onChange).toHaveBeenCalled();
     expect(onChange.mock.calls[0][0].detail).toEqual(["check1"]);
   });

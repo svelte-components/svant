@@ -153,7 +153,7 @@ Description of the Checkbox's function.
       },
       {
         property: 'name',
-        description: 'The name property of all input[type="checkbox"] children',
+        description: 'The name property of all input[type="checkbox"] children.',
         type: 'String',
         default: '-'
       },
@@ -190,22 +190,22 @@ Description of the Checkbox's function.
     data: [
       {
         name: 'change',
-        description: 'Triggers when the checkbox group value changes'
+        description: 'Triggers when the checkbox group value changes.'
       },
     ]
   };
 
   const checkBoxBindData = {
-    title: 'CheckboxGroup Bind',
+    title: 'Checkbox Bind',
     columns: ['Name', 'Description'],
     data: [
       {
         name: 'focus',
-        description: 'Let\'s you bind to the input focus method'
+        description: 'Let\'s you bind to the input focus method.'
       },
       {
         name: 'blur',
-        description: 'Let\'s you bind to the input blur method'
+        description: 'Let\'s you bind to the input blur method.'
       },
     ]
   }
