@@ -101,7 +101,3 @@
     [`${prefixCls}-rtl`]: direction === "rtl"
   });
 </script>
-
-<style lang="less" global>
-  @import "style/index.less";
-</style>

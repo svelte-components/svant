@@ -2,15 +2,16 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "scripts": {
-    "build": "yarn generate:icons && rollup -c",
-    "dev": "cd docs && yarn dev",
-    "generate:icons": "node scripts/generateIcons.js ",
+    "build": "yarn compile:styles && yarn generate:icons && rollup -c",
+    "dev": "yarn compile:styles && cd docs && yarn dev",
+    "generate:icons": "node scripts/generateIcons.js",
+    "compile:styles": "node scripts/compileStyles.js",
     "start": "sirv public",
     "lint": "prettier --check '**/*.js' '**/*.svelte' &>/dev/null || (echo \"Linting failed. Run yarn lint:fix to fix the formatting issues\" &&  exit 1)",
     "lint:fix": "prettier --write '**/*.js' '**/*.svelte'",
     "create:component": "node scripts/createComponentRoute.js",
     "test": "jest",
-    "build:docs": "cd docs && yarn install && yarn gen:code-text &&  yarn export",
+    "build:docs": "yarn compile:styles && cd docs && yarn install && yarn gen:code-text &&  yarn export",
     "test:watch": "yarn test --watch"
   },
   "husky": {
@@ -27,6 +28,7 @@
     "@testing-library/svelte": "^3.0.0",
     "babel-jest": "^25.3.0",
     "codecov": "^3.6.5",
+    "csso": "^4.0.3",
     "flush-promises": "^1.0.2",
     "husky": "^4.2.5",
     "jest": "^25.3.0",

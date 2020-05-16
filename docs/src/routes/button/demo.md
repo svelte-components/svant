@@ -198,7 +198,7 @@ To get a customized button, just set `type`/`shape`/`size`/`loading`/`disabled`.
       }
     ]
   };
-  
+
   const eventData = {
     title: 'Events',
     columns: ['Name', 'Description'],

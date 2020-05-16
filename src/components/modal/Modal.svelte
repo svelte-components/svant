@@ -412,9 +412,7 @@
   }
 </script>
 
-<style lang="less" global>
-  @import "style/index.less";
-
+<style global>
   .confirm-body-wrapper--closeable {
     margin-top: 10px;
   }

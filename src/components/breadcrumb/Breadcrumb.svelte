@@ -18,7 +18,3 @@
 
   setContext("uniformedSeparator", uniformedSeparator);
 </script>
-
-<style lang="less" global>
-  @import "style/index.less";
-</style>

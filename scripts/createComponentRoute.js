@@ -42,10 +42,6 @@ const createComponentFiles = (folder, component) => {
 <script>
 // ...
 </script>
-
-<style lang="less" global>
-  @import "style/index.less";
-</style>
   `;
   writeFileSync(
     `${rootDir}/src/components/${folder}/${component}.svelte`,
@@ -53,8 +49,11 @@ const createComponentFiles = (folder, component) => {
   );
 
   // Add style and empty index.less file
-  mkdirSync(`${rootDir}/src/components/${folder}/style`);
-  writeFileSync(`${rootDir}/src/components/${folder}/style/index.less`, "");
+  mkdirSync(`${rootDir}/src/style/components/${folder}`);
+  writeFileSync(
+    `${rootDir}/src/style/components/${folder}/index.less`,
+    "// You need to import this file in src/style/index.less"
+  );
 
   // Add test file
   const testFileContent = `import ${component} from "../${component}.svelte";

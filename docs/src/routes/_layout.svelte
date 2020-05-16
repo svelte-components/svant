@@ -26,9 +26,6 @@
 </script>
 
 <style global lang="less">
-  @import "../theme/index.less";
-  @import "../../src/style/index.less";
-
   .header {
     position: fixed;
     width: 100%;
@@ -49,9 +46,11 @@
     text-decoration: none;
     display: inline-flex;
     align-items: center;
+
     &:hover {
       color: rgba(0, 0, 0, 0.85);
     }
+
     img {
       position: relative;
       top: -1.5px;

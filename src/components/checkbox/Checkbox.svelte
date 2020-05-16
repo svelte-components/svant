@@ -118,7 +118,3 @@
     $context && $context.toggleOption({ value });
   }
 </script>
-
-<style lang="less" global>
-  @import "style/index.less";
-</style>
