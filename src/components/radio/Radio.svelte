@@ -1,4 +1,4 @@
-<label class="{wrapperClassString}" {style} on:mouseenter on:mouseleav>
+<label class="{wrapperClassString}" {style} on:mouseenter on:mouseleave>
   <BaseCheckbox
     {...radioProps}
     {prefixCls}
