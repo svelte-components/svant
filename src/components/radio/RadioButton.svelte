@@ -10,4 +10,7 @@
   const config = getContext(CONFIG_KEY) || configProvider();
   const { getPrefixCls, direction } = $config;
   const prefixCls = getPrefixCls("radio-button");
+
+  const groupContext = getContext("radioGroupContext");
+  $groupContext.radioButtonGroup = true;
 </script>

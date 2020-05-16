@@ -1,6 +1,6 @@
-@import '../../style/index.less';
-@import '../../style/themes/index';
-@import '../../style/mixins/index';
+@import '../../index.less';
+@import '../../themes/index';
+@import '../../mixins/index';
 
 @radio-prefix-cls: ~'@{ant-prefix}-radio';
 @radio-group-prefix-cls: ~'@{radio-prefix-cls}-group';
@@ -23,7 +23,10 @@
     border-left: none;
   }
 }
-
+// Fix radio button not being stuck to each other
+.@{radio-group-prefix-cls}-button-group {
+  display: inline-flex;
+}
 // 一般状态
 .@{radio-prefix-cls}-wrapper {
   .reset-component;
@@ -125,6 +128,7 @@
 .@{radio-prefix-cls}-checked {
   .@{radio-inner-prefix-cls} {
     border-color: @radio-dot-color;
+
     &::after {
       transform: scale(1);
       opacity: 1;
@@ -138,6 +142,7 @@
     background-color: @input-disabled-bg;
     border-color: @border-color-base !important;
     cursor: not-allowed;
+
     &::after {
       background-color: @radio-dot-disabled-color;
     }
@@ -262,6 +267,7 @@ span.@{radio-prefix-cls} + * {
     &:hover {
       color: @radio-button-hover-color;
       border-color: @radio-button-hover-color;
+
       &::before {
         background-color: @radio-button-hover-color;
       }
@@ -270,6 +276,7 @@ span.@{radio-prefix-cls} + * {
     &:active {
       color: @radio-button-active-color;
       border-color: @radio-button-active-color;
+
       &::before {
         background-color: @radio-button-active-color;
       }
@@ -284,16 +291,19 @@ span.@{radio-prefix-cls} + * {
     color: @radio-solid-checked-color;
     background: @radio-dot-color;
     border-color: @radio-dot-color;
+
     &:hover {
       color: @radio-solid-checked-color;
       background: @radio-button-hover-color;
       border-color: @radio-button-hover-color;
     }
+
     &:active {
       color: @radio-solid-checked-color;
       background: @radio-button-active-color;
       border-color: @radio-button-active-color;
     }
+
     &:focus-within {
       box-shadow: @radio-button-focus-shadow;
     }
@@ -311,6 +321,7 @@ span.@{radio-prefix-cls} + * {
       background-color: @input-disabled-bg;
       border-color: @border-color-base;
     }
+
     &:first-child {
       border-left-color: @border-color-base;
     }

@@ -3,6 +3,7 @@
   {style}
   on:mouseenter
   on:mouseleave
+  bind:this="{groupNode}"
   id="{$$props.id}">
   {#if options.length}
     {#each getOptions() as option (option.value)}
@@ -69,27 +70,33 @@
   const prefixCls = getPrefixCls("radio");
   const groupPrefixCls = `${prefixCls}-group`;
   let classString;
+  let groupNode;
   let context = writable({
     value: value,
     disabled: disabled,
     name: name,
-
+    radioButtonGroup: false,
     setValue: setValue
   });
 
+  context.subscribe(context => {
+    if (!classObj) {
+      classObj = {};
+    }
+    classObj[`${groupPrefixCls}-button-group`] = context.radioButtonGroup;
+  });
+
   setContext("radioGroupContext", context);
-  $: {
-    let mergedSize = customizeSize || size;
-    classString = classNames(
-      groupPrefixCls,
-      `${groupPrefixCls}-${buttonStyle}`,
-      {
-        [`${groupPrefixCls}-${mergedSize}`]: mergedSize,
-        [`${groupPrefixCls}-rtl`]: direction === "rtl"
-      },
-      classObj
-    );
-  }
+
+  $: classString = classNames(
+    groupPrefixCls,
+    `${groupPrefixCls}-${buttonStyle}`,
+    {
+      [`${groupPrefixCls}-${customizeSize || size}`]: customizeSize || size,
+      [`${groupPrefixCls}-rtl`]: direction === "rtl"
+    },
+    classObj
+  );
 
   $: $context = {
     value: value,
@@ -101,6 +108,7 @@
   onMount(() => {
     value = value || $$props.defaultValue;
   });
+
   function getOptions() {
     return options.map(option => {
       if (typeof option === "string") {
@@ -114,6 +122,7 @@
       return option;
     });
   }
+
   function setValue(v) {
     value = v;
     dispatch("change", value);
