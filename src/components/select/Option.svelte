@@ -1,14 +1,14 @@
 {#if visible}
   <div
-    aria-selected="{isCurrentlySelected}"
+    aria-selected="{isSelected}"
     class="{classes}"
     data-option-value="{value}"
     on:click="{onClick}"
     on:mouseenter="{() => {
-      $store.activeOptionIndex = $store.options.indexOf(value);
+      $store.activeValue = value;
     }}">
     <div class="ant-select-item-option-content">{label}</div>
-    {#if ['multiple', 'tags'].includes($store.mode) && isCurrentlySelected}
+    {#if ['multiple', 'tags'].includes($store.mode) && isSelected}
       <span
         class="ant-select-item-option-state"
         unselectable="on"
@@ -24,6 +24,7 @@
   import { getContext, onMount, tick } from "svelte";
   import { CheckOutlined } from "@/components/icons";
   import classNames from "classnames";
+  import { nanoid } from "nanoid";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
 
   const config = getContext(CONFIG_KEY) || configProvider();
@@ -44,9 +45,11 @@
   // Context for the whole select
   let store = getContext("store");
   // Whether this option is the currently selected one
-  let isCurrentlySelected;
+  let isSelected;
   // Need to know if it's the first item selected to determine if it should be active
   let isFirstSelected;
+  // If the item is highlighted and can be selected with enter
+  let isActive;
   // List of classes for the wrapper
   let classes = "";
   // Visibility based on search
@@ -54,37 +57,42 @@
 
   onMount(async () => {
     await tick();
-    if (
-      ["multiple", "tags"].includes($store.mode) &&
-      $store.selectedValue.indexOf(value) >= 0
+
+    if ($store.selectedValue === value) {
+      $store.selectedLabel = label;
+    } else if (
+      // multiple mode check if it's one of the selected options
+      $store.selectedValue.indexOf(value) >= 0 &&
+      // We don't want duplicate labels if this is an added tag
+      $store.addedTags &&
+      !$store.addedTags.find(tag => tag.value === value)
     ) {
       $store.selectedLabel = [...$store.selectedLabel, label];
-    } else if ($store.selectedValue === value) {
-      $store.selectedLabel = label;
     }
 
     // In multiple mode, we want to make sure that the first selected option starts as the active one
     if (isFirstSelected) {
-      $store.activeOptionIndex = $store.options.indexOf(value);
+      $store.activeValue = value;
     }
   });
 
-  $: isCurrentlySelected =
+  $: isSelected =
     $store.selectedValue &&
     ($store.selectedValue === value ||
       $store.selectedValue.indexOf(value) >= 0);
 
   $: isFirstSelected =
-    isCurrentlySelected &&
+    isSelected &&
     ($store.selectedValue === value || $store.selectedValue[0] === value);
+
+  $: isActive = $store.activeValue === value;
 
   $: classes = classNames({
     [`${prefixCls}-item`]: true,
     [`${prefixCls}-item-option`]: true,
     [`${prefixCls}-item-option-disabled`]: disabled,
-    [`${prefixCls}-item-option-selected`]: isCurrentlySelected,
-    [`${prefixCls}-item-option-active`]:
-      $store.activeOptionIndex === $store.options.indexOf(value)
+    [`${prefixCls}-item-option-selected`]: isSelected,
+    [`${prefixCls}-item-option-active`]: isActive
   });
 
   // Update visibility based on search value and function
@@ -96,15 +104,30 @@
 
   function onClick() {
     if (!disabled) {
+      $store.handleSelectPendingTag();
+
       const isSingleMode = !["multiple", "tags"].includes($store.mode);
-      if (!isSingleMode && isCurrentlySelected) {
+      if (!isSingleMode && isSelected) {
         store.set({
           ...$store,
           selectedValue: $store.selectedValue.filter(v => v !== value),
           selectedLabel: $store.selectedLabel.filter(l => l !== label),
           searchValue: ""
         });
+
+        if ($store.addedTags.length) {
+          $store.addedTags = $store.addedTags.filter(
+            tag => tag.value !== value
+          );
+        }
       } else if (!isSingleMode) {
+        if ($store.mode === "tags" && !$store.options.includes(value)) {
+          $store.addedTags = [
+            ...$store.addedTags,
+            { value, label, id: nanoid() }
+          ];
+        }
+
         store.set({
           ...$store,
           selectedValue: [...$store.selectedValue, value],
@@ -116,7 +139,7 @@
           ...$store,
           selectedValue: value,
           selectedLabel: label,
-          popupVisible: false
+          optionsVisible: false
         });
       }
     }

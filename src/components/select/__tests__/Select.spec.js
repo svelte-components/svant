@@ -4,6 +4,10 @@ import Select from "../Select.svelte";
 import SelectBasic from "examples/select/demos/basic.demo.svelte";
 import SelectSearch from "examples/select/demos/search.demo.svelte";
 import SelectMultiple from "examples/select/demos/multiple.demo.svelte";
+import SelectTags from "examples/select/demos/tags.demo.svelte";
+import { last, first } from "lodash-es";
+
+Element.prototype.scrollIntoView = jest.fn();
 
 describe("Select component", () => {
   const originalConsole = { ...console };
@@ -216,7 +220,6 @@ describe("Select component", () => {
         select.querySelectorAll(".ant-select-selection-item").length
       ).toEqual(2);
       await fireEvent.click(select);
-      // press escape
       await fireEvent.keyDown(document.body, {
         key: "Backspace",
         keyCode: 8,
@@ -226,6 +229,28 @@ describe("Select component", () => {
       expect(
         select.querySelectorAll(".ant-select-selection-item").length
       ).toEqual(1);
+    });
+
+    test("backspace removes added tags", async () => {
+      const { container } = render(SelectTags);
+      await delay(300);
+      const select = container.querySelector(".ant-select");
+      const dropdown = container.querySelector(".ant-select-dropdown");
+      await fireEvent.click(select);
+      const input = select.querySelector("input");
+      await fireEvent.input(input, { target: { value: "b" } });
+      await fireEvent.keyDown(document.body, {
+        key: "Enter",
+        keyCode: 13,
+        which: 13
+      });
+      expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(27);
+      await fireEvent.keyDown(document.body, {
+        key: "Backspace",
+        keyCode: 8,
+        which: 8
+      });
+      expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(26);
     });
 
     test("tag close icon removes option", async () => {
@@ -269,12 +294,8 @@ describe("Select component", () => {
         keyCode: 40,
         which: 40
       });
-      expect(options[2].className).toContain("ant-select-item-option-active");
-      await fireEvent.keyDown(document.body, {
-        key: "Enter",
-        keyCode: 13,
-        which: 13
-      });
+      // Should have skipped the disable option
+      expect(options[3].className).toContain("ant-select-item-option-active");
       await fireEvent.keyDown(document.body, {
         key: "ArrowUp",
         keyCode: 38,
@@ -298,7 +319,7 @@ describe("Select component", () => {
       expect(component.$$.ctx[0]).toEqual("jack");
     });
 
-    test("multiple and tags mode keyboard navigation and selection", async () => {
+    test("multiple mode keyboard navigation and selection", async () => {
       const { container } = render(SelectMultiple);
       await delay(300);
       const select = container.querySelector(".ant-select");
@@ -342,5 +363,68 @@ describe("Select component", () => {
       });
       expect(options[2].className).toContain("ant-select-item-option-selected");
     });
+  });
+
+  const selectAndDeselectTags = async ({ useKeyboard, done }) => {
+    const tagText = "test tag";
+    const { container } = render(SelectTags);
+    await delay(300);
+    const select = container.querySelector(".ant-select");
+    const dropdown = container.querySelector(".ant-select-dropdown");
+    await fireEvent.click(select);
+    const input = select.querySelector("input");
+    await fireEvent.input(input, { target: { value: "test tag" } });
+    expect(
+      dropdown.querySelectorAll(".ant-select-item-option")[0].innerHTML
+    ).toContain(tagText);
+
+    if (useKeyboard) {
+      await fireEvent.keyDown(document.body, {
+        key: "Enter",
+        keyCode: 13,
+        which: 13
+      });
+    } else {
+      await fireEvent.click(
+        dropdown.querySelectorAll(".ant-select-item-option")[0]
+      );
+    }
+
+    expect(
+      dropdown.querySelectorAll(".ant-select-item-option")[0].innerHTML
+    ).not.toContain(tagText);
+    // should have been added to the the end of the dropdown options
+    const lastItem = dropdown.querySelectorAll(".ant-select-item")[26];
+    expect(lastItem.innerHTML).toContain(tagText);
+    expect(lastItem.className).toContain("ant-select-item-option-selected");
+
+    if (useKeyboard) {
+      for (let i = 0; i < 26; i++) {
+        await fireEvent.keyDown(document.body, {
+          key: "ArrowDown",
+          keyCode: 40,
+          which: 40
+        });
+      }
+      expect(lastItem.className).toContain("ant-select-item-option-active");
+      // deselect the added tag using the enter key
+      await fireEvent.keyDown(document.body, {
+        key: "Enter",
+        keyCode: 13,
+        which: 13
+      });
+    } else {
+      await fireEvent.click(dropdown.querySelectorAll(".ant-select-item")[26]);
+    }
+    expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(26);
+    done();
+  };
+
+  test("tags mode keyboard navigation and selection", done => {
+    selectAndDeselectTags({ useKeyboard: true, done });
+  });
+
+  test("can add and remove tags", done => {
+    selectAndDeselectTags({ useKeyboard: false, done });
   });
 });
