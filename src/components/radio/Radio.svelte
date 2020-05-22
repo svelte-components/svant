@@ -69,7 +69,8 @@
 
   $: wrapperClassString = classNames(classObj, {
     [`${prefixCls}-wrapper`]: true,
-    [`${prefixCls}-wrapper-checked`]: radioProps.checked,
+    [`${prefixCls}-wrapper-checked`]:
+      value === $context.value || radioProps.checked,
     [`${prefixCls}-wrapper-disabled`]: radioProps.disabled,
     [`${prefixCls}-wrapper-rtl`]: direction === "rtl"
   });

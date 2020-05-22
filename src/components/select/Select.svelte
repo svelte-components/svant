@@ -139,7 +139,7 @@
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
 
   const config = getContext(CONFIG_KEY) || configProvider();
-  const { getPrefixCls } = $config;
+  const { getPrefixCls, size: configSize } = $config;
   let prefixCls = getPrefixCls("select");
 
   const dispatch = createEventDispatcher();
@@ -164,12 +164,16 @@
   export let searchFunction = null;
   // Mode can be multiple or tags
   export let mode = "single";
+  // Custom size of the select input
+  export let size = null;
 
   // ********************** /Props **********************
 
   // We need to pre-render the options very quickly to grab the default Label value
   // This will be set to false onMount
   let hideOptions = true;
+  // Keeps track of focused state
+  let selectFocused = false;
   // Get the txt of the Selected label
   let selectedLabel = "";
   // classes for the select
@@ -184,8 +188,6 @@
   let showClearIcon = false;
   // Keep track of options so we can show an empty indicator
   let noOptions = false;
-  // Keep track of visible nodes
-  let allOptionNodes;
   // store the wrapper id
   let wrapperId = "select-wrapper-" + nanoid();
   // Register events and save the unbind function for destroy - set onMount
@@ -206,7 +208,7 @@
   // For the dropdown transition to work properly we store dropdownVisible in a separate variable
   let dropdownVisible;
 
-  //********* TODO: config-provider size and RTL ******//
+  //********* TODO: config-provider RTL ******//
 
   let store = writable({
     optionsVisible: false,
@@ -246,8 +248,13 @@
 
     // Set event listeners for key presses
     const wrapper = document.getElementById(wrapperId);
-    unbindClickOutside = onClickOutside(wrapper, closeDropdown);
-    unbindEscapePress = onEscape(closeDropdown);
+    unbindClickOutside = onClickOutside(wrapper, () => {
+      selectFocused = false;
+      closeDropdown();
+    });
+    unbindEscapePress = onEscape(() => {
+      closeDropdown();
+    });
     unbindArrowUpPress = onArrowUp(event => {
       handleArrowPress(event, "ArrowUp");
     });
@@ -296,10 +303,12 @@
 
   $: classes = classNames(prefixCls, {
     [`${prefixCls}-single`]: isSingleMode,
+    [`${prefixCls}-sm`]: size === "small" || configSize === "small",
+    [`${prefixCls}-lg`]: size === "large" || configSize === "large",
     [`${prefixCls}-multiple`]: !isSingleMode,
     [`${prefixCls}-show-arrow`]: true,
     [`${prefixCls}-open`]: dropdownVisible,
-    [`${prefixCls}-focused`]: dropdownVisible,
+    [`${prefixCls}-focused`]: selectFocused,
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-allow-clear`]: clearable,
@@ -391,10 +400,20 @@
     input.focus();
   }
 
+  // used in click outside and escape press events
+  function closeDropdown() {
+    if ($store.optionsVisible) {
+      $store.pendingTag = null;
+      $store.optionsVisible = false;
+    }
+  }
+
   // Opening the select dropdown
   // ensures that the proper item is set to active when the dropdown opens
   function onSelectClick() {
     if (!disabled) {
+      selectFocused = true;
+
       const optionsArray = $store.allOptionNodes
         ? Array.from($store.allOptionNodes)
         : [];
@@ -432,14 +451,6 @@
   function removeOption(index) {
     removeOptionAttribute("selectedValue", index);
     removeOptionAttribute("selectedLabel", index);
-  }
-
-  // used in click outside and escape press events
-  function closeDropdown() {
-    if ($store.optionsVisible) {
-      $store.pendingTag = null;
-      $store.optionsVisible = false;
-    }
   }
 
   async function onSearchInput() {
@@ -500,23 +511,38 @@
       `.${prefixCls}-item-option-active`
     );
 
-    const previousDomOption =
+    let previousDomOption =
       activeDomOption && activeDomOption.previousElementSibling;
-    const nextDomOption = activeDomOption && activeDomOption.nextElementSibling;
+    let nextDomOption = activeDomOption && activeDomOption.nextElementSibling;
+
+    // Infinitly navigate through the list
+    let localScrollBehavior = "smooth";
+    if (!previousDomOption && $store.allOptionNodes.length > 1) {
+      localScrollBehavior = "auto";
+      const lastOption =
+        $store.allOptionNodes[$store.allOptionNodes.length - 1];
+      previousDomOption = lastOption;
+    }
+    if (!nextDomOption && $store.allOptionNodes.length > 1) {
+      localScrollBehavior = "auto";
+      const firstOption = $store.allOptionNodes[0];
+      nextDomOption = firstOption;
+    }
+
     const previousValue = findNonDisabledValue("previous", previousDomOption);
     const nextValue = findNonDisabledValue("next", nextDomOption);
 
     if (key === "ArrowUp" && previousDomOption) {
       $store.activeValue = previousValue;
       previousDomOption.scrollIntoView({
-        behavior: "smooth",
+        behavior: localScrollBehavior,
         block: "nearest",
         inline: "start"
       });
     } else if (key === "ArrowDown" && nextDomOption) {
       $store.activeValue = nextValue;
       nextDomOption.scrollIntoView({
-        behavior: "smooth",
+        behavior: localScrollBehavior,
         block: "nearest",
         inline: "start"
       });
@@ -546,6 +572,11 @@
   }
 
   function handleEnterPress() {
+    if (!$store.optionsVisible && selectFocused) {
+      $store.optionsVisible = true;
+      return;
+    }
+
     const activeNode = dropdownNode.querySelector(
       `.${prefixCls}-item-option-active`
     );

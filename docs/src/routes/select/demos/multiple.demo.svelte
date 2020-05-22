@@ -10,9 +10,7 @@
 </Select>
 
 <script>
-  import { Select } from "svant";
-
-  const { Option } = Select;
+  import { Select, Option } from "svant";
 
   const options = [];
   for (let i = 10; i < 36; i++) {
