@@ -13,8 +13,7 @@
 </Select>
 
 <script>
-  import { Select } from "svant";
-  const { Option } = Select;
+  import { Select, Option } from "svant";
 
   let value = "";
 

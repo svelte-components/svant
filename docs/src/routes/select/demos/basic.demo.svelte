@@ -23,10 +23,8 @@
 </Select>
 
 <script>
-  import { Select } from "svant";
+  import { Select, Option } from "svant";
   import { onMount } from "svelte";
-
-  const { Option } = Select;
 
   let selected1 = "lucy";
   let selected2 = "lucy";

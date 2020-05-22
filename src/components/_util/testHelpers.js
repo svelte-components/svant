@@ -1,5 +1,7 @@
 import { detach, insert, noop, set_current_component } from "svelte/internal";
 import { render as defaultRender } from "@testing-library/svelte";
+import { fireEvent } from "@testing-library/svelte";
+
 export const delay = (amount = 200) => {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -74,4 +76,13 @@ export function render(Component, options = {}, renderOptions) {
     delete options.$$context;
   }
   return defaultRender(Component, options, renderOptions);
+}
+
+// Should be called using await
+export function pressKey({ key, which }) {
+  return fireEvent.keyDown(document.body, {
+    key,
+    which,
+    keyCode: which
+  });
 }

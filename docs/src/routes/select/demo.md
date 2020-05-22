@@ -44,6 +44,16 @@ A Select component to select values from a list of options.
   </p>
 </Example>
 
+<Example
+  id="select-demo-sizes"
+  title="Sizes"
+  demoComponent="{Sizes}"
+  demoCode="{SizesCode}">
+  <p slot="description">
+    The height of the input field for the select defaults to 32px. If size is set to large, the height will be 40px, and if set to small, 24px.
+  </p>
+</Example>
+
 ## API
 
 <DocsTable {...attributesData}/>
@@ -62,6 +72,9 @@ A Select component to select values from a list of options.
 
   import Tags from './demos/tags.demo.svelte'
   import TagsCode from './demos/tags.demo.txt'
+
+  import Sizes from './demos/sizes.demo.svelte'
+  import SizesCode from './demos/sizes.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
