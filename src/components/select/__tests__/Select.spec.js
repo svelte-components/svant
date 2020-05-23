@@ -10,8 +10,18 @@ import SelectBasic from "examples/select/demos/basic.demo.svelte";
 import SelectSearch from "examples/select/demos/search.demo.svelte";
 import SelectMultiple from "examples/select/demos/multiple.demo.svelte";
 import SelectTags from "examples/select/demos/tags.demo.svelte";
+import SelectOptionGroups from "examples/select/demos/option-group.demo.svelte";
 
 Element.prototype.scrollIntoView = jest.fn();
+
+const renderAndOpenSelect = async example => {
+  const { container, component } = render(example);
+  await delay(300);
+  const select = container.querySelector(".ant-select");
+  const dropdown = container.querySelector(".ant-select-dropdown");
+  await fireEvent.click(select);
+  return { container, component, select, dropdown };
+};
 
 describe("Select component", () => {
   const originalConsole = { ...console };
@@ -29,15 +39,12 @@ describe("Select component", () => {
   });
 
   test("basic functionality", async () => {
-    const { container } = render(SelectBasic);
-    await delay(300);
+    const { container } = await renderAndOpenSelect(SelectBasic);
     const selectedValue = container.querySelector(".ant-select-selection-item");
     expect(selectedValue.innerHTML).toContain("Lucy");
     const options = container.querySelectorAll(
       ".ant-select-dropdown .ant-select-item-option"
     );
-    const select = container.querySelector(".ant-select");
-    await fireEvent.click(select);
     expect(options[1].className).toContain("ant-select-item-option-active");
     const firstOption = container.querySelector(".ant-select-item");
     await fireEvent.mouseEnter(firstOption);
@@ -49,10 +56,7 @@ describe("Select component", () => {
   });
 
   test("change event", async () => {
-    const { container } = render(SelectBasic);
-    await delay(300);
-    const select = container.querySelector(".ant-select");
-    await fireEvent.click(select);
+    const { container } = await renderAndOpenSelect(SelectBasic);
     const firstOption = container.querySelector(".ant-select-item");
     const mockLog = jest.fn();
     console = {
@@ -64,10 +68,7 @@ describe("Select component", () => {
   });
 
   test("option disabled", async () => {
-    const { container } = render(SelectBasic);
-    await delay(300);
-    const select = container.querySelector(".ant-select");
-    await fireEvent.click(select);
+    const { container } = await renderAndOpenSelect(SelectBasic);
     const disabledItem = container.querySelectorAll(".ant-select-item")[2];
     expect(disabledItem.className).toContain("disabled");
     const mockLog = jest.fn();
@@ -129,11 +130,7 @@ describe("Select component", () => {
   });
 
   test("search field", async () => {
-    const { container } = render(SelectSearch);
-    await delay(300);
-    const select = container.querySelector(".ant-select");
-    const dropdown = container.querySelector(".ant-select-dropdown");
-    await fireEvent.click(select);
+    const { select, dropdown } = await renderAndOpenSelect(SelectSearch);
     expect(select.innerHTML).toContain("anticon-search");
     expect(dropdown.querySelectorAll(".ant-select-item").length).toEqual(3);
     const input = select.querySelector("input");
@@ -170,14 +167,10 @@ describe("Select component", () => {
 
   describe("multiple select", () => {
     test("can display multiple options", async () => {
-      const { container } = render(SelectMultiple);
-      await delay(300);
-      const select = container.querySelector(".ant-select");
+      const { select, dropdown } = await renderAndOpenSelect(SelectMultiple);
       expect(
         select.querySelectorAll(".ant-select-selection-item").length
       ).toEqual(2);
-      await fireEvent.click(select);
-      const dropdown = container.querySelector(".ant-select-dropdown");
       await fireEvent.click(
         dropdown.querySelectorAll(".ant-select-item-option")[1]
       );
@@ -197,11 +190,7 @@ describe("Select component", () => {
     });
 
     test("can search", async () => {
-      const { container } = render(SelectMultiple);
-      await delay(300);
-      const select = container.querySelector(".ant-select");
-      const dropdown = container.querySelector(".ant-select-dropdown");
-      await fireEvent.click(select);
+      const { select, dropdown } = await renderAndOpenSelect(SelectMultiple);
       expect(
         dropdown.querySelectorAll(".ant-select-item").length > 1
       ).toBeTruthy();
@@ -213,13 +202,10 @@ describe("Select component", () => {
     });
 
     test("backspace removes last selected item", async () => {
-      const { container } = render(SelectMultiple);
-      await delay(300);
-      const select = container.querySelector(".ant-select");
+      const { select } = await renderAndOpenSelect(SelectMultiple);
       expect(
         select.querySelectorAll(".ant-select-selection-item").length
       ).toEqual(2);
-      await fireEvent.click(select);
       await pressKey({ key: "Backspace", which: 8 });
       await delay(300);
       expect(
@@ -228,11 +214,7 @@ describe("Select component", () => {
     });
 
     test("backspace removes added tags", async () => {
-      const { container } = render(SelectTags);
-      await delay(300);
-      const select = container.querySelector(".ant-select");
-      const dropdown = container.querySelector(".ant-select-dropdown");
-      await fireEvent.click(select);
+      const { select, dropdown } = await renderAndOpenSelect(SelectTags);
       const input = select.querySelector("input");
       await fireEvent.input(input, { target: { value: "b" } });
       await pressKey({ key: "Enter", which: 13 });
@@ -257,22 +239,15 @@ describe("Select component", () => {
     });
 
     test("focus on input after item selected or deselected", async () => {
-      const { container } = render(SelectMultiple);
-      await delay(300);
-      const select = container.querySelector(".ant-select");
+      const { select, dropdown } = await renderAndOpenSelect(SelectMultiple);
       const input = select.querySelector("input");
-      await fireEvent.click(select);
-      const dropdown = container.querySelector(".ant-select-dropdown");
       await fireEvent.click(dropdown.querySelector(".ant-select-item-option"));
       expect(input).toBe(document.activeElement);
     });
 
     test("single mode keyboard navigation and selection", async () => {
       // Should allow arrows to change active
-      const { container, component } = render(SelectBasic);
-      await delay(300);
-      const select = container.querySelector(".ant-select");
-      await fireEvent.click(select);
+      const { container, component } = await renderAndOpenSelect(SelectBasic);
       const options = container.querySelectorAll(
         ".ant-select-dropdown .ant-select-item-option"
       );
@@ -292,10 +267,7 @@ describe("Select component", () => {
     });
 
     test("multiple mode keyboard navigation and selection", async () => {
-      const { container } = render(SelectMultiple);
-      await delay(300);
-      const select = container.querySelector(".ant-select");
-      await fireEvent.click(select);
+      const { container } = await renderAndOpenSelect(SelectMultiple);
       const options = container.querySelectorAll(
         ".ant-select-dropdown .ant-select-item-option"
       );
@@ -319,11 +291,7 @@ describe("Select component", () => {
 
   const selectAndDeselectTags = async ({ useKeyboard, done }) => {
     const tagText = "test tag";
-    const { container } = render(SelectTags);
-    await delay(300);
-    const select = container.querySelector(".ant-select");
-    const dropdown = container.querySelector(".ant-select-dropdown");
-    await fireEvent.click(select);
+    const { select, dropdown } = await renderAndOpenSelect(SelectTags);
     const input = select.querySelector("input");
     await fireEvent.input(input, { target: { value: "test tag" } });
     expect(
@@ -369,11 +337,7 @@ describe("Select component", () => {
   });
 
   test("enter should open the dropdown", async () => {
-    const { container } = render(SelectBasic);
-    await delay(300);
-    const select = container.querySelector(".ant-select");
-    await fireEvent.click(select);
-    const dropdown = container.querySelector(".ant-select-dropdown");
+    const { dropdown } = await renderAndOpenSelect(SelectBasic);
     expect(dropdown.className).toContain("ant-select-dropdown-open");
     await pressKey({ key: "Enter", which: 13 });
     expect(dropdown.className).not.toContain("ant-select-dropdown-open");
@@ -382,11 +346,7 @@ describe("Select component", () => {
   });
 
   test("arrows should infinitely navigate through the list", async () => {
-    const { container } = render(SelectBasic);
-    await delay(300);
-    const select = container.querySelector(".ant-select");
-    const dropdown = container.querySelector(".ant-select-dropdown");
-    await fireEvent.click(select);
+    const { dropdown } = await renderAndOpenSelect(SelectBasic);
     await pressKey({ key: "ArrowUp", which: 38 });
     // Should bring us past the first item to the bottom of the list
     await pressKey({ key: "ArrowUp", which: 38 });
@@ -400,14 +360,31 @@ describe("Select component", () => {
   });
 
   test("size small", () => {
-    const { container } = render(Select, { size: "small" });
+    const { container } = render(Select, { size: "small", value: "foo" });
     const select = container.querySelector(".ant-select");
     expect(select.className).toContain("-sm");
   });
 
   test("size large", () => {
-    const { container } = render(Select, { size: "large" });
+    const { container } = render(Select, { size: "large", value: "foo" });
     const select = container.querySelector(".ant-select");
     expect(select.className).toContain("-lg");
+  });
+
+  test("option groups should allow arrow navigation", async () => {
+    const { dropdown } = await renderAndOpenSelect(SelectOptionGroups);
+    expect(
+      dropdown.querySelectorAll(".ant-select-item-option")[1].className
+    ).toContain("active");
+    await pressKey({ key: "ArrowDown", which: 40 });
+    // should skip the group heading
+    expect(
+      dropdown.querySelectorAll(".ant-select-item-option")[2].className
+    ).toContain("active");
+    await pressKey({ key: "ArrowUp", which: 38 });
+    // should skip heading on the way up as well
+    expect(
+      dropdown.querySelectorAll(".ant-select-item-option")[1].className
+    ).toContain("active");
   });
 });

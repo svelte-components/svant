@@ -64,9 +64,18 @@ A Select component to select values from a list of options.
   </p>
 </Example>
 
+<Example
+  id="select-demo-option-groups"
+  title="Option Groups"
+  demoComponent="{OptionGroup}"
+  demoCode="{OptionGroupCode}">
+  <p slot="description">
+    Options can be organized in groups within the dropdown.
+  </p>
+</Example>
+
 <!--
    TODO:
-    - Option groups
     - Remote search
     - Copy/Paste tag values
     - onChange should give label and value
@@ -101,6 +110,9 @@ A Select component to select values from a list of options.
 
   import CustomSelection from './demos/custom-selection.demo.svelte'
   import CustomSelectionCode from './demos/custom-selection.demo.txt'
+
+  import OptionGroup from './demos/option-group.demo.svelte'
+  import OptionGroupCode from './demos/option-group.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

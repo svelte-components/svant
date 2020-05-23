@@ -16,6 +16,7 @@ export { default as Checkbox } from "./checkbox/Checkbox.svelte";
 export { default as CheckboxGroup } from "./checkbox/CheckboxGroup.svelte";
 export { default as Select } from "./select/Select.svelte";
 export { default as Option } from "./select/Option.svelte";
+export { default as OptionGroup } from "./select/OptionGroup.svelte";
 export { default as Tag } from "./tag/Tag.svelte";
 export { default as Radio } from "./radio/Radio.svelte";
 export { default as RadioButton } from "./radio/RadioButton.svelte";
