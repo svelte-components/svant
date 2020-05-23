@@ -24,7 +24,6 @@
 
 <script>
   import { Select, Option } from "svant";
-  import { onMount } from "svelte";
 
   let selected1 = "lucy";
   let selected2 = "lucy";
