@@ -3,11 +3,14 @@
     aria-selected="{isSelected}"
     class="{classes}"
     data-option-value="{value}"
+    data-option-label="{label}"
     on:click="{onClick}"
     on:mouseenter="{() => {
       $store.activeValue = value;
     }}">
-    <div class="ant-select-item-option-content">{label}</div>
+    <div class="ant-select-item-option-content">
+      <slot>{label}</slot>
+    </div>
     {#if ['multiple', 'tags'].includes($store.mode) && isSelected}
       <span
         class="ant-select-item-option-state"

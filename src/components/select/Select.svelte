@@ -586,7 +586,7 @@
       !activeNode.classList.contains(`${prefixCls}-item-option-disabled`)
     ) {
       const value = activeNode.dataset.optionValue;
-      const label = activeNode.innerText;
+      const label = activeNode.dataset.optionLabel;
 
       $store.handleSelectPendingTag();
 
