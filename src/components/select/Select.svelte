@@ -506,14 +506,25 @@
     return startNode && startNode.dataset.optionValue;
   }
 
+  function getSiblingOption(direction, activeDomOption) {
+    const method =
+      direction === "next" ? "nextElementSibling" : "previousElementSibling";
+    let sibling = activeDomOption && activeDomOption[method];
+    if (!sibling) return null;
+
+    // An option group label should not be an active element
+    if (sibling.classList.contains(`${prefixCls}-item-group`)) {
+      return sibling[method];
+    }
+    return sibling;
+  }
+
   function navigateDropdown(key) {
     const activeDomOption = dropdownNode.querySelector(
       `.${prefixCls}-item-option-active`
     );
-
-    let previousDomOption =
-      activeDomOption && activeDomOption.previousElementSibling;
-    let nextDomOption = activeDomOption && activeDomOption.nextElementSibling;
+    let previousDomOption = getSiblingOption("previous", activeDomOption);
+    let nextDomOption = getSiblingOption("next", activeDomOption);
 
     // Infinitly navigate through the list
     let localScrollBehavior = "smooth";
