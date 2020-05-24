@@ -237,6 +237,14 @@
     }
   };
 
+  $store.updateAllOptionNodes = async () => {
+    // Make sure options are up to date
+    await tick();
+    $store.allOptionNodes = $store.dropdownNode.querySelectorAll(
+      `.${prefixCls}-item-option`
+    );
+  };
+
   setContext("store", store);
 
   onMount(async () => {
@@ -246,7 +254,7 @@
 
     // Make sure all options all available and set them to the store
     await tick();
-    const optionNodes = dropdownNode.querySelectorAll(
+    const optionNodes = $store.dropdownNode.querySelectorAll(
       `.${prefixCls}-item-option`
     );
     optionNodes.forEach(node => {
@@ -455,9 +463,11 @@
     $store[attr] = $store[attr].filter(l => l !== $store[attr][index]);
   }
 
-  function removeOption(index) {
+  async function removeOption(index) {
     removeOptionAttribute("selectedValue", index);
     removeOptionAttribute("selectedLabel", index);
+
+    $store.updateAllOptionNodes();
   }
 
   async function onSearchInput() {
@@ -532,7 +542,7 @@
   }
 
   function navigateDropdown(key) {
-    let activeDomOption = dropdownNode.querySelector(
+    let activeDomOption = $store.dropdownNode.querySelector(
       `.${prefixCls}-item-option-active`
     );
 
@@ -547,6 +557,12 @@
         activeDomOption =
           $store.allOptionNodes[$store.allOptionNodes.length - 1];
       }
+    }
+
+    // If there is only one option make it active
+    if ($store.allOptionNodes.length === 1) {
+      $store.activeValue = activeDomOption.dataset.optionValue;
+      return;
     }
 
     let previousDomOption = getSiblingOption("previous", activeDomOption);
@@ -612,7 +628,7 @@
 
     inputNode && inputNode.blur();
 
-    const activeNode = dropdownNode.querySelector(
+    const activeNode = $store.dropdownNode.querySelector(
       `.${prefixCls}-item-option-active`
     );
     if (
@@ -659,6 +675,7 @@
         }
       }
     }
+    $store.updateAllOptionNodes();
   }
 </script>
 

@@ -68,16 +68,11 @@ describe("Select component", () => {
   });
 
   test("option disabled", async () => {
-    const { container } = await renderAndOpenSelect(SelectBasic);
+    const { container, select } = await renderAndOpenSelect(SelectBasic);
     const disabledItem = container.querySelectorAll(".ant-select-item")[2];
     expect(disabledItem.className).toContain("disabled");
-    const mockLog = jest.fn();
-    console = {
-      ...console,
-      log: mockLog
-    };
     await fireEvent.click(disabledItem);
-    expect(mockLog).not.toHaveBeenCalled();
+    expect(select.innerHTML).not.toContain("Disabled");
   });
 
   test("whole select disabled", async () => {

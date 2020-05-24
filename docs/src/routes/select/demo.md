@@ -94,9 +94,18 @@ A Select component to select values from a list of options.
   </p>
 </Example>
 
+<Example
+  id="select-demo-hide-selected"
+  title="Hide Already Selected"
+  demoComponent="{HideSelected}"
+  demoCode="{HideSelectedCode}">
+  <p slot="description">
+    Hide already selected options in the dropdown.
+  </p>
+</Example>
+
 <!--
    TODO:
-    - Hide already selected
     - Borderless
     - Custom tags
     - API tables
@@ -137,6 +146,9 @@ A Select component to select values from a list of options.
 
   import CustomContent from './demos/custom-content.demo.svelte'
   import CustomContentCode from './demos/custom-content.demo.txt'
+
+  import HideSelected from './demos/hide-selected.demo.svelte'
+  import HideSelectedCode from './demos/hide-selected.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

@@ -148,5 +148,6 @@
         });
       }
     }
+    $store.updateAllOptionNodes();
   }
 </script>
