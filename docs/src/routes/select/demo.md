@@ -86,14 +86,14 @@ A Select component to select values from a list of options.
 
 <!--
    TODO:
-    - Copy/Paste tag values
-    - onChange should give label and value
     - Custom select content - menu should be a named slot?
     - Hide already selected
     - Borderless
     - Custom tags
     - API tables
 -->
+
+<!-- TODO: Automatic Tokenization https://ant.design/components/select/#components-select-demo-automatic-tokenization -->
 
 ## API
 

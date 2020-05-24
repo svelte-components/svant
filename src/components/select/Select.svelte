@@ -172,6 +172,8 @@
 
   // ********************** /Props **********************
 
+  // Keep track of if the component is mounted
+  let mounted = false;
   // We need to pre-render the options very quickly to grab the default Label value
   // This will be set to false onMount
   let hideOptions = true;
@@ -268,6 +270,8 @@
     });
     unbindBackspacePress = onBackspace(handleBackspacePress);
     unbindEnterPress = onEnter(handleEnterPress);
+
+    mounted = true;
   });
 
   onDestroy(() => {
@@ -339,13 +343,13 @@
   });
 
   // Keep value up to date for 2 way binding
-  $: if ($store.selectedValue) {
+  $: if ($store.selectedValue || $store.selectedValue === "") {
     value = $store.selectedValue;
   }
 
   // dispatch change event when the value changes
-  $: if (value) {
-    dispatch("change", { value });
+  $: if (typeof value && mounted) {
+    dispatch("change", { value, label: $store.selectedLabel });
   }
 
   $: if (!$store.optionsVisible) {

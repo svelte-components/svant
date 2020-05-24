@@ -64,6 +64,7 @@
     if ($store.selectedValue === value) {
       $store.selectedLabel = label;
     } else if (
+      $store.selectedValue &&
       // multiple mode check if it's one of the selected options
       $store.selectedValue.indexOf(value) >= 0 &&
       // We don't want duplicate labels if this is an added tag
