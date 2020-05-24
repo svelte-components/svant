@@ -20,7 +20,7 @@
 
   let value = ["a10", "c12"];
 
-  function handleChange(value) {
+  function handleChange() {
     console.log(`selected ${value}`);
   }
 </script>
