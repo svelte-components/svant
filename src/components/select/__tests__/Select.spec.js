@@ -387,4 +387,31 @@ describe("Select component", () => {
       dropdown.querySelectorAll(".ant-select-item-option")[1].className
     ).toContain("active");
   });
+
+  test("arrows still work if there is no active option in the DOM", async () => {
+    const removeActiveClass = () => {
+      const activeOption = dropdown.querySelector(
+        ".ant-select-item-option-active"
+      );
+      activeOption.classList.remove("ant-select-item-option-active");
+      expect(
+        dropdown.querySelector(".ant-select-item-option-active")
+      ).toBeFalsy();
+    };
+
+    const { dropdown } = await renderAndOpenSelect(SelectSearch);
+    removeActiveClass();
+
+    await pressKey({ key: "ArrowUp", which: 38 });
+    expect(
+      dropdown.querySelector(".ant-select-item-option-active")
+    ).toBeTruthy();
+
+    removeActiveClass();
+
+    await pressKey({ key: "ArrowDown", which: 40 });
+    expect(
+      dropdown.querySelector(".ant-select-item-option-active")
+    ).toBeTruthy();
+  });
 });

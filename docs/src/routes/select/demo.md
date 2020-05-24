@@ -74,9 +74,18 @@ A Select component to select values from a list of options.
   </p>
 </Example>
 
+<Example
+  id="select-demo-remote-search"
+  title="Remote Search"
+  demoComponent="{RemoteSearch}"
+  demoCode="{RemoteSearchCode}">
+  <p slot="description">
+    An example of using the `search` event to fetch options from an external source.
+  </p>
+</Example>
+
 <!--
    TODO:
-    - Remote search
     - Copy/Paste tag values
     - onChange should give label and value
     - Custom select content - menu should be a named slot?
@@ -113,6 +122,9 @@ A Select component to select values from a list of options.
 
   import OptionGroup from './demos/option-group.demo.svelte'
   import OptionGroupCode from './demos/option-group.demo.txt'
+
+  import RemoteSearch from './demos/remote-search.demo.svelte'
+  import RemoteSearchCode from './demos/remote-search.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

@@ -30,7 +30,7 @@
           </span>
         {/each}
       {/if}
-      {#if (searchable || !isSingleMode) && $store.options.length}
+      {#if searchable || !isSingleMode}
         <span
           class="{prefixCls}-selection-search"
           style="{!isSingleMode ? `width: ${inputWidth}` : ''}">
@@ -41,6 +41,7 @@
             aria-haspopup="listbox"
             aria-autocomplete="list"
             bind:value="{$store.searchValue}"
+            bind:this="{inputNode}"
             on:input="{onSearchInput}"
             style="opacity: {$store.optionsVisible ? '1' : '0'};" />
         </span>
@@ -62,14 +63,14 @@
         unselectable="on"
         aria-hidden="true"
         style="user-select: none;">
-        {#if $store.optionsVisible && searchable}
+        {#if loading}
+          <LoadingOutlined spin />
+        {:else if $store.optionsVisible && searchable}
           <SearchOutlined />
         {:else if showClearIcon}
           <span on:click|stopPropagation="{onClearableClicked}">
             <CloseCircleFilled />
           </span>
-        {:else if loading}
-          <LoadingOutlined spin />
         {:else}
           <DownOutlined />
         {/if}
@@ -79,7 +80,7 @@
 
   <div class="{dropdownClasses}" bind:this="{dropdownNode}">
     <div
-      class="{noOptions ? `${prefixCls}-item-empty` : ''}"
+      class="{noOptions && showEmptyMessage ? `${prefixCls}-item-empty` : ''}"
       style="max-height: 256px; overflow-y: auto; overflow-anchor: none;">
       <div class="" style="display: flex; flex-direction: column;">
         {#if $store.pendingTag}
@@ -89,7 +90,7 @@
         {#each $store.addedTags || [] as addedTag (addedTag.id)}
           <Option value="{addedTag.value}" label="{addedTag.value}" />
         {/each}
-        {#if noOptions}
+        {#if noOptions && showEmptyMessage}
           <slot name="no-search-results">
             <div class="no-results">
               <InboxOutlined
@@ -166,6 +167,8 @@
   export let mode = "single";
   // Custom size of the select input
   export let size = null;
+  // Whether to show the empty message if there are no options
+  export let showEmptyMessage = true;
 
   // ********************** /Props **********************
 
@@ -205,6 +208,8 @@
   let isSingleMode = true;
   // Set the dropdown to the store so we can use it in child options
   let dropdownNode;
+  // Keep track of the input for easy blur and focus
+  let inputNode;
   // For the dropdown transition to work properly we store dropdownVisible in a separate variable
   let dropdownVisible;
 
@@ -395,9 +400,7 @@
     $store.selectedValue &&
     $store.optionsVisible
   ) {
-    const wrapper = document.getElementById(wrapperId);
-    const input = wrapper.querySelector(`.${prefixCls}-selection-search-input`);
-    input.focus();
+    inputNode.focus();
   }
 
   // used in click outside and escape press events
@@ -454,6 +457,8 @@
   }
 
   async function onSearchInput() {
+    dispatch("search", $store.searchValue);
+
     $store.activeValue = "";
 
     if (!$store.searchValue) {
@@ -520,9 +525,23 @@
   }
 
   function navigateDropdown(key) {
-    const activeDomOption = dropdownNode.querySelector(
+    let activeDomOption = dropdownNode.querySelector(
       `.${prefixCls}-item-option-active`
     );
+
+    // If there is no active option we still want arrows to work
+    if (!activeDomOption) {
+      $store.allOptionNodes = $store.dropdownNode.querySelectorAll(
+        `.${prefixCls}-item-option`
+      );
+      if ($store.allOptionNodes.length && key === "ArrowUp") {
+        activeDomOption = $store.allOptionNodes[0];
+      } else {
+        activeDomOption =
+          $store.allOptionNodes[$store.allOptionNodes.length - 1];
+      }
+    }
+
     let previousDomOption = getSiblingOption("previous", activeDomOption);
     let nextDomOption = getSiblingOption("next", activeDomOption);
 
@@ -562,12 +581,8 @@
 
   function handleBackspacePress() {
     if (!isSingleMode && $store.selectedValue.length && !$store.searchValue) {
-      const wrapper = document.getElementById(wrapperId);
-      const input = wrapper.querySelector(
-        `.${prefixCls}-selection-search-input`
-      );
       // Check if input has focus
-      if (document.activeElement === input) {
+      if (document.activeElement === inputNode) {
         const index = $store.selectedValue.length - 1;
 
         // Make sure to remove added tags
@@ -587,6 +602,8 @@
       $store.optionsVisible = true;
       return;
     }
+
+    inputNode && inputNode.blur();
 
     const activeNode = dropdownNode.querySelector(
       `.${prefixCls}-item-option-active`
