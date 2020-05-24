@@ -84,9 +84,18 @@ A Select component to select values from a list of options.
   </p>
 </Example>
 
+<Example
+  id="select-demo-custom-content"
+  title="Custom Dropdown Content"
+  demoComponent="{CustomContent}"
+  demoCode="{CustomContentCode}">
+  <p slot="description">
+    The dropdown can be customized by adding content inside the Select tag.
+  </p>
+</Example>
+
 <!--
    TODO:
-    - Custom select content - menu should be a named slot?
     - Hide already selected
     - Borderless
     - Custom tags
@@ -125,6 +134,9 @@ A Select component to select values from a list of options.
 
   import RemoteSearch from './demos/remote-search.demo.svelte'
   import RemoteSearchCode from './demos/remote-search.demo.txt'
+
+  import CustomContent from './demos/custom-content.demo.svelte'
+  import CustomContentCode from './demos/custom-content.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {

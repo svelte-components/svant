@@ -66,6 +66,7 @@
     } else if (
       $store.selectedValue &&
       // multiple mode check if it's one of the selected options
+      typeof $store.selectedValue === "object" &&
       $store.selectedValue.indexOf(value) >= 0 &&
       // We don't want duplicate labels if this is an added tag
       $store.addedTags &&
