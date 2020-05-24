@@ -521,8 +521,11 @@
     let sibling = activeDomOption && activeDomOption[method];
     if (!sibling) return null;
 
-    // An option group label should not be an active element
-    if (sibling.classList.contains(`${prefixCls}-item-group`)) {
+    // An non-option should not be an active element
+    if (
+      sibling.classList.contains(`${prefixCls}-item-group`) ||
+      !sibling.classList.contains(`${prefixCls}-item`)
+    ) {
       return sibling[method];
     }
     return sibling;
