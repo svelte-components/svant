@@ -104,9 +104,18 @@ A Select component to select values from a list of options.
   </p>
 </Example>
 
+<Example
+  id="select-demo-borderless"
+  title="Borderless"
+  demoComponent="{Borderless}"
+  demoCode="{BorderlessCode}">
+  <p slot="description">
+    The select can be rendered without borders so it looks like text rather than an input.
+  </p>
+</Example>
+
 <!--
    TODO:
-    - Borderless
     - Custom tags
     - API tables
 -->
@@ -149,6 +158,9 @@ A Select component to select values from a list of options.
 
   import HideSelected from './demos/hide-selected.demo.svelte'
   import HideSelectedCode from './demos/hide-selected.demo.txt'
+
+  import Borderless from './demos/borderless.demo.svelte'
+  import BorderlessCode from './demos/borderless.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
