@@ -1,4 +1,4 @@
-<div {style} class="wrapper {prefixCls}-wrapper" id="{wrapperId}">
+<div {style} class="wrapper {wrapperClasses}" id="{wrapperId}">
   <div
     class="{classes}"
     on:click="{onSelectClick}"
@@ -9,23 +9,25 @@
       isInputHovered = false;
     }}">
     <div class="{prefixCls}-selector">
-      {#if !isSingleMode && $store.selectedValue}
-        {#each $store.selectedValue as value, index (value)}
+      {#if !isSingleMode && $selectStore.selectedValue}
+        {#each $selectStore.selectedValue as value, index (value)}
           {#if tagProps}
-            <span
-              on:click|stopPropagation="{currentTagAttributes[index].onClick}">
-              <Tag
-                {...currentTagAttributes[index].props}
-                on:close="{currentTagAttributes[index].onClose}">
-                {$store.selectedLabel[index]}
-              </Tag>
-            </span>
-          {:else}
+            {#if !maxTagDisplayCount || (maxTagDisplayCount && index < maxTagDisplayCount)}
+              <span
+                on:click|stopPropagation="{currentTagAttributes[index].onClick}">
+                <Tag
+                  {...currentTagAttributes[index].props}
+                  on:close="{currentTagAttributes[index].onClose}">
+                  {tagLabelDisplayText($selectStore.selectedLabel[index])}
+                </Tag>
+              </span>
+            {/if}
+          {:else if !maxTagDisplayCount || (maxTagDisplayCount && index < maxTagDisplayCount)}
             <span
               class="{prefixCls}-selection-item"
               transition:fadeScale="{{ duration: 200, easing: cubicInOut, baseScale: 0.5 }}">
               <span class="{prefixCls}-selection-item-content">
-                {$store.selectedLabel[index]}
+                {tagLabelDisplayText($selectStore.selectedLabel[index])}
               </span>
               <span
                 class="{prefixCls}-selection-item-remove"
@@ -40,6 +42,11 @@
             </span>
           {/if}
         {/each}
+        {#if maxTagDisplayCount && $selectStore.selectedValue.length > maxTagDisplayCount}
+          <Tag>
+            + {$selectStore.selectedValue.length - maxTagDisplayCount} ...
+          </Tag>
+        {/if}
       {/if}
       {#if searchable || !isSingleMode}
         <span
@@ -51,20 +58,20 @@
             role="combobox"
             aria-haspopup="listbox"
             aria-autocomplete="list"
-            bind:value="{$store.searchValue}"
+            bind:value="{$selectStore.searchValue}"
             bind:this="{inputNode}"
             on:input="{onSearchInput}"
-            style="opacity: {$store.optionsVisible ? '1' : '0'};" />
+            style="opacity: {$selectStore.optionsVisible ? '1' : '0'};" />
         </span>
       {/if}
 
       {#if showPlaceholder}
         <span class="{prefixCls}-selection-placeholder">
-          {#if !$store.searchValue}{placeholder}{/if}
+          {#if !$selectStore.searchValue}{placeholder}{/if}
         </span>
       {:else if isSingleMode}
         <span class="{prefixCls}-selection-item">
-          {#if !$store.searchValue}{$store.selectedLabel || ''}{/if}
+          {#if !$selectStore.searchValue}{$selectStore.selectedLabel || ''}{/if}
         </span>
       {/if}
     </div>
@@ -76,33 +83,39 @@
         style="user-select: none;">
         {#if loading}
           <LoadingOutlined spin />
-        {:else if $store.optionsVisible && searchable}
+        {:else if $selectStore.optionsVisible && searchable}
           <SearchOutlined />
         {:else if showClearIcon}
           <span on:click|stopPropagation="{onClearableClicked}">
-            <CloseCircleFilled />
+            <svelte:component this="{clearIcon}" />
           </span>
-        {:else}
-          <DownOutlined />
+        {:else if showArrow}
+          <svelte:component this="{suffixIcon}" />
         {/if}
       </span>
     {/if}
   </div>
 
-  <div class="{dropdownClasses}" bind:this="{dropdownNode}">
+  <div
+    bind:this="{dropdownNode}"
+    class="{dropdownClasses}"
+    style="{dropdownStyle}">
     <div
       class="{noOptions && showEmptyMessage ? `${prefixCls}-item-empty` : ''}"
-      style="max-height: 256px; overflow-y: auto; overflow-anchor: none;">
+      style="max-height: {dropdownHeight}; overflow-y: auto; overflow-anchor:
+      none;">
       <div class="" style="display: flex; flex-direction: column;">
-        {#if $store.pendingTag}
-          <Option value="{$store.pendingTag}" label="{$store.pendingTag}" />
+        {#if $selectStore.pendingTag}
+          <Option
+            value="{$selectStore.pendingTag}"
+            label="{$selectStore.pendingTag}" />
         {/if}
         <slot />
-        {#each $store.addedTags || [] as addedTag (addedTag.id)}
+        {#each $selectStore.addedTags || [] as addedTag (addedTag.id)}
           <Option value="{addedTag.value}" label="{addedTag.value}" />
         {/each}
         {#if noOptions && showEmptyMessage}
-          <slot name="no-search-results">
+          <slot name="no-options">
             <div class="no-results">
               <InboxOutlined
                 style="{{ fontSize: 34, color: 'rgba(0, 0, 0, .25)' }}" />
@@ -169,6 +182,8 @@
   export let loading = false;
   // Allow the user to click a clear icon to unset the value
   export let clearable = false;
+  // Automatically clear the searchValue when an option is selected
+  export let autoClearSearchValue = true;
   // placeholder text
   export let placeholder = "";
   // allows select to have a search input
@@ -185,11 +200,30 @@
   export let borderless = false;
   // Custom tag props function for multiple and tags mode
   export let tagProps = null;
+  // Custom dropdown width
+  export let dropdownStyle = null;
+  // Dropdown height
+  export let dropdownHeight = "256px";
+  // Maximum number of tags to show in the input
+  export let maxTagDisplayCount = null;
+  // Max amount of characters to show in a tag in the input
+  export let maxTagTextLength = null;
+  // Choose if the arrow should show
+  export let showArrow = true;
+  // custom suffix icon - replaces arrow
+  export let suffixIcon = DownOutlined;
+  // Custom icon for clearing the value
+  export let clearIcon = CloseCircleFilled;
+  // default open state of the dropdown when the select is first rendered
+  export let defaultOpen = false;
+  // this exports the classObj as class so the user can set class={{'abc':true}}
+  let classObj = null;
+  export { classObj as class };
+  let dropdownClassObj = null;
+  export { dropdownClassObj as dropdownClass };
 
   // ********************** /Props **********************
 
-  // Keep track of if the component is mounted
-  let mounted = false;
   // We need to pre-render the options very quickly to grab the default Label value
   // This will be set to false onMount
   let hideOptions = true;
@@ -197,6 +231,8 @@
   let selectFocused = false;
   // Get the txt of the Selected label
   let selectedLabel = "";
+  // wrapper classes
+  let wrapperClasses;
   // classes for the select
   let classes;
   // dropdown classes
@@ -232,11 +268,13 @@
   let dropdownVisible;
   // Keep current tag props in an array so they can be used easily
   let currentTagAttributes;
+  // keep track of former value so we can properly dispatch the change event
+  let formerValue;
 
   //********* TODO: config-provider RTL ******//
 
-  let store = writable({
-    optionsVisible: false,
+  let selectStore = writable({
+    optionsVisible: defaultOpen,
     searchFunction: null,
     searchValue: "",
     activeValue: "",
@@ -247,41 +285,45 @@
   });
 
   // We use this function in the option as well when it's clicked
-  $store.handleSelectPendingTag = async () => {
-    if (mode === "tags" && $store.searchValue) {
-      $store.pendingTag = null;
-      $store.searchValue = "";
-      $store.activeValue = "";
+  $selectStore.handleSelectPendingTag = async () => {
+    if (mode === "tags" && $selectStore.searchValue) {
+      $selectStore.pendingTag = null;
+      $selectStore.activeValue = "";
+      if (autoClearSearchValue) $selectStore.searchValue = "";
     }
   };
 
-  $store.updateAllOptionNodes = async () => {
+  $selectStore.updateAllOptionNodes = async () => {
     // Make sure options are up to date
     await tick();
-    $store.allOptionNodes = $store.dropdownNode.querySelectorAll(
+    $selectStore.allOptionNodes = $selectStore.dropdownNode.querySelectorAll(
       `.${prefixCls}-item-option`
     );
   };
 
-  setContext("store", store);
+  setContext("selectStore", selectStore);
 
   onMount(async () => {
-    $store.selectedValue = value;
-    $store.selectedLabel = selectedLabel;
-    $store.dropdownNode = dropdownNode;
+    $selectStore.selectedValue = value;
+    $selectStore.selectedLabel = selectedLabel;
+    $selectStore.dropdownNode = dropdownNode;
 
-    // Make sure all options all available and set them to the store
+    // Make sure all options all available and set them to the selectStore
     await tick();
-    const optionNodes = $store.dropdownNode.querySelectorAll(
+    const optionNodes = $selectStore.dropdownNode.querySelectorAll(
       `.${prefixCls}-item-option`
     );
     optionNodes.forEach(node => {
-      $store.options = [...$store.options, node.dataset.optionValue];
+      $selectStore.options = [
+        ...$selectStore.options,
+        node.dataset.optionValue
+      ];
     });
 
     // Set event listeners for key presses
     const wrapper = document.getElementById(wrapperId);
     unbindClickOutside = onClickOutside(wrapper, () => {
+      if (selectFocused) dispatch("blur");
       selectFocused = false;
       closeDropdown();
     });
@@ -296,8 +338,6 @@
     });
     unbindBackspacePress = onBackspace(handleBackspacePress);
     unbindEnterPress = onEnter(handleEnterPress);
-
-    mounted = true;
   });
 
   onDestroy(() => {
@@ -312,7 +352,7 @@
     }
   });
 
-  $: $store.mode = mode;
+  $: $selectStore.mode = mode;
 
   $: isSingleMode = !["multiple", "tags"].includes(mode);
 
@@ -320,21 +360,44 @@
     style = toStyle(style);
   }
 
+  $: if (typeof dropdownStyle !== "string") {
+    dropdownStyle = toStyle(dropdownStyle);
+  }
+
+  $: if (typeof classObj === "string") {
+    classObj = {
+      [classObj]: true
+    };
+  }
+
+  $: if (typeof dropdownClassObj === "string") {
+    dropdownClassObj = {
+      [dropdownClassObj]: true
+    };
+  }
+
   // If the user passes a search function we want the options to use it
   $: if (!searchable && isSingleMode) {
-    $store.searchFunction = null;
+    $selectStore.searchFunction = null;
   } else {
-    $store.searchFunction =
+    $selectStore.searchFunction =
       searchFunction || ((input, option) => option.label.indexOf(input) >= 0);
   }
 
   // We need to store visibilty in 2 separate variables so the transition can work
   // dropdownVisible is only used to set the '...-open' classes. Everything else uses $store.optionsVisible
-  $: if ($store.optionsVisible && !dropdownVisible) {
+  $: if (Object.keys($$props).includes("open")) {
+    dropdownVisible = $$props.open;
+    dispatch("dropdownvisiblechange", { visible: $$props.open });
+  } else if ($selectStore.optionsVisible && !dropdownVisible) {
     dropdownVisible = true;
-  } else if (!$store.optionsVisible && dropdownVisible) {
+    dispatch("dropdownvisiblechange", { visible: true });
+  } else if (!$selectStore.optionsVisible && dropdownVisible) {
     dropdownVisible = false;
+    dispatch("dropdownvisiblechange", { visible: false });
   }
+
+  $: wrapperClasses = classNames(`${prefixCls}-wrapper`, { ...classObj });
 
   $: classes = classNames(prefixCls, {
     [`${prefixCls}-single`]: isSingleMode,
@@ -352,6 +415,7 @@
   });
 
   $: dropdownClasses = classNames({
+    ...dropdownClassObj,
     [`${prefixCls}-dropdown`]: true,
     [`${prefixCls}-dropdown-placement-bottomLeft`]: true,
     [`${prefixCls}-dropdown-open`]: dropdownVisible
@@ -360,8 +424,8 @@
   $: showClearIcon =
     isInputHovered &&
     clearable &&
-    $store.selectedLabel &&
-    !($store.optionsVisible && searchable);
+    $selectStore.selectedLabel &&
+    !($selectStore.optionsVisible && searchable);
 
   $: iconWrapperClasses = classNames({
     [`${prefixCls}-arrow`]: !showClearIcon,
@@ -370,42 +434,58 @@
   });
 
   // Keep value up to date for 2 way binding
-  $: if ($store.selectedValue || $store.selectedValue === "") {
-    value = $store.selectedValue;
+  $: if ($selectStore.selectedValue || $selectStore.selectedValue === "") {
+    value = $selectStore.selectedValue;
   }
 
   // dispatch change event when the value changes
-  $: if (typeof value && mounted) {
-    dispatch("change", { value, label: $store.selectedLabel });
+  $: if (value || value === "") {
+    if (!formerValue && formerValue !== "") {
+      formerValue = value;
+    } else if (formerValue !== value) {
+      console.log("changed", formerValue, value);
+      dispatch("change", { value, label: getSelectedLabel() });
+    }
+  }
+  // use a function to fetch the label so the above
+  // watcher doesn't fire on every change to the label
+  function getSelectedLabel() {
+    return $selectStore.selectedLabel;
   }
 
-  $: if (!$store.optionsVisible) {
+  $: if (!$selectStore.optionsVisible) {
     // Allow transition to finish before clearing search
     setTimeout(() => {
-      if ($store.searchValue) $store.searchValue = "";
+      if ($selectStore.searchValue && autoClearSearchValue) {
+        $selectStore.searchValue = "";
+      }
     }, 200);
   }
 
   // When the search value changes, we need to know when
   // there are no options so that we can display an empty message
-  $: if (typeof $store.searchValue) {
-    $store.allOptionNodes =
-      $store.dropdownNode &&
-      $store.dropdownNode.querySelectorAll(`.${prefixCls}-item-option`);
+  $: if (typeof $selectStore.searchValue) {
+    $selectStore.allOptionNodes =
+      $selectStore.dropdownNode &&
+      $selectStore.dropdownNode.querySelectorAll(`.${prefixCls}-item-option`);
   }
 
   $: noOptions =
-    $store.allOptionNodes &&
-    !$store.allOptionNodes.length &&
-    !$store.pendingTag &&
-    !$store.addedTags.length;
+    $selectStore.allOptionNodes &&
+    !$selectStore.allOptionNodes.length &&
+    !$selectStore.pendingTag &&
+    !$selectStore.addedTags.length;
 
   $: showPlaceholder = (function() {
     if (!placeholder) return false;
-    if (!isSingleMode && $store.selectedValue && !$store.selectedValue.length) {
+    if (
+      !isSingleMode &&
+      $selectStore.selectedValue &&
+      !$selectStore.selectedValue.length
+    ) {
       return true;
     }
-    if (!$store.selectedValue) return true;
+    if (!$selectStore.selectedValue) return true;
   })();
 
   // Set input width as the user types to allow maximum space for selected options
@@ -416,11 +496,11 @@
     const item = document
       .getElementById(wrapperId)
       .querySelector(`.${prefixCls}`);
-    const size = calculateSize($store.searchValue, {
+    const size = calculateSize($selectStore.searchValue, {
       font: "Arial",
       fontSize: window.getComputedStyle(item).fontSize
     });
-    inputWidth = `${size.width + $store.searchValue.length}px`;
+    inputWidth = `${size.width + $selectStore.searchValue.length}px`;
   }
 
   // In multiple mode, make sure focus stays on
@@ -428,17 +508,19 @@
   $: if (
     typeof document !== "undefined" &&
     !isSingleMode &&
-    $store.selectedValue &&
-    $store.optionsVisible
+    $selectStore.selectedValue &&
+    $selectStore.optionsVisible
   ) {
     inputNode.focus();
   }
 
-  $: if (typeof $store.selectedValue === "object" && tagProps) {
-    currentTagAttributes = $store.selectedValue.map((value, index) => {
+  // A user can use the tagProps option to pass a function
+  // that will render tags with custom props
+  $: if (typeof $selectStore.selectedValue === "object" && tagProps) {
+    currentTagAttributes = $selectStore.selectedValue.map((value, index) => {
       const props = tagProps({
         value,
-        label: $store.selectedLabel[index]
+        label: $selectStore.selectedLabel[index]
       });
 
       // So we can saftely delete values without worrying
@@ -474,11 +556,24 @@
     });
   }
 
+  function tagLabelDisplayText(tagText) {
+    if (!tagText) return "";
+    if (!maxTagTextLength || tagText.length < maxTagTextLength) {
+      return tagText;
+    }
+    return (
+      tagText
+        .split("")
+        .filter((char, index) => index < maxTagTextLength)
+        .join("") + "..."
+    );
+  }
+
   // used in click outside and escape press events
   function closeDropdown() {
-    if ($store.optionsVisible) {
-      $store.pendingTag = null;
-      $store.optionsVisible = false;
+    if ($selectStore.optionsVisible) {
+      $selectStore.pendingTag = null;
+      $selectStore.optionsVisible = false;
     }
   }
 
@@ -487,30 +582,31 @@
   function onSelectClick() {
     if (!disabled) {
       selectFocused = true;
+      dispatch("focus");
 
-      const optionsArray = $store.allOptionNodes
-        ? Array.from($store.allOptionNodes)
+      const optionsArray = $selectStore.allOptionNodes
+        ? Array.from($selectStore.allOptionNodes)
         : [];
       const firstSelected = optionsArray.find(option => {
         return option.classList.contains(`${prefixCls}-item-option-selected`);
       });
 
-      if (!$store.optionsVisible) {
+      if (!$selectStore.optionsVisible) {
         if (firstSelected) {
-          $store.activeValue = firstSelected.dataset.optionValue;
+          $selectStore.activeValue = firstSelected.dataset.optionValue;
         } else {
-          $store.activeValue = $store.options[0];
+          $selectStore.activeValue = $selectStore.options[0];
         }
       }
 
-      $store.optionsVisible = true;
+      $selectStore.optionsVisible = true;
     }
   }
 
   // Clear icon is clicked
   function onClearableClicked() {
-    store.set({
-      ...$store,
+    selectStore.set({
+      ...$selectStore,
       selectedValue: "",
       selectedLabel: "",
       optionsVisible: false
@@ -519,55 +615,57 @@
 
   function removeOptionAttribute(attr, index) {
     // Need to assign with '=' so that we can use stopPropagation so that the dropdown doesn't open
-    $store[attr] = $store[attr].filter(l => l !== $store[attr][index]);
+    $selectStore[attr] = $selectStore[attr].filter(
+      l => l !== $selectStore[attr][index]
+    );
   }
 
   async function removeOption(index) {
     removeOptionAttribute("selectedValue", index);
     removeOptionAttribute("selectedLabel", index);
 
-    $store.updateAllOptionNodes();
+    $selectStore.updateAllOptionNodes();
   }
 
   async function onSearchInput() {
-    dispatch("search", $store.searchValue);
+    dispatch("search", $selectStore.searchValue);
 
-    $store.activeValue = "";
+    $selectStore.activeValue = "";
 
-    if (!$store.searchValue) {
-      $store.activeValue = $store.options[0];
+    if (!$selectStore.searchValue) {
+      $selectStore.activeValue = $selectStore.options[0];
     } else {
       await tick();
-      const firstVisibleOption = $store.allOptionNodes[0];
+      const firstVisibleOption = $selectStore.allOptionNodes[0];
       if (firstVisibleOption) {
-        $store.activeValue = firstVisibleOption.dataset.optionValue;
+        $selectStore.activeValue = firstVisibleOption.dataset.optionValue;
       }
     }
 
     // Check if the searched value is already an added tag
-    const matchingAddedTag = $store.addedTags.find(
-      tag => tag.value === $store.searchValue
+    const matchingAddedTag = $selectStore.addedTags.find(
+      tag => tag.value === $selectStore.searchValue
     );
     if (matchingAddedTag) {
-      $store.pendingTag = "";
-      $store.activeValue = matchingAddedTag.value;
+      $selectStore.pendingTag = "";
+      $selectStore.activeValue = matchingAddedTag.value;
 
       // Check if search was cleared and there is a pending tag
-    } else if (!$store.searchValue && $store.pendingTag) {
-      $store.pendingTag = "";
+    } else if (!$selectStore.searchValue && $selectStore.pendingTag) {
+      $selectStore.pendingTag = "";
 
       // check if we need to add a pending tag
     } else if (
       mode === "tags" &&
-      !$store.options.includes($store.searchValue)
+      !$selectStore.options.includes($selectStore.searchValue)
     ) {
-      $store.pendingTag = $store.searchValue;
-      $store.activeValue = $store.pendingTag;
+      $selectStore.pendingTag = $selectStore.searchValue;
+      $selectStore.activeValue = $selectStore.pendingTag;
     }
   }
 
   function handleArrowPress(event, key) {
-    if ($store.optionsVisible) {
+    if (selectFocused && $selectStore.optionsVisible) {
       event.preventDefault();
       navigateDropdown(key);
     }
@@ -601,26 +699,26 @@
   }
 
   function navigateDropdown(key) {
-    let activeDomOption = $store.dropdownNode.querySelector(
+    let activeDomOption = $selectStore.dropdownNode.querySelector(
       `.${prefixCls}-item-option-active`
     );
 
     // If there is no active option we still want arrows to work
     if (!activeDomOption) {
-      $store.allOptionNodes = $store.dropdownNode.querySelectorAll(
+      $selectStore.allOptionNodes = $selectStore.dropdownNode.querySelectorAll(
         `.${prefixCls}-item-option`
       );
-      if ($store.allOptionNodes.length && key === "ArrowUp") {
-        activeDomOption = $store.allOptionNodes[0];
+      if ($selectStore.allOptionNodes.length && key === "ArrowUp") {
+        activeDomOption = $selectStore.allOptionNodes[0];
       } else {
         activeDomOption =
-          $store.allOptionNodes[$store.allOptionNodes.length - 1];
+          $selectStore.allOptionNodes[$selectStore.allOptionNodes.length - 1];
       }
     }
 
     // If there is only one option make it active
-    if ($store.allOptionNodes.length === 1) {
-      $store.activeValue = activeDomOption.dataset.optionValue;
+    if ($selectStore.allOptionNodes.length === 1) {
+      $selectStore.activeValue = activeDomOption.dataset.optionValue;
       return;
     }
 
@@ -629,15 +727,15 @@
 
     // Infinitly navigate through the list
     let localScrollBehavior = "smooth";
-    if (!previousDomOption && $store.allOptionNodes.length > 1) {
+    if (!previousDomOption && $selectStore.allOptionNodes.length > 1) {
       localScrollBehavior = "auto";
       const lastOption =
-        $store.allOptionNodes[$store.allOptionNodes.length - 1];
+        $selectStore.allOptionNodes[$selectStore.allOptionNodes.length - 1];
       previousDomOption = lastOption;
     }
-    if (!nextDomOption && $store.allOptionNodes.length > 1) {
+    if (!nextDomOption && $selectStore.allOptionNodes.length > 1) {
       localScrollBehavior = "auto";
-      const firstOption = $store.allOptionNodes[0];
+      const firstOption = $selectStore.allOptionNodes[0];
       nextDomOption = firstOption;
     }
 
@@ -645,14 +743,14 @@
     const nextValue = findNonDisabledValue("next", nextDomOption);
 
     if (key === "ArrowUp" && previousDomOption) {
-      $store.activeValue = previousValue;
+      $selectStore.activeValue = previousValue;
       previousDomOption.scrollIntoView({
         behavior: localScrollBehavior,
         block: "nearest",
         inline: "start"
       });
     } else if (key === "ArrowDown" && nextDomOption) {
-      $store.activeValue = nextValue;
+      $selectStore.activeValue = nextValue;
       nextDomOption.scrollIntoView({
         behavior: localScrollBehavior,
         block: "nearest",
@@ -662,15 +760,20 @@
   }
 
   function handleBackspacePress() {
-    if (!isSingleMode && $store.selectedValue.length && !$store.searchValue) {
+    if (
+      selectFocused &&
+      !isSingleMode &&
+      $selectStore.selectedValue.length &&
+      !$selectStore.searchValue
+    ) {
       // Check if input has focus
       if (document.activeElement === inputNode) {
-        const index = $store.selectedValue.length - 1;
+        const index = $selectStore.selectedValue.length - 1;
 
         // Make sure to remove added tags
-        if ($store.addedTags.length) {
-          $store.addedTags = $store.addedTags.filter(
-            tag => tag.value !== $store.selectedValue[index]
+        if ($selectStore.addedTags.length) {
+          $selectStore.addedTags = $selectStore.addedTags.filter(
+            tag => tag.value !== $selectStore.selectedValue[index]
           );
         }
 
@@ -680,61 +783,67 @@
   }
 
   function handleEnterPress() {
-    if (!$store.optionsVisible && selectFocused) {
-      $store.optionsVisible = true;
+    if (!selectFocused) return;
+
+    if (!$selectStore.optionsVisible && selectFocused) {
+      $selectStore.optionsVisible = true;
       return;
     }
 
     inputNode && inputNode.blur();
 
-    const activeNode = $store.dropdownNode.querySelector(
+    const activeNode = $selectStore.dropdownNode.querySelector(
       `.${prefixCls}-item-option-active`
     );
     if (
-      $store.optionsVisible &&
+      $selectStore.optionsVisible &&
       activeNode &&
       !activeNode.classList.contains(`${prefixCls}-item-option-disabled`)
     ) {
       const value = activeNode.dataset.optionValue;
       const label = activeNode.dataset.optionLabel;
 
-      $store.handleSelectPendingTag();
+      $selectStore.handleSelectPendingTag();
 
       if (isSingleMode) {
-        $store.selectedValue = value;
-        $store.selectedLabel = label;
-        $store.optionsVisible = false;
-      } else if ($store.selectedValue.includes(value)) {
+        $selectStore.selectedValue = value;
+        $selectStore.selectedLabel = label;
+        $selectStore.optionsVisible = false;
+      } else if ($selectStore.selectedValue.includes(value)) {
         // already selected - remove it
-        $store.selectedValue = $store.selectedValue.filter(v => v !== value);
-        $store.selectedLabel = $store.selectedLabel.filter(l => l !== label);
+        $selectStore.selectedValue = $selectStore.selectedValue.filter(
+          v => v !== value
+        );
+        $selectStore.selectedLabel = $selectStore.selectedLabel.filter(
+          l => l !== label
+        );
 
-        $store.searchValue = "";
+        if (autoClearSearchValue) $selectStore.searchValue = "";
 
-        if ($store.addedTags.length) {
-          $store.addedTags = $store.addedTags.filter(
+        if ($selectStore.addedTags.length) {
+          $selectStore.addedTags = $selectStore.addedTags.filter(
             tag => tag.value !== value
           );
         }
       } else {
         // select in multiple mode
-        $store.selectedValue = [...$store.selectedValue, value];
-        $store.selectedLabel = [...$store.selectedLabel, label];
+        $selectStore.selectedValue = [...$selectStore.selectedValue, value];
+        $selectStore.selectedLabel = [...$selectStore.selectedLabel, label];
 
-        $store.searchValue = "";
+        if (autoClearSearchValue) $selectStore.searchValue = "";
 
         if (
           mode === "tags" &&
-          !$store.options.find(option => option === value)
+          !$selectStore.options.find(option => option === value)
         ) {
-          $store.addedTags = [
-            ...$store.addedTags,
+          $selectStore.addedTags = [
+            ...$selectStore.addedTags,
             { value, label: value, id: nanoid() }
           ];
         }
       }
     }
-    $store.updateAllOptionNodes();
+    $selectStore.updateAllOptionNodes();
   }
 </script>
 

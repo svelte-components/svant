@@ -20,7 +20,7 @@
   ];
   let value = ["gold", "cyan"];
 
-  // Takes the option as an argument. Should return tag props and can include an onClose function
+  // Takes the option as an argument. Should return tag props and can include an onClose and onClick functions
   const tagProps = option => {
     return {
       color: option.value,
