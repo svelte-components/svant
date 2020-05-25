@@ -1,7 +1,9 @@
 <Select
   bind:value="{selected1}"
   style="{{ width: 120 }}"
-  on:change="{onChange}">
+  on:change="{onChange}"
+  class="my-select-wrapper"
+  dropdownClass="my-dropdown">
   <Option value="jack" label="Jack" />
   <Option value="lucy" label="Lucy" />
   <Option value="disabled" label="Disabled" disabled />
@@ -18,7 +20,11 @@
   <Option value="lucy" label="Lucy" />
 </Select>
 
-<Select bind:value="{selected4}" style="{{ width: 120 }}" clearable>
+<Select
+  bind:value="{selected4}"
+  style="{{ width: 120 }}"
+  dropdownStyle="{{ width: 100 }}"
+  clearable>
   <Option value="lucy" label="Lucy" />
 </Select>
 

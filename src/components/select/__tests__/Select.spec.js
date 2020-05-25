@@ -1,26 +1,56 @@
-import {
-  render,
-  clearContext,
-  delay,
-  pressKey
-} from "@/components/_util/testHelpers";
+import { render, delay, pressKey } from "@/components/_util/testHelpers";
 import { fireEvent } from "@testing-library/svelte";
+import { tick } from "svelte";
 import Select from "../Select.svelte";
+import Option from "../Option.svelte";
 import SelectBasic from "examples/select/demos/basic.demo.svelte";
 import SelectSearch from "examples/select/demos/search.demo.svelte";
 import SelectMultiple from "examples/select/demos/multiple.demo.svelte";
 import SelectTags from "examples/select/demos/tags.demo.svelte";
 import SelectOptionGroups from "examples/select/demos/option-group.demo.svelte";
+import SelectCustomTags from "examples/select/demos/custom-tags.demo.svelte";
+import SmileOutlined from "../../icons/SmileOutlined.svelte";
 
+// Mock for JSDOM
 Element.prototype.scrollIntoView = jest.fn();
 
 const renderAndOpenSelect = async example => {
   const { container, component } = render(example);
-  await delay(300);
+  await tick();
   const select = container.querySelector(".ant-select");
   const dropdown = container.querySelector(".ant-select-dropdown");
   await fireEvent.click(select);
   return { container, component, select, dropdown };
+};
+
+const createStandardSelect = async (extraProps = {}) => {
+  let options = [];
+  const { container, component } = render(Select, {
+    value: ["testing"],
+    ...extraProps,
+    $$slots: {
+      default: [
+        {
+          component: Option,
+          options: { value: "testing", label: "testing" },
+          renderResults: ({ container }) => {
+            options = [...options, container];
+          }
+        },
+        {
+          component: Option,
+          options: { value: "testing2", label: "testing2" },
+          renderResults: ({ container }) => {
+            options = [...options, container];
+          }
+        }
+      ]
+    }
+  });
+  await tick();
+  const select = container.querySelector(".ant-select");
+  const dropdown = container.querySelector(".ant-select-dropdown");
+  return { container, component, select, dropdown, options };
 };
 
 describe("Select component", () => {
@@ -35,7 +65,6 @@ describe("Select component", () => {
 
   afterEach(() => {
     console = { ...originalConsole };
-    clearContext();
   });
 
   test("basic functionality", async () => {
@@ -77,7 +106,7 @@ describe("Select component", () => {
 
   test("whole select disabled", async () => {
     const { container } = render(SelectBasic);
-    await delay(300);
+    await tick();
     const select = container.querySelectorAll(".ant-select")[1];
     expect(select.className).toContain("disabled");
     await fireEvent.click(select);
@@ -86,14 +115,14 @@ describe("Select component", () => {
 
   test("loading icon", async () => {
     const { container } = render(SelectBasic);
-    await delay(300);
+    await tick();
     const select = container.querySelectorAll(".ant-select")[2];
     expect(select.innerHTML).toContain("ant-select-arrow-loading");
   });
 
   test("clearable", async () => {
     const { container } = render(SelectBasic);
-    await delay(300);
+    await tick();
     const select = container.querySelectorAll(".ant-select")[3];
     const dropdown = container.querySelectorAll(".ant-select-dropdown")[3];
     expect(select.innerHTML).not.toContain("anticon-close-circle");
@@ -138,7 +167,7 @@ describe("Select component", () => {
 
   test("close on click outside", async () => {
     const { container } = render(SelectBasic);
-    await delay(300);
+    await tick();
     const selects = container.querySelectorAll(".ant-select");
     await fireEvent.click(selects[0]);
     const dropdown = container.querySelectorAll(".ant-select-dropdown")[0];
@@ -150,7 +179,7 @@ describe("Select component", () => {
 
   test("close on escape press", async () => {
     const { container } = render(SelectBasic);
-    await delay(300);
+    await tick();
     const selects = container.querySelectorAll(".ant-select");
     await fireEvent.click(selects[0]);
     const dropdown = container.querySelectorAll(".ant-select-dropdown")[0];
@@ -178,10 +207,27 @@ describe("Select component", () => {
       await fireEvent.click(
         dropdown.querySelectorAll(".ant-select-item-option")[1]
       );
+      // Wait for transition
       await delay(300);
       expect(
         select.querySelectorAll(".ant-select-selection-item").length
       ).toEqual(2);
+    });
+
+    test("display a maximum amount of selected options in the input", async () => {
+      const { select, dropdown } = await renderAndOpenSelect(SelectMultiple);
+      // selecting more than the max (3) should not display all the options
+      await fireEvent.click(
+        dropdown.querySelectorAll(".ant-select-item-option")[5]
+      );
+      await fireEvent.click(
+        dropdown.querySelectorAll(".ant-select-item-option")[6]
+      );
+      const displayedTags = select.querySelectorAll(
+        ".ant-select-selection-item"
+      );
+      expect(displayedTags.length).toEqual(3);
+      expect(select.innerHTML).toContain("+ 1 ...");
     });
 
     test("can search", async () => {
@@ -202,6 +248,7 @@ describe("Select component", () => {
         select.querySelectorAll(".ant-select-selection-item").length
       ).toEqual(2);
       await pressKey({ key: "Backspace", which: 8 });
+      // Wait for transition
       await delay(300);
       expect(
         select.querySelectorAll(".ant-select-selection-item").length
@@ -220,13 +267,14 @@ describe("Select component", () => {
 
     test("tag close icon removes option", async () => {
       const { container } = render(SelectMultiple);
-      await delay(300);
+      await tick();
       const select = container.querySelector(".ant-select");
       expect(
         select.querySelectorAll(".ant-select-selection-item").length
       ).toEqual(2);
       expect(select.innerHTML).toContain("anticon-close");
       await fireEvent.click(select.querySelector(".anticon-close"));
+      // Wait for transition
       await delay(300);
       expect(
         select.querySelectorAll(".ant-select-selection-item").length
@@ -413,5 +461,111 @@ describe("Select component", () => {
   test("borderless option", () => {
     const { container } = render(Select, { value: "", borderless: true });
     expect(container.innerHTML).toContain("ant-select-borderless");
+  });
+
+  test("custom tag rendering", async () => {
+    const mockLog = jest.fn();
+    console.log = mockLog;
+    const { select, dropdown } = await renderAndOpenSelect(SelectCustomTags);
+    const goldTag = select.querySelector(".ant-tag-gold");
+
+    // onClick should add the click event
+    await fireEvent.click(goldTag);
+    expect(console.log).toHaveBeenCalledWith("gold clicked");
+
+    // tag should remove the option
+    expect(
+      dropdown.querySelectorAll(".ant-select-item-option-selected").length
+    ).toEqual(2);
+    const closeGold = goldTag.querySelector(".anticon-close");
+    await fireEvent.click(closeGold);
+    await delay(200);
+    expect(
+      dropdown.querySelectorAll(".ant-select-item-option-selected").length
+    ).toEqual(1);
+    // onClose should have fired
+    expect(console.log).toHaveBeenCalledWith("gold option removed");
+  });
+
+  test("max tag label characters display length", async () => {
+    const { container } = await createStandardSelect({
+      maxTagTextLength: 3,
+      mode: "multiple"
+    });
+    expect(
+      container.querySelector(".ant-select-selection-item").innerHTML
+    ).toContain("tes...");
+  });
+
+  test("custom suffixIcon", async () => {
+    const { select } = await createStandardSelect({
+      suffixIcon: SmileOutlined
+    });
+    expect(select.innerHTML).toContain("anticon-smile");
+  });
+
+  test("custom clearIcon", async () => {
+    const { select } = await createStandardSelect({
+      clearIcon: SmileOutlined,
+      clearable: true
+    });
+    expect(select.innerHTML).not.toContain("anticon-smile");
+    await fireEvent.mouseEnter(select);
+    expect(select.innerHTML).toContain("anticon-smile");
+  });
+
+  test("default open options starts with open dropdown", async () => {
+    const { dropdown } = await createStandardSelect({ defaultOpen: true });
+    expect(dropdown.className).toContain("ant-select-dropdown-open");
+  });
+
+  test("controlled dropdown open state", async () => {
+    const { select, dropdown, component } = await createStandardSelect({
+      open: false
+    });
+    expect(dropdown.className).not.toContain("ant-select-dropdown-open");
+    await fireEvent.click(select);
+    // should still be closed
+    expect(dropdown.className).not.toContain("ant-select-dropdown-open");
+
+    component.$set({ open: true });
+    await tick();
+    expect(dropdown.className).toContain("ant-select-dropdown-open");
+    await fireEvent.click(select);
+    // should still be closed
+    expect(dropdown.className).toContain("ant-select-dropdown-open");
+  });
+
+  test("focus event", async () => {
+    const onFocus = jest.fn();
+    const { component, select } = await createStandardSelect();
+    component.$on("focus", onFocus);
+    await fireEvent.click(select);
+    expect(onFocus).toHaveBeenCalled();
+  });
+
+  test("search event", async () => {
+    const onSearch = jest.fn();
+    const { component, select } = await createStandardSelect({
+      searchable: true
+    });
+    component.$on("search", onSearch);
+    const input = select.querySelector("input");
+    await fireEvent.input(input, { target: { value: "j" } });
+    await tick();
+    expect(onSearch).toHaveBeenCalled();
+  });
+
+  test("dropdown visible change event", async () => {
+    const onDropdownVisibleChange = jest.fn();
+    const { component, select, options } = await createStandardSelect();
+    component.$on("dropdownvisiblechange", onDropdownVisibleChange);
+    await fireEvent.click(select);
+    await tick();
+    expect(onDropdownVisibleChange).toHaveBeenCalledTimes(1);
+    // the event should fire on close too
+    component.$set({ open: false });
+    await tick();
+    expect(onDropdownVisibleChange).toHaveBeenCalledTimes(2);
   });
 });

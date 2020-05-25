@@ -6,12 +6,12 @@
     data-option-label="{label}"
     on:click="{onClick}"
     on:mouseenter="{() => {
-      $store.activeValue = value;
+      $selectStore.activeValue = value;
     }}">
     <div class="ant-select-item-option-content">
       <slot>{label}</slot>
     </div>
-    {#if ['multiple', 'tags'].includes($store.mode) && isSelected}
+    {#if ['multiple', 'tags'].includes($selectStore.mode) && isSelected}
       <span
         class="ant-select-item-option-state"
         unselectable="on"
@@ -46,7 +46,7 @@
   // ********************** /Props **********************
 
   // Context for the whole select
-  let store = getContext("store");
+  let selectStore = getContext("selectStore");
   // Whether this option is the currently selected one
   let isSelected;
   // Need to know if it's the first item selected to determine if it should be active
@@ -61,36 +61,37 @@
   onMount(async () => {
     await tick();
 
-    if ($store.selectedValue === value) {
-      $store.selectedLabel = label;
+    if ($selectStore.selectedValue === value) {
+      $selectStore.selectedLabel = label;
     } else if (
-      $store.selectedValue &&
+      $selectStore.selectedValue &&
       // multiple mode check if it's one of the selected options
-      typeof $store.selectedValue === "object" &&
-      $store.selectedValue.indexOf(value) >= 0 &&
+      typeof $selectStore.selectedValue === "object" &&
+      $selectStore.selectedValue.indexOf(value) >= 0 &&
       // We don't want duplicate labels if this is an added tag
-      $store.addedTags &&
-      !$store.addedTags.find(tag => tag.value === value)
+      $selectStore.addedTags &&
+      !$selectStore.addedTags.find(tag => tag.value === value)
     ) {
-      $store.selectedLabel = [...$store.selectedLabel, label];
+      $selectStore.selectedLabel = [...$selectStore.selectedLabel, label];
     }
 
     // In multiple mode, we want to make sure that the first selected option starts as the active one
     if (isFirstSelected) {
-      $store.activeValue = value;
+      $selectStore.activeValue = value;
     }
   });
 
   $: isSelected =
-    $store.selectedValue &&
-    ($store.selectedValue === value ||
-      $store.selectedValue.indexOf(value) >= 0);
+    $selectStore.selectedValue &&
+    ($selectStore.selectedValue === value ||
+      $selectStore.selectedValue.indexOf(value) >= 0);
 
   $: isFirstSelected =
     isSelected &&
-    ($store.selectedValue === value || $store.selectedValue[0] === value);
+    ($selectStore.selectedValue === value ||
+      $selectStore.selectedValue[0] === value);
 
-  $: isActive = $store.activeValue === value;
+  $: isActive = $selectStore.activeValue === value;
 
   $: classes = classNames({
     [`${prefixCls}-item`]: true,
@@ -101,53 +102,59 @@
   });
 
   // Update visibility based on search value and function
-  $: if (!$store.searchValue) {
+  $: if (!$selectStore.searchValue) {
     visible = true;
   } else {
-    visible = $store.searchFunction($store.searchValue, { label, value });
+    visible = $selectStore.searchFunction($selectStore.searchValue, {
+      label,
+      value
+    });
   }
 
   function onClick() {
     if (!disabled) {
-      $store.handleSelectPendingTag();
+      $selectStore.handleSelectPendingTag();
 
-      const isSingleMode = !["multiple", "tags"].includes($store.mode);
+      const isSingleMode = !["multiple", "tags"].includes($selectStore.mode);
       if (!isSingleMode && isSelected) {
-        store.set({
-          ...$store,
-          selectedValue: $store.selectedValue.filter(v => v !== value),
-          selectedLabel: $store.selectedLabel.filter(l => l !== label),
+        selectStore.set({
+          ...$selectStore,
+          selectedValue: $selectStore.selectedValue.filter(v => v !== value),
+          selectedLabel: $selectStore.selectedLabel.filter(l => l !== label),
           searchValue: ""
         });
 
-        if ($store.addedTags.length) {
-          $store.addedTags = $store.addedTags.filter(
+        if ($selectStore.addedTags.length) {
+          $selectStore.addedTags = $selectStore.addedTags.filter(
             tag => tag.value !== value
           );
         }
       } else if (!isSingleMode) {
-        if ($store.mode === "tags" && !$store.options.includes(value)) {
-          $store.addedTags = [
-            ...$store.addedTags,
+        if (
+          $selectStore.mode === "tags" &&
+          !$selectStore.options.includes(value)
+        ) {
+          $selectStore.addedTags = [
+            ...$selectStore.addedTags,
             { value, label, id: nanoid() }
           ];
         }
 
-        store.set({
-          ...$store,
-          selectedValue: [...$store.selectedValue, value],
-          selectedLabel: [...$store.selectedLabel, label],
+        selectStore.set({
+          ...$selectStore,
+          selectedValue: [...$selectStore.selectedValue, value],
+          selectedLabel: [...$selectStore.selectedLabel, label],
           searchValue: ""
         });
       } else {
-        store.set({
-          ...$store,
+        selectStore.set({
+          ...$selectStore,
           selectedValue: value,
           selectedLabel: label,
           optionsVisible: false
         });
       }
     }
-    $store.updateAllOptionNodes();
+    $selectStore.updateAllOptionNodes();
   }
 </script>

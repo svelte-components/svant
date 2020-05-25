@@ -3,7 +3,8 @@
   style="{{ width: 300 }}"
   placeholder="Please select"
   bind:value
-  on:change="{handleChange}">
+  on:change="{handleChange}"
+  maxTagDisplayCount="{3}">
   {#each options as option (option.value)}
     <Option value="{option.value}" label="{option.label}" />
   {/each}

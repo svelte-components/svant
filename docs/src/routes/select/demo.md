@@ -125,18 +125,13 @@ A Select component to select values from a list of options.
   </div>
 </Example>
 
-<!--
-   TODO:
-    - Tests for Custom tags
-    - scope key events (not body??)
-    - API tables
--->
-
-<!-- TODO: Automatic Tokenization https://ant.design/components/select/#components-select-demo-automatic-tokenization -->
-
 ## API
 
-<DocsTable {...attributesData}/>
+<DocsTable {...selectAttributesData}/>
+<DocsTable {...optionAttributesData}/>
+<DocsTable {...optionGroupAttributesData}/>
+<DocsTable {...selectEventData}/>
+<DocsTable {...slotsData}/>
 
 <script>
   import Example from 'docs/src/components/Example.svelte';
@@ -178,15 +173,247 @@ A Select component to select values from a list of options.
   import CustomTagsCode from './demos/custom-tags.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
-  const attributesData = {
-    title: 'Attributes',
+  const selectAttributesData = {
+    title: 'Select Attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
       {
-        property: 'test',
-        description: 'test description',
+        property: 'value',
+        description: 'The current value of the select. Can be used for 2 way binding: `bind:value`.',
+        type: 'String|Array',
+        default: '-'
+      },
+      {
+        property: 'style',
+        description: 'Style string or style object (e.x. `style={{ fontSize: 18 }}`) for the Select wrapper.',
+        type: 'String|Object',
+        default: '-'
+      },
+      {
+        property: 'class',
+        description: "Class name or class object (e.x. `class={{ 'abc':true }}`) for the Select wrapper.",
+        type: 'String|Object',
+        default: '-'
+      },
+      {
+        property: 'dropdownClass',
+        description: "Class name or class object (e.x. `class={{ 'abc':true }}`) for the dropdown.",
+        type: 'String|Object',
+        default: '-'
+      },
+      {
+        property: 'dropdownStyle',
+        description: "Style string or style object (e.x. `style={{ fontSize: 18 }}`) for the dropdown.",
+        type: 'String|Object',
+        default: '-'
+      },
+      {
+        property: 'dropdownHeight',
+        description: "Max height of the dropdown. Overflow will be scrollable",
         type: 'String',
-        default: 'test'
+        default: '256px'
+      },
+      {
+        property: 'disabled',
+        description: 'Whether or not the Select is interactive.',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'loading',
+        description: 'Whether the loading spinner should show.',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'clearable',
+        description: 'Whether the close icon will show when the Select is hovered on. When clicked it will clear the value.',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'autoClearSearchValue',
+        description: 'Whether the current search will be cleared on selecting an item. Only applies `when` mode is set to `multiple` or `tags`.',
+        type: 'Boolean',
+        default: 'true'
+      },
+      {
+        property: 'placeholder',
+        description: 'The placeholder to show if there is no value.',
+        type: 'String',
+        default: '-'
+      },
+      {
+        property: 'searchable',
+        description: 'Whether the select has a search input in single mode to filter the options displayed.',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'searchFunction',
+        description: 'Custom search function used together with the `searchable` prop. It takes the `searchInput` and the `option` as arguments and will be used to search in place of the default label only search. If the function returns `true` for a given option, it wil be displayed.',
+        type: 'Function',
+        default: 'function that searches for a matching label'
+      },
+      {
+        property: 'mode',
+        description: 'The select mode. Allowed values are `single`, `multiple`, and `tags`. See the examples above for details.',
+        type: 'String',
+        default: 'single'
+      },
+      {
+        property: 'size',
+        description: 'The size of the Select input. Valid values are `small`, `default`, and `large`.',
+        type: 'String',
+        default: 'default'
+      },
+      {
+        property: 'showEmptyMessage',
+        description: 'Whether to show the "No options" message in the dropdown when there are no options available.',
+        type: 'Boolean',
+        default: 'true'
+      },
+      {
+        property: 'borderless',
+        description: 'Makes the Select input render with no borders so it looks like plain text with chevron down icon.',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'tagProps',
+        description: 'A function used in `tags` mode that will render tags with custom props. It takes the option as an argument and should return tag props. It can also include onClose and onClick functions.',
+        type: 'Function',
+        default: '-'
+      },
+      {
+        property: 'maxTagDisplayCount',
+        description: 'The maximum amount of tags to show in the input when in `multiple` or `tags` mode.',
+        type: 'Number',
+        default: '-'
+      },
+      {
+        property: 'maxTagTextLength',
+        description: 'The maximum amount of characters for a display tag in `multiple` or `tags` mode. An ellipses will be shown if there are more characters.',
+        type: 'Number',
+        default: '-'
+      },
+      {
+        property: 'showArrow',
+        description: 'Whether to show the drop-down arrow.',
+        type: 'Boolean',
+        default: 'true'
+      },
+      {
+        property: 'suffixIcon',
+        description: 'Custom icon in place of the arrow in the select input.',
+        type: 'SvelteComponent',
+        default: 'DownOutlined'
+      },
+      {
+        property: 'clearIcon',
+        description: 'Clear icon to use when the Select is clearable and the user hovers over the select.',
+        type: 'SvelteComponent',
+        default: 'CloseCircleFilled'
+      },
+      {
+        property: 'defaultOpen',
+        description: 'Initial open state of the dropdown.',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'open',
+        description: 'Controlled open state of the dropdown.',
+        type: 'Boolean',
+        default: '-'
+      }
+    ]
+  }
+
+  const optionAttributesData = {
+    title: 'Option Attributes',
+    columns: ['Property', 'Description', 'Type', 'Default'],
+    data: [
+      {
+        property: 'value',
+        description: 'Value of the option.',
+        type: 'String',
+        default: '-'
+      },
+      {
+        property: 'label',
+        description: 'Label of the option',
+        type: 'String',
+        default: '-'
+      },
+      {
+        property: 'disabled',
+        description: 'Disabled state of the option',
+        type: 'Boolean',
+        default: 'false'
+      }
+    ]
+  }
+
+  const optionGroupAttributesData = {
+    title: 'OptionGroup Attributes',
+    columns: ['Property', 'Description', 'Type', 'Default'],
+    data: [
+      {
+        property: 'label',
+        description: 'The OptionGroup label',
+        type: 'String',
+        default: '-'
+      }
+    ]
+  }
+
+  const selectEventData = {
+    title: 'Select Events',
+    columns: ['Name', 'Description'],
+    data: [
+      {
+        name: 'change',
+        description: 'The Select\'s value changed.'
+      },
+      {
+        name: 'blur',
+        description: 'The user clicked away from the Select.'
+      },
+      {
+        name: 'focus',
+        description: 'The user focused the Select.'
+      },
+      {
+        name: 'search',
+        description: 'The user typed a character into the search input.'
+      },
+      {
+        name: 'dropdownvisiblechange',
+        description: 'The dropdown is opened or closed.'
+      }
+    ]
+  };
+
+
+  const slotsData = {
+    title: 'Slots',
+    columns: ['Name', 'Description', 'Component'],
+    data: [
+      {
+        name: 'default (no name needed)',
+        description: 'The default slot for Select expects options, but any custom content can be added in there as well together with the options. See the above "Custom Dropdown Content" section for an example.',
+        component: 'Select'
+      },
+      {
+        name: 'no-options',
+        description: 'Custom content to display when there are no options. Generally used for when search results come up empty.',
+        component: 'Select'
+      },
+      {
+        name: 'default (no name needed)',
+        description: 'Custom content to display for the Option inside the dropdown. If no content is put in the default slot, the option will render the label. See the above "Custom Selection Display" section for an example.',
+        component: 'Option'
       }
     ]
   }
