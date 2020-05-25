@@ -169,6 +169,8 @@
   export let size = null;
   // Whether to show the empty message if there are no options
   export let showEmptyMessage = true;
+  // Allow a borderless verison
+  export let borderless = false;
 
   // ********************** /Props **********************
 
@@ -329,7 +331,8 @@
     [`${prefixCls}-disabled`]: disabled,
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-allow-clear`]: clearable,
-    [`${prefixCls}-show-search`]: searchable || !isSingleMode
+    [`${prefixCls}-show-search`]: searchable || !isSingleMode,
+    [`${prefixCls}-borderless`]: borderless
   });
 
   $: dropdownClasses = classNames({

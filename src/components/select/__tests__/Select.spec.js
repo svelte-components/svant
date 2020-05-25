@@ -409,4 +409,9 @@ describe("Select component", () => {
       dropdown.querySelector(".ant-select-item-option-active")
     ).toBeTruthy();
   });
+
+  test("borderless option", () => {
+    const { container } = render(Select, { value: "", borderless: true });
+    expect(container.innerHTML).toContain("ant-select-borderless");
+  });
 });
