@@ -11,23 +11,34 @@
     <div class="{prefixCls}-selector">
       {#if !isSingleMode && $store.selectedValue}
         {#each $store.selectedValue as value, index (value)}
-          <span
-            class="{prefixCls}-selection-item"
-            transition:fadeScale="{{ duration: 200, easing: cubicInOut, baseScale: 0.5 }}">
-            <span class="{prefixCls}-selection-item-content">
-              {$store.selectedLabel[index]}
-            </span>
+          {#if tagProps}
             <span
-              class="{prefixCls}-selection-item-remove"
-              on:click|stopPropagation="{() => {
-                removeOption(index);
-              }}"
-              unselectable="on"
-              aria-hidden="true"
-              style="user-select: none;">
-              <CloseOutlined />
+              on:click|stopPropagation="{currentTagAttributes[index].onClick}">
+              <Tag
+                {...currentTagAttributes[index].props}
+                on:close="{currentTagAttributes[index].onClose}">
+                {$store.selectedLabel[index]}
+              </Tag>
             </span>
-          </span>
+          {:else}
+            <span
+              class="{prefixCls}-selection-item"
+              transition:fadeScale="{{ duration: 200, easing: cubicInOut, baseScale: 0.5 }}">
+              <span class="{prefixCls}-selection-item-content">
+                {$store.selectedLabel[index]}
+              </span>
+              <span
+                class="{prefixCls}-selection-item-remove"
+                on:click|stopPropagation="{() => {
+                  removeOption(index);
+                }}"
+                unselectable="on"
+                aria-hidden="true"
+                style="user-select: none;">
+                <CloseOutlined />
+              </span>
+            </span>
+          {/if}
         {/each}
       {/if}
       {#if searchable || !isSingleMode}
@@ -131,6 +142,7 @@
     onEnter
   } from "@/components/_util/events";
   import Option from "./Option.svelte";
+  import Tag from "../tag/Tag.svelte";
   import { fadeScale } from "@/components/_util/transitions";
   import { cubicInOut } from "svelte/easing";
   import { nanoid } from "nanoid";
@@ -171,6 +183,8 @@
   export let showEmptyMessage = true;
   // Allow a borderless verison
   export let borderless = false;
+  // Custom tag props function for multiple and tags mode
+  export let tagProps = null;
 
   // ********************** /Props **********************
 
@@ -216,6 +230,8 @@
   let inputNode;
   // For the dropdown transition to work properly we store dropdownVisible in a separate variable
   let dropdownVisible;
+  // Keep current tag props in an array so they can be used easily
+  let currentTagAttributes;
 
   //********* TODO: config-provider RTL ******//
 
@@ -416,6 +432,46 @@
     $store.optionsVisible
   ) {
     inputNode.focus();
+  }
+
+  $: if (typeof $store.selectedValue === "object" && tagProps) {
+    currentTagAttributes = $store.selectedValue.map((value, index) => {
+      const props = tagProps({
+        value,
+        label: $store.selectedLabel[index]
+      });
+
+      // So we can saftely delete values without worrying
+      // about references when we want to call a function
+      const propsCopy = { ...props };
+
+      let onClose = () => {};
+      if (props.onClose) {
+        onClose = event => {
+          propsCopy.onClose(event);
+          removeOption(index);
+        };
+        delete props.onClose;
+      }
+
+      let onClick = () => {};
+      if (props.onClick) {
+        onClick = propsCopy.onClick;
+        delete props.onClick;
+      }
+
+      const propsKeys = Object.keys(props);
+
+      if (!propsKeys.includes("closable")) {
+        props.closable = true;
+      }
+
+      if (!propsKeys.includes("visible")) {
+        props.visible = true;
+      }
+
+      return { props, onClick, onClose };
+    });
   }
 
   // used in click outside and escape press events

@@ -114,9 +114,21 @@ A Select component to select values from a list of options.
   </p>
 </Example>
 
+<Example
+  id="select-demo-custom-tags"
+  title="Custom Tags"
+  demoComponent="{CustomTags}"
+  demoCode="{CustomTagsCode}">
+  <div slot="description">
+    <p>The tags displayed in the Select input in multiple or tags mode can be customized using the `tagProps` function. It should return the props to be added to the tag (color, icon).</p>
+    <p>`onClick` and `onClose` functions can be added as well.</p>
+  </div>
+</Example>
+
 <!--
    TODO:
-    - Custom tags
+    - Tests for Custom tags
+    - scope key events (not body??)
     - API tables
 -->
 
@@ -161,6 +173,9 @@ A Select component to select values from a list of options.
 
   import Borderless from './demos/borderless.demo.svelte'
   import BorderlessCode from './demos/borderless.demo.txt'
+
+  import CustomTags from './demos/custom-tags.demo.svelte'
+  import CustomTagsCode from './demos/custom-tags.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
   const attributesData = {
