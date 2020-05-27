@@ -56,10 +56,40 @@ Description of the Divider's function.
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
       {
-        property: 'test',
-        description: 'test description',
-        type: 'String',
-        default: 'test'
+        property: 'type',
+        description: 'Direction if the divider.',
+        type: 'horizontal | vertical',
+        default: 'horizontal'
+      },
+      {
+        property: 'dashed',
+        description: 'Whether the line is dashed.',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'orientation',
+        description: 'Position of the title inside the divider.',
+        type: 'left | right | center',
+        default: 'center'
+      },
+      {
+        property: 'plain',
+        description: 'Makes the title inside the divider is plain text instead of a heading.',
+        type: 'Boolean',
+        default: 'false'
+      },
+      {
+        property: 'class',
+        description: 'Custom class for the divider.',
+        type: 'String|Object',
+        default: '-'
+      },
+      {
+        property: 'style',
+        description: 'Custom style of the divider.',
+        type: 'String|Object',
+        default: '-'
       }
     ]
   }
