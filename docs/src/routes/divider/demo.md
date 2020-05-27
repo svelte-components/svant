@@ -1,0 +1,40 @@
+# Divider
+
+Description of the Divider's function.
+
+## Examples
+
+<Example
+  id="divider-demo-horizontal"
+  title="Horizontal"
+  demoComponent="{Horizontal}"
+  demoCode="{HorizontalCode}">
+  <p slot="description">
+    A simple example. The `Divider` is horizontal by default.
+  </p>
+</Example>
+
+## API
+
+<DocsTable {...attributesData}/>
+
+<script>
+  import Example from 'docs/src/components/Example.svelte';
+
+  import Horizontal from './demos/horizontal.demo.svelte'
+  import HorizontalCode from './demos/horizontal.demo.txt'
+
+  import DocsTable from 'docs/src/components/DocsTable.svelte'
+  const attributesData = {
+    title: 'Attributes',
+    columns: ['Property', 'Description', 'Type', 'Default'],
+    data: [
+      {
+        property: 'test',
+        description: 'test description',
+        type: 'String',
+        default: 'test'
+      }
+    ]
+  }
+</script>
