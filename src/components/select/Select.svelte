@@ -165,7 +165,7 @@
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
 
   const config = getContext(CONFIG_KEY) || configProvider();
-  const { getPrefixCls, size: configSize } = $config;
+  const { getPrefixCls, size: configSize, direction } = $config;
   let prefixCls = getPrefixCls("select");
 
   const dispatch = createEventDispatcher();
@@ -270,8 +270,6 @@
   let currentTagAttributes;
   // keep track of former value so we can properly dispatch the change event
   let formerValue;
-
-  //********* TODO: config-provider RTL ******//
 
   let selectStore = writable({
     optionsVisible: defaultOpen,
@@ -411,7 +409,8 @@
     [`${prefixCls}-loading`]: loading,
     [`${prefixCls}-allow-clear`]: clearable,
     [`${prefixCls}-show-search`]: searchable || !isSingleMode,
-    [`${prefixCls}-borderless`]: borderless
+    [`${prefixCls}-borderless`]: borderless,
+    [`${prefixCls}-rtl`]: direction === "rtl"
   });
 
   $: dropdownClasses = classNames({
