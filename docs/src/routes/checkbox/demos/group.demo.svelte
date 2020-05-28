@@ -18,9 +18,9 @@
 <script>
   import { CheckboxGroup } from "svant";
 
-  let value1 = ['Apple'];
-  let value2 = ['Pear'];
-  let value3 = ['Apple'];
+  let value1 = ["Apple"];
+  let value2 = ["Pear"];
+  let value3 = ["Apple"];
 
   const plainOptions = ["Apple", "Pear", "Orange"];
   const options = [

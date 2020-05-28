@@ -34,8 +34,8 @@
   const dispatch = createEventDispatcher();
 
   // ********************** Props **********************
-  // sets the default checked state
-  export let defaultChecked = false;
+  // sets the checked state
+  export let checked;
   // disabled state of switch
   export let disabled = false;
   // set the loading status of button
@@ -59,10 +59,7 @@
   }
   let node;
   let classes;
-  let checked = false;
-  $: if ("checked" in $$props) {
-    checked = !!$$props.checked;
-  }
+
   const config = getContext(CONFIG_KEY) || configProvider();
   const { getPrefixCls, direction, size: configSize } = $config;
   const prefixCls = getPrefixCls("switch");
@@ -77,9 +74,6 @@
   });
 
   onMount(() => {
-    if (!("checked" in $$props)) {
-      checked = !!defaultChecked;
-    }
     if ($$props["autoFocus"] && !disabled) {
       focus();
     }
@@ -90,9 +84,7 @@
       return;
     }
 
-    if (!("checked" in $$props)) {
-      checked = newChecked;
-    }
+    checked = newChecked;
     dispatch("change", newChecked);
   }
 

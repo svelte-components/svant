@@ -91,13 +91,7 @@ Switch is used to represent switching between two states (e.x on-off)
       },
       {
         property: 'checked',
-        description: 'Determine whether the Switch is checked, if this prop is set the component will not handle state change the prop needs to change if you want to change the state.',
-        type: 'Boolean',
-        default: 'false'
-      },
-      {
-        property: 'defaultChecked',
-        description: 'Default state of the Switch',
+        description: 'Determine whether the Switch is checked. This property can be used for 2 way binding.',
         type: 'Boolean',
         default: 'false'
       },
@@ -121,7 +115,7 @@ Switch is used to represent switching between two states (e.x on-off)
       }
     ]
   };
-  
+
   const switchEventData = {
     title: 'Events',
     columns: ['Name', 'Description'],
@@ -136,7 +130,7 @@ Switch is used to represent switching between two states (e.x on-off)
       },
     ]
   };
-  
+
    const switchBindData = {
       title: 'Bind',
       columns: ['Name', 'Description'],
@@ -151,7 +145,7 @@ Switch is used to represent switching between two states (e.x on-off)
         },
       ]
     };
-    
+
    const switchSlotsData = {
       title: 'Slots',
       columns: ['Name', 'Description'],

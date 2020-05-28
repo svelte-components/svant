@@ -135,7 +135,7 @@
         const indexB = options.findIndex(opt => opt.value === b);
         return indexA - indexB;
       });
-    value = changeValue
+    value = changeValue;
     dispatch("change", changeValue);
   }
 </script>
