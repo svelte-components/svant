@@ -67,7 +67,16 @@
     radioProps.name = context.name;
   }
 
-  $: isChecked = checked || ($context && value === $context.value);
+  $: if ($context && value === $context.value) {
+    isChecked = true;
+    checked = true;
+  } else if ($context) {
+    isChecked = false;
+    checked = false;
+  } else {
+    isChecked = !!checked;
+  }
+
   $: isDisabled = disabled || ($context && $context.disabled);
 
   $: if (childSlot && !childSlot.hasChildNodes()) {

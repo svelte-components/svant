@@ -5,7 +5,7 @@
 
   let checked = false;
 
-  function onChange({ detail }) {
-    console.log(`checked = ${detail.target.checked}`);
+  function onChange() {
+    console.log(`checked = ${checked}`);
   }
 </script>
