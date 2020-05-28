@@ -1,22 +1,26 @@
 <div>
   <CheckboxGroup
     options="{plainOptions}"
-    defaultValue="{['Apple']}"
+    bind:value="{value1}"
     on:change="{onChange}" />
   <br />
   <br />
-  <CheckboxGroup {options} defaultValue="{['Pear']}" on:change="{onChange}" />
+  <CheckboxGroup {options} bind:value="{value2}" on:change="{onChange}" />
   <br />
   <br />
   <CheckboxGroup
     options="{optionsWithDisabled}"
     disabled
-    defaultValue="{['Apple']}"
+    bind:value="{value3}"
     on:change="{onChange}" />
 </div>
 
 <script>
   import { CheckboxGroup } from "svant";
+
+  let value1 = ['Apple'];
+  let value2 = ['Pear'];
+  let value3 = ['Apple'];
 
   const plainOptions = ["Apple", "Pear", "Orange"];
   const options = [

@@ -87,7 +87,7 @@ describe("CheckboxGroup component", () => {
     expect(onChange).toHaveBeenCalled();
   });
 
-  test("should only emit values and not change the prop is value is present in the props", () => {
+  test("should allow 2 way binding and emit a change event", () => {
     const { component } = render(CheckboxGroup, {
       value: ["1"],
       options: [
@@ -114,7 +114,7 @@ describe("CheckboxGroup component", () => {
     });
 
     const valueInx = component.$$.props.value;
-    expect(component.$$.ctx[valueInx]).toEqual(["1"]);
+    expect(component.$$.ctx[valueInx]).toEqual(["1", "2"]);
     expect(onChange).toHaveBeenCalled();
   });
 

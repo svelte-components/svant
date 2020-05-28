@@ -110,13 +110,7 @@ Description of the Checkbox's function.
       },
       {
         property: 'checked',
-        description: 'Specifies whether the checkbox is selected.',
-        type: 'Boolean',
-        default: 'false'
-      },
-      {
-        property: 'defaultChecked',
-        description: 'Specifies the initial state: whether or not the checkbox is selected.',
+        description: 'Specifies whether the checkbox is selected. Can be used for 2 way binding.',
         type: 'Boolean',
         default: 'false'
       },
@@ -139,12 +133,6 @@ Description of the Checkbox's function.
     title: 'CheckboxGroup Attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
-      {
-        property: 'defaultValue',
-        description: 'Default selected value.',
-        type: 'String[]',
-        default: '[]'
-      },
       {
         property: 'disabled',
         description: 'Disable all checkboxes.',
@@ -171,8 +159,8 @@ Description of the Checkbox's function.
       }
     ]
   };
-  
-  
+
+
   const checkBoxEventData = {
     title: 'Checkbox Events',
     columns: ['Name', 'Description'],

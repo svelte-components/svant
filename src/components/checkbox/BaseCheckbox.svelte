@@ -22,7 +22,7 @@
 </span>
 
 <script>
-  import { createEventDispatcher, onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import { string as toStyle } from "to-style";
   import classNames from "classnames";
 
@@ -39,8 +39,6 @@
   export let style = null;
   // specifies if the checkbox is checked
   export let checked = null;
-  // specifies if the initial checkbox checked value
-  export let defaultChecked = false;
   // the input type
   export let type = "checkbox";
   // the input name
@@ -91,17 +89,11 @@
     [`${prefixCls}-disabled`]: disabled
   });
 
-  onMount(() => {
-    checked = "checked" in $$props ? checked : defaultChecked;
-  });
-
   function handleChange(e) {
     if (disabled) {
       return;
     }
-    if (!("checked" in $$props)) {
-      checked = e.target.checked;
-    }
+    checked = e.target.checked;
     dispatch("change", {
       target: {
         ...$$props,
