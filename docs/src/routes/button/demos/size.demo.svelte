@@ -1,9 +1,4 @@
-<RadioGroup
-  on:change="{s => {
-    size = s.detail;
-  }}"
-  defaultValue="default"
-  style="{{ marginBottom: '16px' }}">
+<RadioGroup bind:value="{size}" style="{{ marginBottom: '16px' }}">
   <RadioButton value="large">Large</RadioButton>
   <RadioButton value="default">Default</RadioButton>
   <RadioButton value="small">Small</RadioButton>
@@ -25,5 +20,5 @@
 <script>
   import { Button, RadioGroup, RadioButton } from "svant";
   import { DownloadOutlined } from "svant/icons";
-  let size;
+  let size = "default";
 </script>

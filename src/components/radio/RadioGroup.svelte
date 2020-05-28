@@ -86,14 +86,12 @@
   );
 
   $: $context = {
-    value: value,
-    disabled: disabled,
-    name: name,
-
-    setValue: setValue
+    value,
+    disabled,
+    name,
+    setValue
   };
   onMount(() => {
-    value = value || $$props.defaultValue;
     classObj[`${groupPrefixCls}-button-group`] = hasButtonGroupChild();
   });
 

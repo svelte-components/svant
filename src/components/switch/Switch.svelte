@@ -35,7 +35,7 @@
 
   // ********************** Props **********************
   // sets the checked state
-  export let checked;
+  export let checked = null;
   // disabled state of switch
   export let disabled = false;
   // set the loading status of button

@@ -1,11 +1,14 @@
-<RadioGroup options="{plainOptions}" on:change="{onChange1}" value="{value1}" />
+<RadioGroup
+  options="{plainOptions}"
+  on:change="{onChange1}"
+  bind:value="{value1}" />
 <br />
 <RadioGroup
   options="{optionsWithDisabled}"
   on:change="{onChange2}"
-  value="{value2}" />
+  bind:value="{value2}" />
 <br />
-<RadioGroup {options} disabled value="{value3}" />
+<RadioGroup {options} disabled bind:value="{value3}" />
 
 <script>
   import { RadioGroup } from "svant";
@@ -24,13 +27,11 @@
     { label: "Orange", value: "Orange", disabled: true }
   ];
 
-  function onChange1({ detail }) {
-    console.log("radio1 checked", detail);
-    value1 = detail;
+  function onChange1() {
+    console.log("radio1 checked", value1);
   }
 
-  function onChange2({ detail }) {
-    console.log("radio2 checked", detail);
-    value2 = detail;
+  function onChange2() {
+    console.log("radio2 checked", value2);
   }
 </script>
