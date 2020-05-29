@@ -16,7 +16,8 @@
   {
     "name": "Navigation",
     "children": [
-      "breadcrumb"
+      "breadcrumb",
+      "menu"
     ]
   },
   {
