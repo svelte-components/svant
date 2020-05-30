@@ -9,7 +9,8 @@
   {
     "name": "Layout",
     "children": [
-      "layout"
+      "layout",
+      "divider"
     ]
   },
   {
