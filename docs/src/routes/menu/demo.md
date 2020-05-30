@@ -1,16 +1,16 @@
 # Menu
 
-Description of the Menu's function.
+A versatile menu for navigation.
 
 ## Examples
 
 <Example
   id="menu-demo-basic"
-  title="Basic"
+  title="Top Navigation"
   demoComponent="{Basic}"
   demoCode="{BasicCode}">
   <p slot="description">
-    Basic description of the Menu component goes here
+    Horizontal top navigation menu.
   </p>
 </Example>
 
@@ -38,4 +38,3 @@ Description of the Menu's function.
     ]
   }
 </script>
-  
