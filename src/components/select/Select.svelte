@@ -129,14 +129,13 @@
 </div>
 
 <script>
-  import {
-    DownOutlined,
-    LoadingOutlined,
-    CloseCircleFilled,
-    CloseOutlined,
-    SearchOutlined,
-    InboxOutlined
-  } from "@/components/icons";
+  import { default as DownOutlined } from "@/components/icons/DownOutlined.svelte";
+  import { default as LoadingOutlined } from "@/components/icons/LoadingOutlined.svelte";
+  import { default as CloseCircleFilled } from "@/components/icons/CloseCircleFilled.svelte";
+  import { default as CloseOutlined } from "@/components/icons/CloseOutlined.svelte";
+  import { default as SearchOutlined } from "@/components/icons/SearchOutlined.svelte";
+  import { default as InboxOutlined } from "@/components/icons/InboxOutlined.svelte";
+
   import { writable } from "svelte/store";
   import {
     getContext,
@@ -397,12 +396,11 @@
 
   $: wrapperClasses = classNames(`${prefixCls}-wrapper`, { ...classObj });
 
-  $: classes = classNames(prefixCls, {
+  $: classes = classNames([prefixCls, `${prefixCls}-show-arrow`], {
     [`${prefixCls}-single`]: isSingleMode,
     [`${prefixCls}-sm`]: size === "small" || configSize === "small",
     [`${prefixCls}-lg`]: size === "large" || configSize === "large",
     [`${prefixCls}-multiple`]: !isSingleMode,
-    [`${prefixCls}-show-arrow`]: true,
     [`${prefixCls}-open`]: dropdownVisible,
     [`${prefixCls}-focused`]: selectFocused,
     [`${prefixCls}-disabled`]: disabled,
@@ -413,12 +411,13 @@
     [`${prefixCls}-rtl`]: direction === "rtl"
   });
 
-  $: dropdownClasses = classNames({
-    ...dropdownClassObj,
-    [`${prefixCls}-dropdown`]: true,
-    [`${prefixCls}-dropdown-placement-bottomLeft`]: true,
-    [`${prefixCls}-dropdown-open`]: dropdownVisible
-  });
+  $: dropdownClasses = classNames(
+    [`${prefixCls}-dropdown`, `${prefixCls}-dropdown-placement-bottomLeft`],
+    {
+      ...dropdownClassObj,
+      [`${prefixCls}-dropdown-open`]: dropdownVisible
+    }
+  );
 
   $: showClearIcon =
     isInputHovered &&
@@ -442,7 +441,6 @@
     if (!formerValue && formerValue !== "") {
       formerValue = value;
     } else if (formerValue !== value) {
-      console.log("changed", formerValue, value);
       dispatch("change", { value, label: getSelectedLabel() });
     }
   }
@@ -579,27 +577,26 @@
   // Opening the select dropdown
   // ensures that the proper item is set to active when the dropdown opens
   function onSelectClick() {
-    if (!disabled) {
-      selectFocused = true;
-      dispatch("focus");
+    if (disabled) return;
+    selectFocused = true;
+    dispatch("focus");
 
-      const optionsArray = $selectStore.allOptionNodes
-        ? Array.from($selectStore.allOptionNodes)
-        : [];
-      const firstSelected = optionsArray.find(option => {
-        return option.classList.contains(`${prefixCls}-item-option-selected`);
-      });
+    const optionsArray = $selectStore.allOptionNodes
+      ? Array.from($selectStore.allOptionNodes)
+      : [];
+    const firstSelected = optionsArray.find(option => {
+      return option.classList.contains(`${prefixCls}-item-option-selected`);
+    });
 
-      if (!$selectStore.optionsVisible) {
-        if (firstSelected) {
-          $selectStore.activeValue = firstSelected.dataset.optionValue;
-        } else {
-          $selectStore.activeValue = $selectStore.options[0];
-        }
+    if (!$selectStore.optionsVisible) {
+      if (firstSelected) {
+        $selectStore.activeValue = firstSelected.dataset.optionValue;
+      } else {
+        $selectStore.activeValue = $selectStore.options[0];
       }
-
-      $selectStore.optionsVisible = true;
     }
+
+    $selectStore.optionsVisible = true;
   }
 
   // Clear icon is clicked

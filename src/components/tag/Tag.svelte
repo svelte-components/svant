@@ -17,7 +17,7 @@
 {/if}
 
 <script>
-  import { CloseOutlined } from "@/components/icons";
+  import { default as CloseOutlined } from "@/components/icons/CloseOutlined.svelte";
   import { fadeScale } from "@/components/_util/transitions";
   import { cubicInOut } from "svelte/easing";
   import classNames from "classnames";

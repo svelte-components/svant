@@ -6,7 +6,7 @@
   import { setContext, getContext, createEventDispatcher } from "svelte";
   import { writable } from "svelte/store";
   import classNames from "classnames";
-  import { RightOutlined } from "@/components/icons";
+  import { default as RightOutlined } from "@/components/icons/RightOutlined.svelte";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
 
   const dispatch = createEventDispatcher();

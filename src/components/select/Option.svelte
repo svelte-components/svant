@@ -25,7 +25,7 @@
 
 <script>
   import { getContext, onMount, tick } from "svelte";
-  import { CheckOutlined } from "@/components/icons";
+  import { default as CheckOutlined } from "@/components/icons/CheckOutlined.svelte";
   import classNames from "classnames";
   import { nanoid } from "nanoid";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
@@ -93,9 +93,7 @@
 
   $: isActive = $selectStore.activeValue === value;
 
-  $: classes = classNames({
-    [`${prefixCls}-item`]: true,
-    [`${prefixCls}-item-option`]: true,
+  $: classes = classNames([`${prefixCls}-item`, `${prefixCls}-item-option`], {
     [`${prefixCls}-item-option-disabled`]: disabled,
     [`${prefixCls}-item-option-selected`]: isSelected,
     [`${prefixCls}-item-option-active`]: isActive
@@ -112,48 +110,47 @@
   }
 
   function onClick() {
-    if (!disabled) {
-      $selectStore.handleSelectPendingTag();
+    if (disabled) return;
+    $selectStore.handleSelectPendingTag();
 
-      const isSingleMode = !["multiple", "tags"].includes($selectStore.mode);
-      if (!isSingleMode && isSelected) {
-        selectStore.set({
-          ...$selectStore,
-          selectedValue: $selectStore.selectedValue.filter(v => v !== value),
-          selectedLabel: $selectStore.selectedLabel.filter(l => l !== label),
-          searchValue: ""
-        });
+    const isSingleMode = !["multiple", "tags"].includes($selectStore.mode);
+    if (!isSingleMode && isSelected) {
+      selectStore.set({
+        ...$selectStore,
+        selectedValue: $selectStore.selectedValue.filter(v => v !== value),
+        selectedLabel: $selectStore.selectedLabel.filter(l => l !== label),
+        searchValue: ""
+      });
 
-        if ($selectStore.addedTags.length) {
-          $selectStore.addedTags = $selectStore.addedTags.filter(
-            tag => tag.value !== value
-          );
-        }
-      } else if (!isSingleMode) {
-        if (
-          $selectStore.mode === "tags" &&
-          !$selectStore.options.includes(value)
-        ) {
-          $selectStore.addedTags = [
-            ...$selectStore.addedTags,
-            { value, label, id: nanoid() }
-          ];
-        }
-
-        selectStore.set({
-          ...$selectStore,
-          selectedValue: [...$selectStore.selectedValue, value],
-          selectedLabel: [...$selectStore.selectedLabel, label],
-          searchValue: ""
-        });
-      } else {
-        selectStore.set({
-          ...$selectStore,
-          selectedValue: value,
-          selectedLabel: label,
-          optionsVisible: false
-        });
+      if ($selectStore.addedTags.length) {
+        $selectStore.addedTags = $selectStore.addedTags.filter(
+          tag => tag.value !== value
+        );
       }
+    } else if (!isSingleMode) {
+      if (
+        $selectStore.mode === "tags" &&
+        !$selectStore.options.includes(value)
+      ) {
+        $selectStore.addedTags = [
+          ...$selectStore.addedTags,
+          { value, label, id: nanoid() }
+        ];
+      }
+
+      selectStore.set({
+        ...$selectStore,
+        selectedValue: [...$selectStore.selectedValue, value],
+        selectedLabel: [...$selectStore.selectedLabel, label],
+        searchValue: ""
+      });
+    } else {
+      selectStore.set({
+        ...$selectStore,
+        selectedValue: value,
+        selectedLabel: label,
+        optionsVisible: false
+      });
     }
     $selectStore.updateAllOptionNodes();
   }

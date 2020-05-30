@@ -31,13 +31,12 @@
   import messagesStore from "./store.js";
   import classNames from "classnames";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
-  import {
-    InfoCircleFilled,
-    CheckCircleFilled,
-    CloseCircleFilled,
-    ExclamationCircleFilled,
-    LoadingOutlined
-  } from "@/components/icons";
+
+  import { default as InfoCircleFilled } from "@/components/icons/InfoCircleFilled.svelte";
+  import { default as CheckCircleFilled } from "@/components/icons/CheckCircleFilled.svelte";
+  import { default as CloseCircleFilled } from "@/components/icons/CloseCircleFilled.svelte";
+  import { default as ExclamationCircleFilled } from "@/components/icons/ExclamationCircleFilled.svelte";
+  import { default as LoadingOutlined } from "@/components/icons/LoadingOutlined.svelte";
 
   const config = getContext(CONFIG_KEY) || configProvider();
   const { getPrefixCls, direction } = $config;
