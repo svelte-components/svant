@@ -1,4 +1,4 @@
-<RadioGroup on:change="{onChange}" {value}>
+<RadioGroup bind:value on:change="{onChange}">
   <Radio value="{1}">A</Radio>
   <Radio value="{2}">B</Radio>
   <Radio value="{3}">C</Radio>
@@ -8,8 +8,8 @@
 <script>
   import { Radio, RadioGroup } from "svant";
   let value = 1;
-  function onChange({ detail }) {
-    console.log("radio checked", detail);
-    value = detail;
+
+  function onChange() {
+    console.log("radio checked", value);
   }
 </script>

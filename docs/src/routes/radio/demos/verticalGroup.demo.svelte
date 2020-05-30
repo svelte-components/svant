@@ -1,4 +1,4 @@
-<RadioGroup on:change="{onChange}" {value}>
+<RadioGroup on:change="{onChange}" bind:value>
   <Radio value="{1}" style="{radioStyle}">Option A</Radio>
   <Radio value="{2}" style="{radioStyle}">Option B</Radio>
   <Radio value="{3}" style="{radioStyle}">Option C</Radio>
@@ -12,8 +12,7 @@
     lineHeight: "30px"
   };
   let value = 1;
-  function onChange({ detail }) {
-    console.log("radio checked", detail);
-    value = detail;
+  function onChange() {
+    console.log("radio checked", value);
   }
 </script>

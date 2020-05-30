@@ -1,6 +1,6 @@
 <div>
   <p style="{{ marginBottom: '20px' }}">
-    <Checkbox {checked} {disabled} on:change="{onChange}">{label}</Checkbox>
+    <Checkbox bind:checked {disabled} on:change="{onChange}">{label}</Checkbox>
   </p>
   <p>
     <Button type="primary" size="small" on:click="{toggleChecked}">
@@ -33,8 +33,7 @@
     disabled = !disabled;
   }
 
-  function onChange({ detail }) {
-    console.log("checked = ", detail.target.checked);
-    checked = detail.target.checked;
+  function onChange() {
+    console.log("checked = ", checked);
   }
 </script>

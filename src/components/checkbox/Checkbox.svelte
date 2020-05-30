@@ -3,6 +3,8 @@
     {prefixCls}
     class="{checkboxClass}"
     {...checkboxProps}
+    disabled="{!!isDisabled}"
+    checked="{!!isChecked}"
     bind:focus
     bind:blur
     on:change="{({ detail }) => onChange(detail)}" />
@@ -39,6 +41,8 @@
   export let focus = null;
   // allows you to bind:blur so you can programmatically blur the checkbox
   export let blur = null;
+  // Allows 2 way binding
+  export let checked = null;
 
   // this exports the classObj as class so the button user can set class={{'abc':true}}
   let classObj = null;
@@ -55,6 +59,8 @@
   let classString;
   let checkboxClass;
   let checkboxProps;
+  let isChecked;
+  let isDisabled;
   let childSlot = null;
 
   // since we are not adding any style we just convert the style object to a style sting if it is not already a string
@@ -62,18 +68,20 @@
     style = toStyle(style);
   }
 
+  $: isChecked = checked || ($context && $context.value.indexOf(value) !== -1);
+  $: isDisabled = disabled || ($context && $context.disabled);
+
   $: {
-    checkboxProps = { disabled, ...$$restProps };
+    checkboxProps = { ...$$restProps };
 
     if ($context) {
       checkboxProps.name = $context.name;
-      checkboxProps.checked = $context.value.indexOf(value) !== -1;
-      checkboxProps.disabled = disabled || $context.disabled;
     }
+
     classString = classNames(classObj, {
       [`${prefixCls}-wrapper`]: true,
-      [`${prefixCls}-wrapper-checked`]: checkboxProps.checked,
-      [`${prefixCls}-wrapper-disabled`]: checkboxProps.disabled
+      [`${prefixCls}-wrapper-checked`]: isChecked,
+      [`${prefixCls}-wrapper-disabled`]: isDisabled
     });
     checkboxClass = classNames({
       [`${prefixCls}-indeterminate`]: indeterminate
@@ -106,6 +114,7 @@
   });
 
   function onChange(detail) {
+    checked = detail.target.checked;
     dispatch("change", detail);
     $context && $context.toggleOption({ value });
   }

@@ -11,12 +11,6 @@ describe("Checkbox component", () => {
     const { container } = render(Checkbox);
     expect(container.innerHTML).toContain("ant-checkbox");
   });
-  test("should render with default state", () => {
-    const { container } = render(Checkbox, { defaultChecked: true });
-
-    const input = container.getElementsByTagName("INPUT")[0];
-    expect(input.checked).toEqual(true);
-  });
 
   test("should render with checked defined", () => {
     const { container } = render(Checkbox, { checked: true });

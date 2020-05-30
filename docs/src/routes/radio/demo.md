@@ -110,10 +110,10 @@ Description of the Radio's function.
 
   import Basic from './demos/basic.demo.svelte'
   import BasicCode from './demos/basic.demo.txt'
-  
+
   import Disabled from './demos/disabled.demo.svelte'
   import DisabledCode from './demos/disabled.demo.txt'
-  
+
   import Group from './demos/group.demo.svelte'
   import GroupCode from './demos/group.demo.txt'
 
@@ -125,15 +125,15 @@ Description of the Radio's function.
 
   import RadioButtonGroup from './demos/radioButton.demo.svelte'
   import RadioButtonGroupCode from './demos/radioButton.demo.txt'
-  
+
   import SolidButtonGroup from './demos/solidButton.demo.svelte'
   import SolidButtonGroupCode from './demos/solidButton.demo.txt'
-  
+
   import SizeRadioGroup from './demos/radioGroupSize.demo.svelte'
   import SizeRadioGroupCode from './demos/radioGroupSize.demo.txt'
 
   import DocsTable from 'docs/src/components/DocsTable.svelte'
-  
+
   const attributesData = {
     title: 'Radio Attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
@@ -151,12 +151,6 @@ Description of the Radio's function.
         default: 'false'
       },
       {
-        property: 'defaultChecked',
-        description: 'Specifies the initial state: whether or not the checkbox is selected.',
-        type: 'Boolean',
-        default: 'false'
-      },
-      {
         property: 'disabled',
         description: 'Disable checkbox.',
         type: 'Boolean',
@@ -170,17 +164,11 @@ Description of the Radio's function.
       }
     ]
   };
-  
+
   const groupAttributesData = {
     title: 'RadioGroup Attributes',
     columns: ['Property', 'Description', 'Type', 'Default'],
     data: [
-      {
-        property: 'defaultValue',
-        description: 'Default selected value.',
-        type: 'Any',
-        default: '-'
-      },
       {
         property: 'disabled',
         description: 'Disable all radios.',
@@ -201,7 +189,7 @@ Description of the Radio's function.
       },
       {
         property: 'value',
-        description: 'Used for setting the currently selected value.',
+        description: 'Used for setting the currently selected value. Can be used for 2 way binding.',
         type: 'String',
         default: '-'
       },
@@ -218,9 +206,9 @@ Description of the Radio's function.
         default: 'outline'
       }
     ]
-    
+
   };
-  
+
   const radioEventData = {
     title: 'Radio Events',
     columns: ['Name', 'Description'],
@@ -242,7 +230,7 @@ Description of the Radio's function.
       },
     ]
   };
-  
+
    const radioBindData = {
       title: 'Radio Bind',
       columns: ['Name', 'Description'],

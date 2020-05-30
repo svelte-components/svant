@@ -10,7 +10,7 @@
   <br />
   <CheckboxGroup
     options="{plainOptions}"
-    value="{checkedList}"
+    bind:value="{checkedList}"
     on:change="{onChange}" />
 </div>
 
@@ -23,7 +23,6 @@
   let checkAll = false;
 
   function onChange({ detail }) {
-    checkedList = detail;
     indeterminate =
       checkedList.length && checkedList.length < plainOptions.length;
     checkAll = checkedList.length === plainOptions.length;

@@ -1,4 +1,4 @@
-<CheckboxGroup style="{{ width: '100%' }}" on:change="{onChange}">
+<CheckboxGroup bind:value style="{{ width: '100%' }}" on:change="{onChange}">
   <Checkbox value="A">A</Checkbox>
   <Checkbox value="B">B</Checkbox>
   <Checkbox value="C">C</Checkbox>
@@ -8,7 +8,8 @@
 
 <script>
   import { CheckboxGroup, Checkbox } from "svant";
-  function onChange({ detail }) {
-    console.log("checked = ", detail);
+  let value = [];
+  function onChange() {
+    console.log("checked = ", value);
   }
 </script>

@@ -1,4 +1,4 @@
-<RadioGroup defaultValue="a" size="large">
+<RadioGroup bind:value="{value1}" size="large">
   <RadioButton value="a">Hangzhou</RadioButton>
   <RadioButton value="b">Shanghai</RadioButton>
   <RadioButton value="c">Beijing</RadioButton>
@@ -6,7 +6,7 @@
 </RadioGroup>
 <br />
 
-<RadioGroup defaultValue="a" style="{{ marginTop: 16 }}">
+<RadioGroup bind:value="{value2}" style="{{ marginTop: 16 }}">
   <RadioButton value="a">Hangzhou</RadioButton>
   <RadioButton value="b">Shanghai</RadioButton>
   <RadioButton value="c">Beijing</RadioButton>
@@ -14,7 +14,7 @@
 </RadioGroup>
 <br />
 
-<RadioGroup defaultValue="a" size="small" style="{{ marginTop: 16 }}">
+<RadioGroup bind:value="{value3}" size="small" style="{{ marginTop: 16 }}">
   <RadioButton value="a">Hangzhou</RadioButton>
   <RadioButton value="b">Shanghai</RadioButton>
   <RadioButton value="c">Beijing</RadioButton>
@@ -23,4 +23,7 @@
 
 <script>
   import { RadioButton, RadioGroup } from "svant";
+  let value1 = "a";
+  let value2 = "a";
+  let value3 = "a";
 </script>

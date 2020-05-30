@@ -1,6 +1,8 @@
 <label class="{wrapperClassString}" {style} on:mouseenter on:mouseleave>
   <BaseCheckbox
     {...radioProps}
+    disabled="{!!isDisabled}"
+    checked="{!!isChecked}"
     {prefixCls}
     bind:focus
     type="radio"
@@ -35,6 +37,8 @@
   export let focus = null;
   // allows you to bind:blur so you can programmatically blur the checkbox
   export let blur = null;
+  // Allows 2 way binding
+  export let checked = null;
 
   // this exports the classObj as class so the button user can set class={{'abc':true}}
   let classObj = null;
@@ -54,14 +58,26 @@
   let radioProps;
   let childSlot;
   let wrapperClassString;
+  let isChecked;
+  let isDisabled;
 
-  $: radioProps = { ...$$restProps, disabled, value };
+  $: radioProps = { ...$$restProps, value };
 
   $: if ($context) {
     radioProps.name = context.name;
-    radioProps.checked = value === $context.value;
-    radioProps.disabled = disabled || $context.disabled;
   }
+
+  $: if ($context && value === $context.value) {
+    isChecked = true;
+    checked = true;
+  } else if ($context) {
+    isChecked = false;
+    checked = false;
+  } else {
+    isChecked = !!checked;
+  }
+
+  $: isDisabled = disabled || ($context && $context.disabled);
 
   $: if (childSlot && !childSlot.hasChildNodes()) {
     childSlot.remove();
@@ -69,13 +85,14 @@
 
   $: wrapperClassString = classNames(classObj, {
     [`${prefixCls}-wrapper`]: true,
-    [`${prefixCls}-wrapper-checked`]: radioProps.checked,
-    [`${prefixCls}-wrapper-disabled`]: radioProps.disabled,
+    [`${prefixCls}-wrapper-checked`]: isChecked,
+    [`${prefixCls}-wrapper-disabled`]: isDisabled,
     [`${prefixCls}-wrapper-rtl`]: direction === "rtl"
   });
 
   function onChange({ detail }) {
     $context && $context.setValue(radioProps.value);
+    checked = detail.target.checked;
     dispatch("change", detail);
   }
 </script>

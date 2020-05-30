@@ -12,13 +12,6 @@ describe("Radio component", () => {
     expect(container.innerHTML).toContain("ant-radio");
   });
 
-  test("should render with default state", () => {
-    const { container } = render(Radio, { defaultChecked: true });
-
-    const input = container.getElementsByTagName("INPUT")[0];
-    expect(input.checked).toEqual(true);
-  });
-
   test("should render with checked defined", () => {
     const { container } = render(Radio, { checked: true });
 

@@ -93,7 +93,7 @@
   };
 
   onMount(() => {
-    value = $$props.value || $$props.defaultValue || [];
+    value = $$props.value || [];
   });
 
   function getOptions() {
@@ -135,6 +135,7 @@
         const indexB = options.findIndex(opt => opt.value === b);
         return indexA - indexB;
       });
+    value = changeValue;
     dispatch("change", changeValue);
   }
 </script>
