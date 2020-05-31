@@ -25,6 +25,7 @@
       "checkbox",
       "radio",
       "input",
+      "select",
       "switch"
     ]
   },

@@ -1,6 +1,6 @@
 # Notification
 
-Description of the Notification's function.
+Display a notification message globally.
 
 ## Examples
 

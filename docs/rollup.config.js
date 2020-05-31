@@ -33,6 +33,9 @@ const onwarn = (warning, onwarn) =>
     /[/\\]@sapper[/\\]/.test(warning.message)) ||
   onwarn(warning);
 
+const dedupe = importee =>
+  importee === "svelte" || importee.startsWith("svelte/");
+
 export default {
   client: {
     input: config.client.input(),
@@ -54,7 +57,7 @@ export default {
       }),
       resolve({
         browser: true,
-        dedupe: ["svelte"]
+        dedupe
       }),
       string({
         include: "**/*.txt"
@@ -120,7 +123,7 @@ export default {
         }
       }),
       resolve({
-        dedupe: ["svelte"]
+        dedupe
       }),
       alias({
         entries: {

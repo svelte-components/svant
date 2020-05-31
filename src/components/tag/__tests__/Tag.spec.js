@@ -2,7 +2,7 @@ import Tag from "../Tag.svelte";
 import { fireEvent } from "@testing-library/svelte";
 import { render, delay } from "@/components/_util/testHelpers";
 import { PresetColors } from "@/components/_util/colors.js";
-import { CheckCircleOutlined } from "@/components/icons";
+import { default as CheckCircleOutlined } from "@/components/icons/CheckCircleOutlined.svelte";
 
 describe("Tag component", () => {
   test("should render", () => {

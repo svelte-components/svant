@@ -135,13 +135,13 @@
   import { fade, fly } from "svelte/transition";
   import { string as toStyle } from "to-style";
   import classNames from "classnames";
-  import {
-    CloseOutlined,
-    InfoCircleOutlined,
-    CheckCircleOutlined,
-    CloseCircleOutlined,
-    ExclamationCircleOutlined
-  } from "@/components/icons";
+
+  import { default as CloseOutlined } from "@/components/icons/CloseOutlined.svelte";
+  import { default as InfoCircleOutlined } from "@/components/icons/InfoCircleOutlined.svelte";
+  import { default as CheckCircleOutlined } from "@/components/icons/CheckCircleOutlined.svelte";
+  import { default as CloseCircleOutlined } from "@/components/icons/CloseCircleOutlined.svelte";
+  import { default as ExclamationCircleOutlined } from "@/components/icons/ExclamationCircleOutlined.svelte";
+
   import Button from "../button/Button.svelte";
   import { modalDestroyFunctions } from "./store";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";

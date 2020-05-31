@@ -30,7 +30,7 @@
 <script>
   import { createEventDispatcher, getContext, onDestroy } from "svelte";
   import { string as toStyle } from "to-style";
-  import { LoadingOutlined } from "@/components/icons";
+  import { default as LoadingOutlined } from "@/components/icons/LoadingOutlined.svelte";
   import classNames from "classnames";
   import { default as _wave } from "@/components/_util/wave";
   import { CONFIG_KEY, configProvider } from "@/provider/config-provider";
