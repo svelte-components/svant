@@ -27,7 +27,7 @@
     "@testing-library/jest-dom": "^5.5.0",
     "@testing-library/svelte": "^3.0.0",
     "babel-jest": "^25.3.0",
-    "codecov": "^3.6.5",
+    "codecov": "^3.7.1",
     "csso": "^4.0.3",
     "flush-promises": "^1.0.2",
     "husky": "^4.2.5",
