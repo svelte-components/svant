@@ -17,7 +17,7 @@
     "compression": "^1.7.1",
     "css-animation": "^1.5.0",
     "lodash": "^4.17.21",
-    "nanoid": "^3.1.7",
+    "nanoid": "^3.1.31",
     "polka": "next",
     "postcss": "^7.0.36",
     "postcss-load-config": "^2.1.0",
